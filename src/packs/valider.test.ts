@@ -24,6 +24,12 @@ describe('validerPack', () => {
   it('rejette un niveau hors 1-5', () => {
     expect(validerPack({ ...base, questions: [{ ...qcm, niveau: 6 }] }).erreurs[0].raison).toBe('niveau hors 1-5');
   });
+  it('rejette plus de 4 choix', () => {
+    expect(validerPack({ ...base, questions: [{ ...qcm, choix: ['a', 'b', 'c', 'd', 'e'] }] }).erreurs[0].raison).toBe('choix : 2 à 4');
+  });
+  it('rejette des choix en double', () => {
+    expect(validerPack({ ...base, questions: [{ ...qcm, choix: ['a', 'a'] }] }).erreurs[0].raison).toBe('choix en double');
+  });
   it('rejette un type inconnu', () => {
     expect(validerPack({ ...base, questions: [{ ...qcm, type: 'devinette' }] }).erreurs[0].raison).toBe('type inconnu : devinette');
   });

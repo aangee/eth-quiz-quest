@@ -18,7 +18,8 @@ function raison(q: any): string | null {
   switch (q.type) {
     case 'qcm':
       if (!str(q.question)) return 'question vide';
-      if (!strs(q.choix, 2)) return 'choix : au moins 2';
+      if (!strs(q.choix, 2) || q.choix.length > 4) return 'choix : 2 à 4';
+      if (new Set(q.choix).size !== q.choix.length) return 'choix en double';
       if (!Number.isInteger(q.reponse) || q.reponse < 0 || q.reponse >= q.choix.length) return 'reponse hors choix';
       return null;
     case 'vrai_faux':
