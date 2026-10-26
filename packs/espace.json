@@ -1,0 +1,20 @@
+{
+  "pack": "espace-v1",
+  "domaine": "Espace",
+  "version": 1,
+  "questions": [
+    { "id": "esp-001", "type": "vrai_faux", "niveau": 1, "age_min": 6, "question": "Le Soleil est une étoile.", "reponse": true, "explication": "C'est l'étoile la plus proche de la Terre." },
+    { "id": "esp-002", "type": "vrai_faux", "niveau": 1, "age_min": 6, "question": "La Lune produit sa propre lumière.", "reponse": false, "explication": "Elle renvoie la lumière du Soleil." },
+    { "id": "esp-003", "type": "qcm", "niveau": 1, "age_min": 6, "question": "Sur quelle planète vivons-nous ?", "choix": ["Mars", "La Terre", "Vénus", "Jupiter"], "reponse": 1, "explication": "La Terre est la 3e planète en partant du Soleil." },
+    { "id": "esp-004", "type": "qcm", "niveau": 2, "age_min": 7, "question": "Quelle planète est la plus proche du Soleil ?", "choix": ["Vénus", "Mercure", "Mars", "La Terre"], "reponse": 1, "explication": "Mercure est à environ 58 millions de km du Soleil." },
+    { "id": "esp-005", "type": "qcm", "niveau": 2, "age_min": 7, "question": "Quelle planète est surnommée « la planète rouge » ?", "choix": ["Mars", "Jupiter", "Saturne", "Neptune"], "reponse": 0, "explication": "Son sol contient de l'oxyde de fer, c'est-à-dire de la rouille." },
+    { "id": "esp-006", "type": "vrai_faux", "niveau": 2, "age_min": 8, "question": "Saturne est la seule planète à avoir des anneaux.", "reponse": false, "explication": "Jupiter, Uranus et Neptune en ont aussi, mais bien plus discrets." },
+    { "id": "esp-007", "type": "qcm", "niveau": 3, "age_min": 8, "question": "Combien de planètes compte le système solaire ?", "choix": ["7", "8", "9", "10"], "reponse": 1, "explication": "Depuis 2006, Pluton est classée planète naine." },
+    { "id": "esp-008", "type": "qcm", "niveau": 3, "age_min": 9, "question": "Quelle est la plus grosse planète du système solaire ?", "choix": ["Saturne", "Jupiter", "Neptune", "La Terre"], "reponse": 1, "explication": "On pourrait y faire entrer plus de 1 300 Terres." },
+    { "id": "esp-009", "type": "qcm", "niveau": 3, "age_min": 9, "question": "Qui a marché le premier sur la Lune ?", "choix": ["Youri Gagarine", "Neil Armstrong", "Buzz Aldrin", "Thomas Pesquet"], "reponse": 1, "explication": "C'était en juillet 1969, pendant la mission Apollo 11." },
+    { "id": "esp-010", "type": "vrai_faux", "niveau": 4, "age_min": 10, "question": "La lumière du Soleil met environ 8 minutes pour arriver sur Terre.", "reponse": true, "explication": "Elle parcourt environ 150 millions de km à 300 000 km/s." },
+    { "id": "esp-011", "type": "qcm", "niveau": 4, "age_min": 10, "question": "Comment s'appelle notre galaxie ?", "choix": ["Andromède", "La Voie lactée", "Le Grand Nuage de Magellan", "Orion"], "reponse": 1, "explication": "Elle contient plus de 100 milliards d'étoiles." },
+    { "id": "esp-012", "type": "qcm", "niveau": 5, "age_min": 12, "question": "Quelle planète tourne sur elle-même dans le sens inverse de la plupart des autres ?", "choix": ["Vénus", "Mars", "Mercure", "Neptune"], "reponse": 0, "explication": "Vénus a une rotation dite rétrograde." },
+    { "id": "esp-013", "type": "vrai_faux", "niveau": 5, "age_min": 12, "question": "Sur Vénus, un jour dure plus longtemps qu'une année.", "reponse": true, "explication": "Vénus tourne sur elle-même en environ 243 jours terrestres, et autour du Soleil en environ 225." }
+  ]
+}
