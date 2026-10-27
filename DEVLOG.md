@@ -3,7 +3,7 @@
 > **Point de reprise.** Si on travaille ailleurs (autre machine, session cloud, nouvelle conversation),
 > on repart d'ici : état du projet, décisions, ce qui reste. À mettre à jour à chaque fin de session.
 
-**Dernière mise à jour : 2026-10-27** — session cloud Nysa ↔ aangee (conception + V1 + lots 6, 7, 8 et **9**).
+**Dernière mise à jour : 2026-10-27** — session cloud Nysa ↔ aangee (conception + V1 + lots 6 à 9 + correctif des explications).
 
 ---
 
@@ -21,8 +21,8 @@ espace parent, classement famille en ligne (facultatif), animations et musique d
 ## État au 2026-10-27
 
 - `main` à jour : **PR #1 à #8 fusionnées**. Branche de travail : `claude/gamification-app-multidomains-0scl4l`.
-- **178 tests** (`npm test`), `npx tsc --noEmit` et `npm run build` OK.
-- **Lot 8 (thèmes) fusionné** (PR #9, #10). **Lot 9 (arbre lisible) fait** sur la branche `nysa/wizardly-bardeen-ciuz3m` — **pas encore de PR**.
+- **181 tests** (`npm test`), `npx tsc --noEmit` et `npm run build` OK.
+- **Lots 8 et 9 fusionnés** (PR #9, #10, #11). Correctif « réponse répétée dans les explications » sur la branche `nysa/wizardly-bardeen-ciuz3m`.
   La spec §18-§19 et les plans 8a/8b/8c/9 sont dans `nysa-atlas`, branche `nysa/wizardly-bardeen-ciuz3m`.
 - **Classement famille installé** par aangee (projet Firebase `quiz-quest-famille`, forfait Spark) : les scores remontent.
 - **Duel réseau validé sur les vrais appareils** (box Wi-Fi et partage de connexion).
@@ -43,7 +43,7 @@ espace parent, classement famille en ligne (facultatif), animations et musique d
 | 8b — Mise en page | Barre de navigation (Carte · Jeux · Arbre · Classement · Profil), carte d'accueil (étapes en zigzag, décor du thème, quête du jour), onglet Profil, duel dans Jeux, champ `icone` des packs, quiz lisible (lettres A–D, bonne/mauvaise réponse en couleur + symbole) | #9 |
 | Correctif | Marge sous la barre sur tous les onglets (Jeux ne défilait pas jusqu'en bas) | #10 |
 | 8c — Thèmes | Thèmes `survie` (Aventure survie) et `bdpop` (BD Pop, clair), choix du thème à la création (aperçu en direct) et dans l'onglet Profil, guide `src/themes/AJOUTER-UN-THEME.md` | #9 |
-| 9 — Arbre lisible | Rangées de nœuds reliés (fait / prochain / fermé), réserve d'étoiles expliquée, domaines repliés, fiche au toucher (ce que ça débloque, pourquoi c'est fermé, Jouer), habillage par thème (néon, tronc en bois, bandes de BD) | — |
+| 9 — Arbre lisible | Rangées de nœuds reliés (fait / prochain / fermé), réserve d'étoiles expliquée, domaines repliés, fiche au toucher (ce que ça débloque, pourquoi c'est fermé, Jouer), habillage par thème (néon, tronc en bois, bandes de BD) | #11 |
 
 ## Décisions à ne pas oublier (détails dans la spec)
 
@@ -85,7 +85,8 @@ espace parent, classement famille en ligne (facultatif), animations et musique d
 
 ## Prochaines étapes
 
-- **PR du lot 9 vers `main`** (avec l'accord d'aangee), puis test de l'arbre avec Loulou.
+- **Histoire de France** (spec §20, à valider par aangee) : nouveau domaine, ~40 éléments, référence = programme
+  d'histoire du cycle 3 (repères CM1/CM2 : Gaulois → Union européenne), deux relectures factuelles.
 - Ajouter un thème : suivre `src/themes/AJOUTER-UN-THEME.md`.
 
 ## Prochaines idées (non commencées)
@@ -99,7 +100,7 @@ espace parent, classement famille en ligne (facultatif), animations et musique d
 ## Reprendre le travail
 
 1. `git pull` dans ce dépôt **et** dans `nysa-atlas` ; lire ce DEVLOG puis la spec (`§0` à `§17`).
-2. `npm install && npm test && npm run build` (attendu : 178 tests OK).
+2. `npm install && npm test && npm run build` (attendu : 181 tests OK).
 3. Pour une nouvelle fonctionnalité : brainstorm (skill `brainstorming` de `nysa-plugins`) → section de spec → plan
    `docs/superpowers/plans/AAAA-MM-JJ-quiz-quest-<lot>.md` → exécution → PR vers `main`.
 4. Sur aaee-katana : lancer `/nysa-boot` depuis le dossier du projet (`L:/CORE/labs/eth-quiz-quest`, à confirmer) pour
