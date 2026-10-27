@@ -187,7 +187,9 @@ export function App() {
       return <EcranProfil profil={profil(ecran.profilId)} semaine={semaine} onMaj={maj}
         onChanger={() => setEcran({ nom: 'profils' })} onParent={() => setEcran({ nom: 'parent' })} />;
     case 'arbre':
-      return <EcranArbre profil={profil(ecran.profilId)} arbre={arbre} onMaj={maj} />;
+      return <EcranArbre profil={profil(ecran.profilId)} arbre={arbre} onMaj={maj}
+        onJouer={(jeu) => setEcran({ nom: 'jeu', profilId: ecran.profilId, jeu, partie: { domaines, defi: false } })}
+        onDefi={(jeu, d) => setEcran({ nom: 'jeu', profilId: ecran.profilId, jeu, partie: { domaines: [d], defi: true } })} />;
     case 'quiz':
       return <EcranQuiz profil={profil(ecran.profilId)} domaines={ecran.domaines}
         onFin={(p, bilan) => finQuiz(p, bilan, ecran.domaines)} />;

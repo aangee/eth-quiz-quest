@@ -24,3 +24,10 @@
 :root[data-theme="neon"] .barre-nav { background: #120b2bee; border-top-color: var(--c-accent); box-shadow: 0 -4px 20px #22e4ff44; }
 :root[data-theme="neon"] .onglet.actif { text-shadow: 0 0 8px var(--c-accent); }
 :root[data-theme="neon"] .compteur-etoiles { box-shadow: 0 0 10px #ffe14d66; }
+/* Arbre */
+:root[data-theme="neon"] .trait-fait { box-shadow: 0 0 8px var(--c-accent); }
+:root[data-theme="neon"] .noeud-rond.fait .rond { box-shadow: 0 0 14px var(--c-accent); }
+:root[data-theme="neon"] .noeud-rond.prochain .rond { box-shadow: 0 0 16px var(--c-lien); }
+:root[data-theme="neon"] .reserve { box-shadow: 0 0 14px #ffe14d44; }
+:root[data-theme="neon"] .titre-branche { letter-spacing: 0.06em; font-size: 0.85em; }
+:root[data-theme="neon"] .fiche { box-shadow: 0 -10px 30px #000a; }

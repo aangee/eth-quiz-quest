@@ -33,7 +33,7 @@ describe.each(THEMES.map((t) => [t.id, t] as const))('thème %s', (_id, t) => {
   });
   it('textes d\'ambiance et décor de carte', () => {
     Object.values(t.textes).forEach((x) => expect(x.length).toBeGreaterThan(0));
-    expect(Object.keys(t.textes).sort()).toEqual(['bravo', 'suite', 'titreCarte', 'titreJoueur']);
+    expect(Object.keys(t.textes).sort()).toEqual(['bravo', 'reserve', 'suite', 'titreArbre', 'titreCarte', 'titreJoueur']);
     expect(typeof t.DecorCarte).toBe('function');
   });
   it('au moins 6 couleurs de domaine', () => {

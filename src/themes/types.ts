@@ -24,7 +24,10 @@ export interface Theme {
   /** rayon et bord en px ; ombre = valeur CSS box-shadow des cartes et boutons principaux. */
   forme: { rayon: number; bord: number; ombre: string };
   /** Textes d'ambiance. */
-  textes: { titreCarte: string; titreJoueur: string; bravo: string; suite: string };
+  textes: { titreCarte: string; titreJoueur: string; bravo: string; suite: string; titreArbre: string;
+    /** Suite de « N étoile(s) … » dans l'arbre (ex. « à dépenser »). */
+    reserve: string;
+  };
   /** Décor SVG de la carte d'accueil, posé derrière les étapes (repère : viewBox 0 0 100 hauteur). */
   DecorCarte: ComponentType<DecorCarteProps>;
 }

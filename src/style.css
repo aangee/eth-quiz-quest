@@ -206,3 +206,50 @@ body.avec-barre .ecran { padding-bottom: calc(108px + env(safe-area-inset-bottom
 .apercu-pastilles { display: flex; gap: 6px; }
 .apercu-pastilles i { width: 22px; height: 22px; border-radius: 50%; border: 3px solid; }
 .apercu-bouton { align-self: flex-start; padding: 3px 12px; font-size: 0.75em; font-weight: 800; }
+
+/* --- Arbre de compétences (lot 9) --- */
+.reserve { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: var(--rayon);
+  background: var(--c-surface); border: var(--bord) solid var(--c-lien); color: var(--c-lien); }
+.reserve div { display: flex; flex-direction: column; }
+.reserve strong { font-family: var(--police-titre); font-size: 1.05em; }
+.reserve small { color: var(--c-texte-doux); }
+.branche-arbre { display: flex; flex-direction: column; gap: 10px; }
+.titre-branche { display: flex; align-items: center; gap: 8px; margin: 6px 0 0; font-family: var(--police-titre); }
+.titre-branche small, .tete-accordeon small { margin-left: auto; font-family: var(--police-texte); font-weight: 500; color: var(--c-texte-doux); }
+.rangee-noeuds { position: relative; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 14px 0; padding: 8px 0 2px; }
+.trait { position: absolute; left: 38px; right: 38px; top: 39px; height: 4px; border-radius: 2px; background: var(--c-bord); }
+.trait-fait { display: block; height: 100%; border-radius: 2px; background: var(--c-accent); transition: width 400ms ease; }
+.noeud-rond { position: relative; width: 76px; min-height: 0; padding: 0; display: flex; flex-direction: column; align-items: center; gap: 6px;
+  background: none; border: none; color: var(--c-texte); }
+.noeud-rond .rond { width: 62px; height: 62px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: var(--c-surface); border: calc(var(--bord) + 1px) solid var(--c-bord); color: var(--c-texte-doux); }
+.noeud-rond .nom { font-size: 0.7em; line-height: 1.2; text-align: center; color: var(--c-texte-doux); }
+.noeud-rond.fait .rond { background: var(--c-accent); border-color: var(--c-accent); color: var(--c-sur-accent); }
+.noeud-rond.fait .nom { color: var(--c-texte); }
+.noeud-rond.prochain .rond, .noeud-rond.trop_cher .rond { border-color: var(--c-lien); color: var(--c-lien); }
+.noeud-rond.prochain .nom { color: var(--c-lien); font-weight: 700; }
+.noeud-rond.prochain .rond { animation: halo 1600ms ease-in-out infinite; }
+.noeud-rond.trop_cher .prix { opacity: 0.6; }
+.noeud-rond.ferme .rond { opacity: 0.75; }
+.noeud-rond.nouveau .rond { animation: deverrouille 700ms ease-out; }
+@keyframes halo { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--c-lien) 55%, transparent); }
+  50% { box-shadow: 0 0 0 9px color-mix(in srgb, var(--c-lien) 0%, transparent); } }
+.prix { position: absolute; top: -4px; right: 0; display: inline-flex; align-items: center; gap: 2px; padding: 1px 7px; border-radius: 999px;
+  background: var(--c-lien); color: var(--c-fond); font-size: 0.65em; font-weight: 700; }
+.coche { position: absolute; top: 46px; right: 6px; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: var(--c-ok); color: var(--c-sur-ok); }
+.accordeon { display: flex; flex-direction: column; gap: 6px; }
+.tete-accordeon { display: flex; align-items: center; gap: 8px; text-align: left; font-weight: 700; }
+.voile { position: fixed; inset: 0; z-index: 30; background: rgb(0 0 0 / 0.5); animation: entree 150ms ease-out; }
+.fiche { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); z-index: 31; width: 100%; max-width: 560px;
+  display: flex; flex-direction: column; gap: 10px; padding: 18px 18px calc(20px + env(safe-area-inset-bottom));
+  background: var(--c-surface); border-top: var(--bord) solid var(--c-lien); border-radius: 22px 22px 0 0; animation: monte-fiche 220ms ease-out; }
+.fiche:focus { outline: none; }
+.fiche h2 { margin: 0; padding-right: 48px; }
+.fiche p { margin: 0; }
+.fermer-fiche { position: absolute; top: 10px; right: 10px; min-height: 44px; width: 44px; padding: 0; display: flex; align-items: center; justify-content: center; }
+.type-recompense { display: flex; align-items: center; gap: 8px; color: var(--c-lien); font-weight: 700; }
+.etat-fiche { color: var(--c-texte-doux); }
+.etat-fiche.ok { color: var(--c-ok); font-weight: 700; }
+.ensuite { color: var(--c-texte-doux); }
+@keyframes monte-fiche { from { transform: translate(-50%, 40px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }

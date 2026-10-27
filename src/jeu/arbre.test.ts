@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { COMPETENCES, brancheDomaine, construireArbre, etoilesGagnees, etoilesDispo, etatNoeud, debloquer } from './arbre';
+import { COMPETENCES, MINI_JEUX, brancheDomaine, construireArbre, descriptionRecompense, etoilesGagnees, etoilesDispo, etatNoeud, debloquer, vueArbre, type MiniJeu } from './arbre';
 import { normaliserProfil } from './profil';
 import type { Question } from '../types';
 
@@ -47,5 +47,50 @@ describe('arbre', () => {
     const p = { ...base, xpDomaine: { Espace: 2100 }, debloques: ['mj:chrono', 'mj:calcul'] }; // niveau 7 → 6 étoiles
     const p2 = debloquer(p, COMPETENCES.find((n) => n.id === 'joker:temps')!, COMPETENCES);
     expect(p2.jokers.temps).toBe(1);
+  });
+});
+
+describe('vueArbre', () => {
+  const arbre = [...COMPETENCES, ...brancheDomaine('Espace', [1, 2, 3, 4, 5].map(vf))];
+  // niveau 3 en Espace → 2 étoiles ; chrono débloqué (1) → 1 étoile dispo
+  const p = { ...base, xpDomaine: { Espace: 300 }, debloques: ['mj:chrono'] };
+  const v = vueArbre(p, arbre);
+  const noeud = (id: string) => v.branches.flatMap((b) => b.noeuds).find((x) => x.noeud.id === id)!;
+
+  it('branches dans l\'ordre, sans emoji, domaine indiqué', () => {
+    expect(v.branches.map((b) => b.nom)).toEqual(['Rapidité', 'Mémoire et mots', 'Savoir', 'Espace']);
+    expect(v.branches[3].domaine).toBe('Espace');
+    expect(v.branches[0].domaine).toBeUndefined();
+    v.branches.forEach((b) => expect(b.nom).toMatch(/^[\p{L} ]+$/u));
+  });
+  it('états : fait, prochain, trop cher, fermé', () => {
+    expect(v.dispo).toBe(1);
+    expect(noeud('mj:chrono').etat).toBe('fait');
+    expect(noeud('mj:memory').etat).toBe('prochain');
+    expect(noeud('mj:calcul').etat).toBe('trop_cher');
+    expect(noeud('mj:mot').etat).toBe('ferme');
+  });
+  it('prérequis manquants avec leur branche, et nœud suivant', () => {
+    expect(noeud('mj:mot').manquants).toEqual([{ id: 'mj:memory', nom: 'Memory', branche: 'Mémoire et mots' }]);
+    expect(noeud('joker:expert:Espace').manquants[0].branche).toBe('Espace');
+    expect(noeud('mj:chrono').suivant?.id).toBe('mj:calcul');
+    expect(noeud('joker:temps').suivant).toBeUndefined();
+  });
+  it('avancement par branche', () => {
+    expect(v.branches[0]).toMatchObject({ faits: 1, total: 3 });
+  });
+});
+
+describe('descriptionRecompense', () => {
+  it('une phrase par mini-jeu et par joker', () => {
+    COMPETENCES.forEach((n) => expect(descriptionRecompense(n).phrase.length).toBeGreaterThan(10));
+    (Object.keys(MINI_JEUX) as MiniJeu[]).forEach((j) =>
+      expect(descriptionRecompense({ id: 'x', nom: 'x', branche: 'b', cout: 1, prerequis: [], recompense: { type: 'minijeu', jeu: j } }).type).toBe('Nouveau mini-jeu'));
+  });
+  it('défi et Expert citent le domaine', () => {
+    const b = brancheDomaine('Espace', [1, 2, 3, 4, 5].map(vf));
+    expect(descriptionRecompense(b[0])).toMatchObject({ type: 'Défi' });
+    expect(descriptionRecompense(b[0]).phrase).toContain('Espace');
+    expect(descriptionRecompense(b[1]).phrase).toContain('Espace');
   });
 });
