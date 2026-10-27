@@ -10,6 +10,7 @@ describe('normaliserProfil', () => {
     expect(p.jokers).toEqual({});
     expect(p.quetes).toEqual({ date: '', liste: [] });
     expect(p.calendrier).toEqual([]);
+    expect(p.records).toEqual({});
   });
   it('garde les champs déjà présents', () => {
     const p = normaliserProfil({ id: 'a', prenom: 'L', avatar: 'x', age: 9, debloques: ['mj:chrono'] });

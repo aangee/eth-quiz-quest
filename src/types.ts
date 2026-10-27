@@ -51,4 +51,6 @@ export interface Profil {
   quetes: QuetesDuJour;
   /** Dates « AAAA-MM-JJ » où les 3 quêtes du jour ont été réussies. */
   calendrier: string[];
+  /** Meilleurs scores : « chrono », ou « chrono:Espace » pour un défi. */
+  records: Record<string, number>;
 }
