@@ -19,3 +19,8 @@
   box-shadow: 0 0 18px color-mix(in srgb, var(--c-ok) 55%, transparent);
 }
 :root[data-theme="neon"] .jauge div { background: linear-gradient(90deg, #22e4ff, #ff3dbb); box-shadow: 0 0 12px #22e4ff; }
+:root[data-theme="neon"] .pastille { box-shadow: 0 0 16px var(--couleur); }
+:root[data-theme="neon"] .avatar-rond { box-shadow: 0 0 14px var(--c-accent); }
+:root[data-theme="neon"] .barre-nav { background: #120b2bee; border-top-color: var(--c-accent); box-shadow: 0 -4px 20px #22e4ff44; }
+:root[data-theme="neon"] .onglet.actif { text-shadow: 0 0 8px var(--c-accent); }
+:root[data-theme="neon"] .compteur-etoiles { box-shadow: 0 0 10px #ffe14d66; }

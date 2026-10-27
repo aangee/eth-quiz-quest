@@ -14,14 +14,15 @@ function defisDebloques(p: Profil): { jeu: MiniJeu; domaine: string }[] {
     .filter((d) => JEUX_DISPONIBLES.includes(d.jeu));
 }
 
-export function EcranMiniJeux({ profil, onJouer, onDefi, onRetour }: {
-  profil: Profil; onJouer: (jeu: MiniJeu) => void; onDefi: (jeu: MiniJeu, domaine: string) => void; onRetour: () => void;
+export function EcranMiniJeux({ profil, onJouer, onDefi, onDuel }: {
+  profil: Profil; onJouer: (jeu: MiniJeu) => void; onDefi: (jeu: MiniJeu, domaine: string) => void; onDuel: () => void;
 }) {
   const jeux = Object.keys(MINI_JEUX) as MiniJeu[];
   const defis = defisDebloques(profil);
   return (
     <main class="ecran">
-      <h2><Icone nom="jeux" /> Mini-jeux</h2>
+      <h2><Icone nom="jeux" /> Jeux</h2>
+      <button class="principal" onClick={onDuel}><Icone nom="duel" /> Duel</button>
       <div class="liste">
         {jeux.map((j) => {
           const debloque = profil.debloques.includes(`mj:${j}`);
@@ -56,7 +57,6 @@ export function EcranMiniJeux({ profil, onJouer, onDefi, onRetour }: {
           </div>
         </>
       )}
-      <button onClick={onRetour}><Icone nom="retour" /> Retour</button>
     </main>
   );
 }

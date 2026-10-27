@@ -151,3 +151,32 @@ select { font: inherit; padding: 10px 12px; border-radius: var(--rayon); backgro
 .classement .podium-2 { color: var(--c-texte); }
 .classement .podium-3 { color: var(--c-domaine-3); }
 button .icone { vertical-align: -0.25em; }
+
+/* --- Barre de navigation et carte d'accueil (lot 8b) --- */
+.avec-barre { padding-bottom: 108px; }
+.barre-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); z-index: 15; width: 100%; max-width: 560px;
+  display: flex; gap: 4px; padding: 6px 6px calc(8px + env(safe-area-inset-bottom));
+  background: var(--c-surface); border-top: var(--bord) solid var(--c-bord); }
+.onglet { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 58px;
+  padding: 6px 2px; background: none; border: none; color: var(--c-texte-doux); font-size: 0.7em; }
+.onglet.actif { color: var(--c-accent); font-weight: 700; }
+.entete-joueur { display: flex; align-items: center; gap: 12px; padding-right: 52px; }
+.avatar-rond { width: 52px; height: 52px; flex: none; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 1.6em; background: var(--c-surface); border: var(--bord) solid var(--c-accent); }
+.identite { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.identite strong { font-size: 1.15em; }
+.identite small, .xp-texte { color: var(--c-texte-doux); }
+.xp-texte { align-self: flex-end; margin-top: -6px; }
+.compteur-etoiles { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; font-weight: 700;
+  color: var(--c-lien); border: var(--bord) solid var(--c-lien); }
+.titre-carte { margin: 0.3em 0 0; }
+.carte-monde { position: relative; margin: 0 -16px; }
+.decor-carte { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.etape { position: absolute; transform: translate(-50%, -36px); width: 136px; min-height: 0; padding: 0; background: none; border: none;
+  display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--c-texte); }
+.pastille { width: 72px; height: 72px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: var(--c-surface); border: calc(var(--bord) + 1px) solid var(--couleur); color: var(--couleur); }
+.nom-etape { font-family: var(--police-titre); font-weight: 700; font-size: 0.8em; text-align: center; }
+.etape small { color: var(--c-texte-doux); font-size: 0.75em; }
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px; font-size: 0.65em; font-weight: 700;
+  background: var(--c-lien); color: var(--c-fond); }

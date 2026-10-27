@@ -13,7 +13,7 @@ function ilYa(date: number): string {
   return min < 1 ? "à l'instant" : min < 60 ? `il y a ${min} min` : min < 1440 ? `il y a ${Math.round(min / 60)} h` : `il y a ${Math.round(min / 1440)} j`;
 }
 
-export function EcranClassement({ famille, onRetour }: { famille: Famille | null; onRetour: () => void }) {
+export function EcranClassement({ famille }: { famille: Famille | null }) {
   const [entrees, setEntrees] = useState<EntreeClassement[] | null>(null);
   const [date, setDate] = useState<number | null>(null);
   const [etat, setEtat] = useState<'chargement' | 'ok' | 'hors-ligne'>('chargement');
@@ -33,7 +33,7 @@ export function EcranClassement({ famille, onRetour }: { famille: Famille | null
         <h2><Icone nom="trophee" /> Classement</h2>
         <p>Le classement de la famille n'est pas encore installé sur cet appareil.</p>
         <p class="domaine">Un parent peut l'installer : Espace parent › Classement famille.</p>
-        <button onClick={onRetour}><Icone nom="retour" /> Retour</button>
+        
       </main>
     );
   }
@@ -71,7 +71,7 @@ export function EcranClassement({ famille, onRetour }: { famille: Famille | null
           </li>
         ))}
       </ol>
-      <button onClick={onRetour}><Icone nom="retour" /> Retour</button>
+      
     </main>
   );
 }

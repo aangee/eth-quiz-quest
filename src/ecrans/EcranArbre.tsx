@@ -4,8 +4,8 @@ import { JEUX_DISPONIBLES } from '../jeu/minijeux';
 import { useState } from 'preact/hooks';
 import { Icone } from '../ui/Icone';
 
-export function EcranArbre({ profil, arbre, onMaj, onRetour }: {
-  profil: Profil; arbre: Noeud[]; onMaj: (p: Profil) => void; onRetour: () => void;
+export function EcranArbre({ profil, arbre, onMaj }: {
+  profil: Profil; arbre: Noeud[]; onMaj: (p: Profil) => void;
 }) {
   const [dernier, setDernier] = useState<string | null>(null);
   const dispo = etoilesDispo(profil, arbre);
@@ -39,7 +39,6 @@ export function EcranArbre({ profil, arbre, onMaj, onRetour }: {
           </div>
         </section>
       ))}
-      <button onClick={onRetour}><Icone nom="retour" /> Retour</button>
     </main>
   );
 }
