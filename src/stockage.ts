@@ -25,8 +25,8 @@ export async function sauverSemaine(q: QueteSemaine): Promise<void> {
   await set(CLE_SEMAINE, q);
 }
 
-export function nouveauProfil(prenom: string, avatar: string, age: number): Profil {
-  return normaliserProfil({ id: crypto.randomUUID(), prenom, avatar, age });
+export function nouveauProfil(prenom: string, avatar: string, age: number, theme?: string): Profil {
+  return normaliserProfil({ id: crypto.randomUUID(), prenom, avatar, age, ...(theme ? { theme } : {}) });
 }
 
 const CLE_PACKS = 'packsImportes';

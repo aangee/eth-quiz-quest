@@ -100,7 +100,7 @@ export function App() {
     const t = themeParId(idTheme);
     appliquerTheme(t);
     memoriserTheme(t.id);
-  }, [idTheme]);
+  }, [idTheme, ecran.nom]); // ecran.nom : réapplique après un aperçu sur l'écran des profils
 
   if (!profils || !semaine) return <main class="ecran"><p>Chargement…</p></main>;
 
@@ -181,7 +181,7 @@ export function App() {
       return <EcranCarte profil={profil(ecran.profilId)} arbre={arbre}
         onJouer={(d) => setEcran({ nom: 'quiz', profilId: ecran.profilId, domaines: d })} />;
     case 'profil':
-      return <EcranProfil profil={profil(ecran.profilId)} semaine={semaine}
+      return <EcranProfil profil={profil(ecran.profilId)} semaine={semaine} onMaj={maj}
         onChanger={() => setEcran({ nom: 'profils' })} onParent={() => setEcran({ nom: 'parent' })} />;
     case 'arbre':
       return <EcranArbre profil={profil(ecran.profilId)} arbre={arbre} onMaj={maj} />;

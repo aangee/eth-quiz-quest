@@ -4,10 +4,11 @@ import { nomJoker } from '../jeu/arbre';
 import { jokersDebloques } from '../jeu/jokers';
 import { Calendrier } from './Calendrier';
 import { Icone } from '../ui/Icone';
+import { ChoixTheme } from '../ui/ChoixTheme';
 
 /** Onglet Profil : quêtes, calendrier, jokers, changer de joueur, espace parent. */
-export function EcranProfil({ profil, semaine, onChanger, onParent }: {
-  profil: Profil; semaine: QueteSemaine; onChanger: () => void; onParent: () => void;
+export function EcranProfil({ profil, semaine, onMaj, onChanger, onParent }: {
+  profil: Profil; semaine: QueteSemaine; onMaj: (p: Profil) => void; onChanger: () => void; onParent: () => void;
 }) {
   const jokers = jokersDebloques(profil);
   return (
@@ -33,6 +34,9 @@ export function EcranProfil({ profil, semaine, onChanger, onParent }: {
           <p>{jokers.map((j) => `${nomJoker(j)} ×${profil.jokers[j] ?? 0}`).join(' · ')}</p>
         </>
       )}
+
+      <h2>Thème</h2>
+      <ChoixTheme valeur={profil.theme} onChoisir={(theme) => onMaj({ ...profil, theme })} />
 
       <button onClick={onChanger}><Icone nom="profil" /> Changer de joueur</button>
       <button onClick={onParent}><Icone nom="cadenas" /> Espace parent</button>

@@ -194,3 +194,15 @@ button .icone { vertical-align: -0.25em; }
 .choix .rate { border-color: var(--c-ko); background: color-mix(in srgb, var(--c-ko) 18%, var(--c-surface)); opacity: 1; }
 .choix .rate .icone { color: var(--c-ko); }
 .choix button.estompe { opacity: 0.55; }
+
+/* --- Choix du thème (lot 8c) --- */
+.choix-theme { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.vignette { display: flex; flex-direction: column; align-items: stretch; gap: 6px; padding: 8px; text-align: left; }
+.vignette.choisie { border-color: var(--c-accent); outline: 3px solid var(--c-accent); outline-offset: 1px; }
+.vignette-nom { font-weight: 700; }
+.vignette small { color: var(--c-texte-doux); font-size: 0.75em; }
+.apercu { display: flex; flex-direction: column; gap: 8px; padding: 10px; border: 2px solid; }
+.apercu-titre { font-size: 0.85em; font-weight: 800; letter-spacing: 0.03em; }
+.apercu-pastilles { display: flex; gap: 6px; }
+.apercu-pastilles i { width: 22px; height: 22px; border-radius: 50%; border: 3px solid; }
+.apercu-bouton { align-self: flex-start; padding: 3px 12px; font-size: 0.75em; font-weight: 800; }
