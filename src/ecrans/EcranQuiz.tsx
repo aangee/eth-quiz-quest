@@ -9,6 +9,7 @@ import { choixACacher, jokersDebloques, jokerUtilisable, utiliserJoker } from '.
 import { nomJoker } from '../jeu/arbre';
 import { BarreTemps } from './BarreTemps';
 import { Icone } from '../ui/Icone';
+import { useTheme } from '../themes/contexte';
 
 export const NB_QUESTIONS = 10;
 export const LIMITE_MS = 20000;
@@ -48,6 +49,8 @@ export function EcranQuiz({ profil, domaines, onFin }: {
   const [caches, setCaches] = useState<Set<Valeur>>(() => new Set());
   const [jokerPris, setJokerPris] = useState(false);
   const [gain, setGain] = useState(0);
+  const [choisi, setChoisi] = useState<Valeur | null>(null);
+  const theme = useTheme();
 
   // Choix des QCM mélangés une fois par question (valeur = index d'origine)
   const choix = useMemo<{ label: string; valeur: Valeur }[]>(() => {
@@ -62,6 +65,7 @@ export function EcranQuiz({ profil, domaines, onFin }: {
     if (!tirage || verdict !== null) return;
     const { q, domaine } = tirage;
     const juste = rep !== null && rep === q.reponse;
+    setChoisi(rep);
     const temps = Date.now() - debut;
     const r = appliquerReponse(p, domaine, q, juste, temps, limite);
     setGain(r.xp);
@@ -104,6 +108,7 @@ export function EcranQuiz({ profil, domaines, onFin }: {
     if (!prochain) { onFin(avancerQuetes(p, { type: 'fin_quiz' }), bilan); return; }
     setTirage(prochain);
     setVerdict(null);
+    setChoisi(null);
     setDebut(Date.now());
     setLimite(LIMITE_MS);
     setReste(LIMITE_MS);
@@ -126,26 +131,31 @@ export function EcranQuiz({ profil, domaines, onFin }: {
       <p class="domaine">{tirage.domaine} · niv. {q.niveau}</p>
       <h2>{q.question}</h2>
       <div class="choix">
-        {choix.filter((c) => !caches.has(c.valeur)).map((c) => (
-          <button key={c.label} class={verdict !== null && c.valeur === q.reponse ? 'bon' : ''}
-            disabled={verdict !== null} onClick={() => repondre(c.valeur)}>
-            {c.label}
-          </button>
-        ))}
+        {choix.map((c, i) => ({ ...c, lettre: 'ABCD'[i] })).filter((c) => !caches.has(c.valeur)).map((c) => {
+          const etat = verdict === null ? '' : c.valeur === q.reponse ? 'bon' : c.valeur === choisi ? 'rate' : 'estompe';
+          return (
+            <button key={c.label} class={etat} disabled={verdict !== null} onClick={() => repondre(c.valeur)}>
+              {q.type === 'qcm' && <span class="lettre" aria-hidden="true">{c.lettre}</span>}
+              <span class="libelle">{c.label}</span>
+              {etat === 'bon' && <Icone nom="valider" titre="bonne réponse" />}
+              {etat === 'rate' && <Icone nom="quitter" titre="ta réponse" />}
+            </button>
+          );
+        })}
       </div>
       {verdict === null && !jokerPris && jokersDispo.length > 0 && (
         <div class="jokers">
           {jokersDispo.map((j) => (
-            <button key={j} onClick={() => prendreJoker(j)}>🃏 {nomJoker(j)} ×{p.jokers[j]}</button>
+            <button key={j} onClick={() => prendreJoker(j)}><Icone nom="joker" /> {nomJoker(j)} ×{p.jokers[j]}</button>
           ))}
         </div>
       )}
       {verdict !== null && (
         <div class={verdict ? 'verdict ok' : 'verdict ko'}>
-          <p>{verdict ? <><Icone nom="valider" /> Bravo ! <span class="gain">+{gain} XP</span></> : <><Icone nom="quitter" /> Raté</>}</p>
+          <p>{verdict ? <><Icone nom="valider" /> {theme.textes.bravo} <span class="gain">+{gain} XP</span></> : <><Icone nom="quitter" /> Raté</>}</p>
           {!verdict && <p>Bonne réponse : <b>{bonneReponse(q)}</b></p>}
           {q.explication && <p>{q.explication}</p>}
-          <button class="principal" onClick={suivant}>Suivant <Icone nom="suivant" /></button>
+          <button class="principal" onClick={suivant}>{theme.textes.suite} <Icone nom="suivant" /></button>
         </div>
       )}
     </main>

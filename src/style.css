@@ -180,3 +180,17 @@ button .icone { vertical-align: -0.25em; }
 .etape small { color: var(--c-texte-doux); font-size: 0.75em; }
 .badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px; font-size: 0.65em; font-weight: 700;
   background: var(--c-lien); color: var(--c-fond); }
+
+/* --- Lisibilité du quiz (lot 8b) --- */
+:root { font-size: 18px; }
+.ecran > h2 { font-size: 1.4em; line-height: 1.3; }
+.choix button { display: flex; align-items: center; gap: 12px; min-height: 60px; text-align: left; font-size: 1.1em; font-weight: 700; }
+.choix button:disabled { opacity: 1; }
+.choix .libelle { flex: 1; }
+.lettre { width: 34px; height: 34px; flex: none; display: flex; align-items: center; justify-content: center; border-radius: 8px;
+  border: var(--bord) solid currentColor; color: var(--c-accent); font-family: var(--police-titre); font-size: 0.8em; }
+.choix .bon { border-color: var(--c-ok); background: color-mix(in srgb, var(--c-ok) 18%, var(--c-surface)); }
+.choix .bon .icone { color: var(--c-ok); }
+.choix .rate { border-color: var(--c-ko); background: color-mix(in srgb, var(--c-ko) 18%, var(--c-surface)); opacity: 1; }
+.choix .rate .icone { color: var(--c-ko); }
+.choix .estompe { opacity: 0.55; }

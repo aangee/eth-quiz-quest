@@ -43,7 +43,7 @@ export function Memory({ profil, partie, onFin, onQuitter }: PropsJeu) {
   return (
     <main class="ecran">
       <div class="barre">
-        <span>🃏 Memory</span>
+        <span><Icone nom="joker" /> Memory</span>
         <span><Icone nom="melanger" /> {coups} coups</span>
       </div>
       <p class="domaine">{tirage.domaine} · {tirage.q.question}</p>
