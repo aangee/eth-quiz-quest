@@ -2,6 +2,7 @@ import { useState } from 'preact/hooks';
 import type { Profil } from '../types';
 import { nouveauProfil } from '../stockage';
 import { niveauDepuisXp } from '../jeu/xp';
+import { Icone } from '../ui/Icone';
 
 const AVATARS = ['🦊', '🐉', '🚀', '🦉', '🐼', '🤖', '🦖', '🐙'];
 
@@ -15,7 +16,7 @@ export function EcranProfils({ profils, onCreer, onChoisir, onParent }: {
 
   return (
     <main class="ecran">
-      <h1>⭐ Quiz Quest</h1>
+      <h1>Quiz Quest</h1>
       {profils.length > 0 && <h2>Qui joue ?</h2>}
       <div class="liste">
         {profils.map((p) => (
@@ -35,7 +36,7 @@ export function EcranProfils({ profils, onCreer, onChoisir, onParent }: {
       <button class="principal" disabled={!valide} onClick={() => { onCreer(nouveauProfil(prenom.trim(), avatar, age)); setPrenom(''); }}>
         Créer
       </button>
-      <button onClick={onParent}>🔒 Espace parent</button>
+      <button onClick={onParent}><Icone nom="cadenas" /> Espace parent</button>
     </main>
   );
 }

@@ -6,6 +6,7 @@ import { avancerQuetes } from '../../jeu/quetes';
 import { melanger } from '../../jeu/melange';
 import { pointsDuel } from '../../jeu/duel';
 import { BarreTemps } from '../BarreTemps';
+import { Icone } from '../../ui/Icone';
 
 export interface ReponseDuel { juste: boolean; points: number; profil: Profil }
 
@@ -55,7 +56,7 @@ export function QuestionDuel({ profil, domaines, vues, onReponse }: {
   const { q } = tirage;
   return (
     <div class="question-duel">
-      <p class="domaine">{profil.avatar} {profil.prenom} · {tirage.domaine} · niv. {q.niveau} · ⏱ {Math.ceil(reste / 1000)} s</p>
+      <p class="domaine">{profil.avatar} {profil.prenom} · {tirage.domaine} · niv. {q.niveau} · <Icone nom="chrono" /> {Math.ceil(reste / 1000)} s</p>
       <BarreTemps reste={reste} total={LIMITE_MS} />
       <h2>{q.question}</h2>
       <div class="choix">
@@ -68,9 +69,9 @@ export function QuestionDuel({ profil, domaines, vues, onReponse }: {
       </div>
       {resultat && (
         <div class={resultat.juste ? 'verdict ok' : 'verdict ko'}>
-          <p>{resultat.juste ? `✅ +${resultat.points} points` : '❌ 0 point'}</p>
+          <p>{resultat.juste ? <><Icone nom="valider" /> +{resultat.points} points</> : <><Icone nom="quitter" /> 0 point</>}</p>
           {!resultat.juste && <p>Bonne réponse : <b>{bonneReponse(q)}</b></p>}
-          <button class="principal" onClick={() => onReponse(resultat)}>Continuer ▶</button>
+          <button class="principal" onClick={() => onReponse(resultat)}>Continuer <Icone nom="suivant" /></button>
         </div>
       )}
     </div>

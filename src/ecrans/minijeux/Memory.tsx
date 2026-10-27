@@ -4,6 +4,7 @@ import { questionsDuDomaine } from '../../packs';
 import { contenu, crediter, multXp, type PropsJeu } from '../../jeu/minijeux';
 import { creerCartes, estPaire, type Carte } from '../../jeu/memory';
 import { PasDeContenu } from './PasDeContenu';
+import { Icone } from '../../ui/Icone';
 
 export const PAIRES_MAX = 6;
 
@@ -43,7 +44,7 @@ export function Memory({ profil, partie, onFin, onQuitter }: PropsJeu) {
     <main class="ecran">
       <div class="barre">
         <span>🃏 Memory</span>
-        <span>🔁 {coups} coups</span>
+        <span><Icone nom="melanger" /> {coups} coups</span>
       </div>
       <p class="domaine">{tirage.domaine} · {tirage.q.question}</p>
       <div class="grille">
@@ -52,7 +53,7 @@ export function Memory({ profil, partie, onFin, onQuitter }: PropsJeu) {
           const visible = trouvee || retournees.includes(c.id);
           return (
             <button key={c.id} class={`carte-memory ${visible ? 'visible' : ''} ${trouvee ? 'trouvee' : ''}`} onClick={() => toucher(c)}>
-              <span class="face dos">❓</span><span class="face recto">{c.texte}</span>
+              <span class="face dos">?</span><span class="face recto">{c.texte}</span>
             </button>
           );
         })}

@@ -1,5 +1,6 @@
 import { useState } from 'preact/hooks';
 import type { Profil } from '../../types';
+import { Icone } from '../../ui/Icone';
 
 function LigneProfil({ p, onMaj, onSupprimer }: { p: Profil; onMaj: (p: Profil) => void; onSupprimer: (id: string) => void }) {
   const [prenom, setPrenom] = useState(p.prenom);
@@ -12,8 +13,8 @@ function LigneProfil({ p, onMaj, onSupprimer }: { p: Profil; onMaj: (p: Profil) 
       <input aria-label="Pseudo" value={prenom} onInput={(e) => setPrenom(e.currentTarget.value)} />
       <input aria-label="Âge" class="age" type="number" min={5} max={99} value={age}
         onInput={(e) => setAge(Number(e.currentTarget.value))} />
-      <button class="petit" disabled={!modifie || !valide} onClick={() => onMaj({ ...p, prenom: prenom.trim(), age })}>💾</button>
-      <button class="petit" onClick={() => { if (confirm(`Supprimer ${p.prenom} et toute sa progression ?`)) onSupprimer(p.id); }}>🗑️</button>
+      <button class="petit" disabled={!modifie || !valide} onClick={() => onMaj({ ...p, prenom: prenom.trim(), age })} aria-label={`Enregistrer ${p.prenom}`}><Icone nom="valider" /></button>
+      <button class="petit" onClick={() => { if (confirm(`Supprimer ${p.prenom} et toute sa progression ?`)) onSupprimer(p.id); }} aria-label={`Supprimer ${p.prenom}`}><Icone nom="supprimer" /></button>
     </div>
   );
 }
@@ -23,7 +24,7 @@ export function SectionProfils({ profils, onMaj, onSupprimer }: {
 }) {
   return (
     <section>
-      <h3>👤 Profils</h3>
+      <h3><Icone nom="profil" /> Profils</h3>
       {profils.length === 0 && <p>Aucun profil.</p>}
       <div class="liste">
         {profils.map((p) => <LigneProfil key={p.id} p={p} onMaj={onMaj} onSupprimer={onSupprimer} />)}

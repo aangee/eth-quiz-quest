@@ -1,5 +1,6 @@
 import { useState } from 'preact/hooks';
 import { defiOubli, hacherPin, pinValide, verifierPin } from '../../jeu/pin';
+import { Icone } from '../../ui/Icone';
 
 type Mode = 'saisie' | 'creer' | 'oubli';
 
@@ -35,7 +36,7 @@ export function VerrouPin({ pin, onPin, onOuvrir, onRetour }: {
 
   return (
     <main class="ecran">
-      <h2>🔒 Espace parent</h2>
+      <h2><Icone nom="cadenas" /> Espace parent</h2>
       {mode === 'saisie' && (
         <>
           <p>Entre le code PIN :</p>
@@ -46,7 +47,7 @@ export function VerrouPin({ pin, onPin, onOuvrir, onRetour }: {
       )}
       {mode === 'creer' && (
         <>
-          <p>Choisis un code PIN à 4 chiffres (à ne pas dire aux enfants 😉) :</p>
+          <p>Choisis un code PIN à 4 chiffres (à ne pas dire aux enfants) :</p>
           {champ(a, setA, 'Nouveau code')}
           {champ(b, setB, 'Encore une fois')}
           <button class="principal" disabled={a.length !== 4 || b.length !== 4} onClick={creer}>Enregistrer le code</button>
@@ -61,7 +62,7 @@ export function VerrouPin({ pin, onPin, onOuvrir, onRetour }: {
         </>
       )}
       {message && <p class="bandeau">{message}</p>}
-      <button onClick={onRetour}>← Retour</button>
+      <button onClick={onRetour}><Icone nom="retour" /> Retour</button>
     </main>
   );
 }

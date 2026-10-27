@@ -1,6 +1,7 @@
 import { useState } from 'preact/hooks';
 import type { Profil } from '../types';
 import { domaines } from '../packs';
+import { Icone } from '../ui/Icone';
 
 export function EcranDomaines({ profil, onJouer, onRetour }: {
   profil: Profil; onJouer: (d: string[]) => void; onRetour: () => void;
@@ -19,8 +20,8 @@ export function EcranDomaines({ profil, onJouer, onRetour }: {
           </label>
         ))}
       </div>
-      <button class="principal" disabled={!choisis.length} onClick={() => onJouer(choisis)}>Jouer ▶</button>
-      <button onClick={onRetour}>← Retour</button>
+      <button class="principal" disabled={!choisis.length} onClick={() => onJouer(choisis)}>Jouer <Icone nom="suivant" /></button>
+      <button onClick={onRetour}><Icone nom="retour" /> Retour</button>
     </main>
   );
 }

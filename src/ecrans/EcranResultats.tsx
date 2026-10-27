@@ -3,6 +3,7 @@ import type { Bilan } from './EcranQuiz';
 import { niveauDepuisXp, seuil } from '../jeu/xp';
 import { Celebration } from './Celebration';
 import { celebration } from '../jeu/celebration';
+import { Icone } from '../ui/Icone';
 
 export function EcranResultats({ profil, avant, bilan, onRejouer, onRetour }: {
   profil: Profil; avant: Profil; bilan: Bilan; onRejouer: () => void; onRetour: () => void;
@@ -11,7 +12,7 @@ export function EcranResultats({ profil, avant, bilan, onRejouer, onRetour }: {
   return (
     <main class="ecran">
       <h1>{bilan.justes}/{bilan.total}</h1>
-      <p>✨ +{bilan.xp} XP</p>
+      <p class="gain-total">+{bilan.xp} XP</p>
       <Celebration c={celebration(avant, profil)} />
       <p>
         {profil.avatar} {profil.prenom} · niveau {niv} ·{' '}
@@ -23,13 +24,13 @@ export function EcranResultats({ profil, avant, bilan, onRejouer, onRetour }: {
           <ul>
             {bilan.erreurs.map((e) => (
               <li key={e.question}>
-                <b>{e.question}</b><br />✅ {e.bonne}{e.explication && <> — {e.explication}</>}
+                <b>{e.question}</b><br /><Icone nom="valider" /> {e.bonne}{e.explication && <> — {e.explication}</>}
               </li>
             ))}
           </ul>
         </>
       )}
-      <button class="principal" onClick={onRejouer}>Rejouer 🔁</button>
+      <button class="principal" onClick={onRejouer}>Rejouer</button>
       <button onClick={onRetour}>Mon profil</button>
     </main>
   );

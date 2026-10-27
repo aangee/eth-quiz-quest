@@ -5,6 +5,7 @@ import { contenu, crediter, longueur, multXp, type ARetenir, type PropsJeu } fro
 import { friseJuste, verifierOrdre } from '../../jeu/frise';
 import { melanger } from '../../jeu/melange';
 import { PasDeContenu } from './PasDeContenu';
+import { Icone } from '../../ui/Icone';
 
 export const NB_FRISES = 3;
 
@@ -47,8 +48,8 @@ export function Frise({ profil, partie, onFin, onQuitter }: PropsJeu) {
   return (
     <main class="ecran">
       <div class="barre">
-        <span>📜 Frise {i + 1}/{liste.length}</span>
-        <span>✅ {score}</span>
+        <span><Icone nom="horloge" /> Frise {i + 1}/{liste.length}</span>
+        <span><Icone nom="valider" /> {score}</span>
       </div>
       <p class="domaine">{domaine}</p>
       <h2>{q.question}</h2>
@@ -70,9 +71,9 @@ export function Frise({ profil, partie, onFin, onQuitter }: PropsJeu) {
       {!valide && restants.length === 0 && <button class="principal" onClick={valider}>Valider</button>}
       {valide && (
         <div class={juste ? 'verdict ok' : 'verdict ko'}>
-          <p>{juste ? '✅ Parfait !' : `❌ Le bon ordre : ${q.elements.join(' → ')}`}</p>
+          <p>{juste ? <><Icone nom="valider" /> Parfait !</> : <><Icone nom="quitter" /> Le bon ordre : {q.elements.join(' → ')}</>}</p>
           {q.explication && <p>{q.explication}</p>}
-          <button class="principal" onClick={suivant}>Suivant ▶</button>
+          <button class="principal" onClick={suivant}>Suivant <Icone nom="suivant" /></button>
         </div>
       )}
       <button onClick={onQuitter}>Abandonner</button>

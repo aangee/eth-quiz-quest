@@ -31,6 +31,7 @@ import { BoutonMusique } from './ecrans/BoutonMusique';
 import { appliquerTheme } from './themes/appliquer';
 import { themeParId } from './themes/registre';
 import { memoriserTheme } from './themes/dernier';
+import { Icone } from './ui/Icone';
 
 const MENUS = new Set(['profils', 'joueur', 'arbre', 'domaines', 'minijeux', 'classement', 'parent', 'resultats', 'finjeu']);
 
@@ -202,7 +203,7 @@ export function App() {
     case 'jeu': {
       const Jeu = JEUX[ecran.jeu];
       const retour = () => setEcran({ nom: 'minijeux', profilId: ecran.profilId });
-      if (!Jeu) return <main class="ecran"><p>Bientôt !</p><button onClick={retour}>← Retour</button></main>;
+      if (!Jeu) return <main class="ecran"><p>Bientôt !</p><button onClick={retour}><Icone nom="retour" /> Retour</button></main>;
       return <Jeu profil={profil(ecran.profilId)} partie={ecran.partie} onQuitter={retour}
         onFin={(p, r) => finJeu(ecran.jeu, ecran.partie, p, r)} />;
     }

@@ -1,6 +1,7 @@
 import type { Profil } from '../types';
 import { MINI_JEUX, type MiniJeu } from '../jeu/arbre';
 import { JEUX_DISPONIBLES, cleRecord } from '../jeu/minijeux';
+import { Icone } from '../ui/Icone';
 
 /** Défis débloqués : nœuds « defi:<jeu>:<domaine> ». */
 function defisDebloques(p: Profil): { jeu: MiniJeu; domaine: string }[] {
@@ -20,7 +21,7 @@ export function EcranMiniJeux({ profil, onJouer, onDefi, onRetour }: {
   const defis = defisDebloques(profil);
   return (
     <main class="ecran">
-      <h2>🕹️ Mini-jeux</h2>
+      <h2><Icone nom="jeux" /> Mini-jeux</h2>
       <div class="liste">
         {jeux.map((j) => {
           const debloque = profil.debloques.includes(`mj:${j}`);
@@ -29,17 +30,17 @@ export function EcranMiniJeux({ profil, onJouer, onDefi, onRetour }: {
           return (
             <div key={j} class={`noeud ${debloque && dispo ? 'debloque' : 'verrouille'}`}>
               <span>{MINI_JEUX[j].nom}</span>
-              {record !== undefined && <small>🏆 {record}</small>}
-              {!debloque ? <small>🔒 à débloquer dans l'arbre</small>
+              {record !== undefined && <small><Icone nom="trophee" /> {record}</small>}
+              {!debloque ? <small><Icone nom="cadenas" /> à débloquer dans l'arbre</small>
                 : !dispo ? <small>bientôt</small>
-                : <button onClick={() => onJouer(j)}>Jouer ▶</button>}
+                : <button onClick={() => onJouer(j)}>Jouer <Icone nom="suivant" /></button>}
             </div>
           );
         })}
       </div>
       {defis.length > 0 && (
         <>
-          <h2>🏁 Défis</h2>
+          <h2><Icone nom="quete" /> Défis</h2>
           <p class="domaine">Un seul domaine, plus long, XP ×2.</p>
           <div class="liste">
             {defis.map((d) => {
@@ -47,15 +48,15 @@ export function EcranMiniJeux({ profil, onJouer, onDefi, onRetour }: {
               return (
                 <div key={`${d.jeu}:${d.domaine}`} class="noeud debloque">
                   <span>{MINI_JEUX[d.jeu].nom} · {d.domaine}</span>
-                  {record !== undefined && <small>🏆 {record}</small>}
-                  <button onClick={() => onDefi(d.jeu, d.domaine)}>Défi ▶</button>
+                  {record !== undefined && <small><Icone nom="trophee" /> {record}</small>}
+                  <button onClick={() => onDefi(d.jeu, d.domaine)}>Défi <Icone nom="suivant" /></button>
                 </div>
               );
             })}
           </div>
         </>
       )}
-      <button onClick={onRetour}>← Retour</button>
+      <button onClick={onRetour}><Icone nom="retour" /> Retour</button>
     </main>
   );
 }

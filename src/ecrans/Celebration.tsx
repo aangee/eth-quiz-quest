@@ -1,4 +1,5 @@
 import { aCelebrer, type Celebration as C } from '../jeu/celebration';
+import { Icone } from '../ui/Icone';
 
 /** Couleurs du thème actif (variables posées par appliquerTheme). */
 const COULEURS = [0, 1, 2, 3, 4, 5].map((i) => `var(--c-domaine-${i})`);
@@ -16,8 +17,8 @@ export function Celebration({ c }: { c: C }) {
           }} />
         ))}
       </div>
-      {c.niveau !== null && <p class="grand">🎉 Niveau {c.niveau} !</p>}
-      {c.etoiles > 0 && <p>⭐ +{c.etoiles} étoile{c.etoiles > 1 ? 's' : ''} à dépenser dans l'arbre</p>}
+      {c.niveau !== null && <p class="grand">Niveau {c.niveau} !</p>}
+      {c.etoiles > 0 && <p><Icone nom="etoile" pleine /> +{c.etoiles} étoile{c.etoiles > 1 ? 's' : ''} à dépenser dans l'arbre</p>}
     </div>
   );
 }

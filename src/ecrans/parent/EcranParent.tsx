@@ -7,6 +7,7 @@ import { SectionSauvegarde } from './SectionSauvegarde';
 import { SectionProfils } from './SectionProfils';
 import { SectionClassement } from './SectionClassement';
 import type { Famille } from '../../stockage';
+import { Icone } from '../../ui/Icone';
 
 export function EcranParent(props: {
   pin: string | null; profils: Profil[]; packsImportes: Pack[]; semaine: QueteSemaine;
@@ -26,13 +27,13 @@ export function EcranParent(props: {
   }
   return (
     <main class="ecran">
-      <h2>🔒 Espace parent</h2>
+      <h2><Icone nom="cadenas" /> Espace parent</h2>
       <SectionPacks packsImportes={props.packsImportes} onPacks={props.onPacks} />
       <SectionSauvegarde profils={props.profils} semaine={props.semaine} packsImportes={props.packsImportes} onRestaurer={props.onRestaurer} />
       <SectionProfils profils={props.profils} onMaj={props.onMajProfil} onSupprimer={props.onSupprimerProfil} />
       <SectionClassement famille={props.famille} onFamille={props.onFamille} />
-      <button onClick={() => setChangerPin(true)}>🔑 Changer le code PIN</button>
-      <button onClick={props.onRetour}>← Accueil</button>
+      <button onClick={() => setChangerPin(true)}><Icone nom="cadenas" /> Changer le code PIN</button>
+      <button onClick={props.onRetour}><Icone nom="retour" /> Accueil</button>
     </main>
   );
 }

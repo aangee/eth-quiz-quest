@@ -8,6 +8,7 @@ import { avancerQuetes } from '../jeu/quetes';
 import { choixACacher, jokersDebloques, jokerUtilisable, utiliserJoker } from '../jeu/jokers';
 import { nomJoker } from '../jeu/arbre';
 import { BarreTemps } from './BarreTemps';
+import { Icone } from '../ui/Icone';
 
 export const NB_QUESTIONS = 10;
 export const LIMITE_MS = 20000;
@@ -118,8 +119,8 @@ export function EcranQuiz({ profil, domaines, onFin }: {
     <main class="ecran">
       <div class="barre">
         <span>Question {bilan.total + (verdict === null ? 1 : 0)}/{NB_QUESTIONS}</span>
-        <span>⏱ {Math.ceil(reste / 1000)} s</span>
-        <span>✨ {bilan.xp} XP</span>
+        <span><Icone nom="chrono" /> {Math.ceil(reste / 1000)} s</span>
+        <span>{bilan.xp} XP</span>
       </div>
       <BarreTemps reste={reste} total={limite} />
       <p class="domaine">{tirage.domaine} · niv. {q.niveau}</p>
@@ -141,10 +142,10 @@ export function EcranQuiz({ profil, domaines, onFin }: {
       )}
       {verdict !== null && (
         <div class={verdict ? 'verdict ok' : 'verdict ko'}>
-          <p>{verdict ? <>✅ Bravo ! <span class="gain">+{gain} XP</span></> : '❌ Raté'}</p>
+          <p>{verdict ? <><Icone nom="valider" /> Bravo ! <span class="gain">+{gain} XP</span></> : <><Icone nom="quitter" /> Raté</>}</p>
           {!verdict && <p>Bonne réponse : <b>{bonneReponse(q)}</b></p>}
           {q.explication && <p>{q.explication}</p>}
-          <button class="principal" onClick={suivant}>Suivant ▶</button>
+          <button class="principal" onClick={suivant}>Suivant <Icone nom="suivant" /></button>
         </div>
       )}
     </main>

@@ -142,3 +142,12 @@ select { font: inherit; padding: 10px 12px; border-radius: var(--rayon); backgro
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   .confettis { display: none; }
 }
+
+/* --- Icônes et repères (lot 8a) --- */
+.case { display: inline-block; width: 18px; height: 18px; border: var(--bord) solid var(--c-texte-doux); border-radius: 4px; vertical-align: -0.2em; }
+.gain-total { font-family: var(--police-titre); font-size: 1.4em; color: var(--c-accent); margin: 0.2em 0; }
+.classement .rang { color: var(--c-texte-doux); }
+.classement .podium-1 { color: var(--c-domaine-2); }
+.classement .podium-2 { color: var(--c-texte); }
+.classement .podium-3 { color: var(--c-domaine-3); }
+button .icone { vertical-align: -0.25em; }

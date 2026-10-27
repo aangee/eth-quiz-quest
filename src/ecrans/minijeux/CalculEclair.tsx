@@ -3,6 +3,7 @@ import { crediter, longueur, multXp, type PropsJeu } from '../../jeu/minijeux';
 import { genererCalcul, niveauCalcul, niveauCalculDepart } from '../../jeu/calcul';
 import { DUREE_MS } from './ChronoEclair';
 import { BarreTemps } from '../BarreTemps';
+import { Icone } from '../../ui/Icone';
 
 const TOUCHES = ['7', '8', '9', '4', '5', '6', '1', '2', '3'];
 
@@ -30,7 +31,7 @@ export function CalculEclair({ profil, partie, onFin, onQuitter }: PropsJeu) {
     if (termine) onFin(crediter(profil, null, xp), { score, xp, texte: `${score} calcul(s) juste(s)` });
   }, [termine]);
 
-  if (termine) return <main class="ecran"><p>⏱ Terminé !</p></main>;
+  if (termine) return <main class="ecran"><p><Icone nom="chrono" /> Terminé !</p></main>;
 
   const valider = () => {
     if (saisie === '') return;
@@ -50,13 +51,13 @@ export function CalculEclair({ profil, partie, onFin, onQuitter }: PropsJeu) {
   return (
     <main class="ecran">
       <div class="barre">
-        <span>🔢 Calcul éclair · niv. {niveau}</span>
-        <span>⏱ {Math.ceil(reste / 1000)} s</span>
-        <span>✅ {score}</span>
+        <span><Icone nom="eclair" /> Calcul éclair · niv. {niveau}</span>
+        <span><Icone nom="chrono" /> {Math.ceil(reste / 1000)} s</span>
+        <span><Icone nom="valider" /> {score}</span>
       </div>
       <BarreTemps reste={reste} total={duree} />
       <h1 class="calcul">{calcul.texte} = {saisie || '?'}</h1>
-      {rate && <p class="rate-texte">❌ Essaie encore</p>}
+      {rate && <p class="rate-texte">Essaie encore</p>}
       <div class="pave">
         {TOUCHES.map((t) => <button key={t} onClick={() => taper(t)}>{t}</button>)}
         <button onClick={() => setSaisie((s) => s.slice(0, -1))}>⌫</button>

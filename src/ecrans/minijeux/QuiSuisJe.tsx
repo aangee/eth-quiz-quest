@@ -5,6 +5,7 @@ import { contenu, crediter, longueur, multXp, type ARetenir, type PropsJeu } fro
 import { choixQui, pointsQui } from '../../jeu/qui';
 import { melanger } from '../../jeu/melange';
 import { PasDeContenu } from './PasDeContenu';
+import { Icone } from '../../ui/Icone';
 
 export const NB_PERSONNAGES = 4;
 
@@ -52,12 +53,12 @@ export function QuiSuisJe({ profil, partie, onFin, onQuitter }: PropsJeu) {
   return (
     <main class="ecran">
       <div class="barre">
-        <span>🕵️ Qui suis-je ? {i + 1}/{tour.length}</span>
-        <span>⭐ {score} pts</span>
+        <span><Icone nom="profil" /> Qui suis-je ? {i + 1}/{tour.length}</span>
+        <span><Icone nom="etoile" pleine /> {score} pts</span>
       </div>
       <p class="domaine">{domaine} · {pointsQui(vus)} point(s) en jeu</p>
       <ul class="quetes">
-        {q.indices.slice(0, choisi ? q.indices.length : vus).map((t) => <li key={t}>🔎 {t}</li>)}
+        {q.indices.slice(0, choisi ? q.indices.length : vus).map((t) => <li key={t}>{t}</li>)}
       </ul>
       {!choisi && vus < q.indices.length && <button onClick={() => setVus(vus + 1)}>Indice suivant (−1 point)</button>}
       <div class="choix">
@@ -71,9 +72,9 @@ export function QuiSuisJe({ profil, partie, onFin, onQuitter }: PropsJeu) {
       </div>
       {choisi && (
         <div class={choisi === q.reponse ? 'verdict ok' : 'verdict ko'}>
-          <p>{choisi === q.reponse ? `✅ +${pointsQui(vus)} point(s)` : `❌ C'était : ${q.reponse}`}</p>
+          <p>{choisi === q.reponse ? <><Icone nom="valider" /> +{pointsQui(vus)} point(s)</> : <><Icone nom="quitter" /> C'était : {q.reponse}</>}</p>
           {q.explication && <p>{q.explication}</p>}
-          <button class="principal" onClick={suivant}>Suivant ▶</button>
+          <button class="principal" onClick={suivant}>Suivant <Icone nom="suivant" /></button>
         </div>
       )}
       <button onClick={onQuitter}>Abandonner</button>
