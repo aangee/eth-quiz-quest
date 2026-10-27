@@ -23,3 +23,4 @@
 :root[data-theme="bdpop"] .compteur-etoiles { background: #ffd23f; color: #1a1a2e; border: 3px solid #1a1a2e; box-shadow: 3px 3px 0 #1a1a2e; }
 :root[data-theme="bdpop"] .lettre { border-radius: 50%; color: #1a1a2e; background: #ffd23f; }
 :root[data-theme="bdpop"] .choix .rate .icone, :root[data-theme="bdpop"] .choix .bon .icone { color: #1a1a2e; }
+:root[data-theme="bdpop"] .gain, :root[data-theme="bdpop"] .gain-total, :root[data-theme="bdpop"] .record { color: #c62828; }
