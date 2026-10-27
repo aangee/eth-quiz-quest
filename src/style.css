@@ -64,3 +64,35 @@ label { display: flex; gap: 8px; align-items: center; }
 .clavier .bon { border-color: var(--ok); }
 .clavier .rate, .choix .rate { border-color: var(--ko); opacity: 0.6; }
 .record { color: var(--accent); font-weight: 700; }
+
+.frise { margin: 0; padding-left: 1.6em; display: flex; flex-direction: column; gap: 6px; }
+.frise button { width: 100%; text-align: left; }
+.frise .bon { border-color: var(--ok); }
+.frise .rate { border-color: var(--ko); }
+.image-etiquettes { position: relative; }
+.image-etiquettes img { width: 100%; display: block; border-radius: 12px; }
+.zone { position: absolute; transform: translate(-50%, -50%); min-height: 32px; min-width: 32px; padding: 2px 8px;
+  font-size: 0.8em; border-radius: 16px; background: var(--accent); color: #1b1340; font-weight: 700; }
+.zone.posee { background: #ffffff; }
+.zone.bon { background: var(--ok); }
+.zone.rate { background: var(--ko); color: #ffffff; }
+.etiquettes { display: flex; flex-wrap: wrap; gap: 6px; }
+.etiquettes button { min-height: 40px; padding: 8px 12px; }
+.etiquettes .choisi { border-color: var(--accent); }
+
+.scores { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; background: var(--carte); padding: 10px 12px; border-radius: 10px; }
+.passe { display: flex; flex-direction: column; gap: 12px; text-align: center; padding: 24px 0; }
+.question-duel { display: flex; flex-direction: column; gap: 12px; }
+.qr { width: 100%; max-width: 360px; align-self: center; background: #ffffff; border-radius: 12px; }
+.scanner video { width: 100%; border-radius: 12px; background: #000000; }
+.code-texte { background: var(--carte); padding: 10px 12px; border-radius: 10px; }
+.code-texte textarea { width: 100%; font: 0.75em ui-monospace, monospace; margin: 6px 0; background: var(--fond); color: var(--texte); border-radius: 8px; border: 1px solid #4a3d99; }
+.bandeau { background: #3d2f85; padding: 8px 12px; border-radius: 10px; margin: 0; }
+.bandeau.ko { background: var(--ko); color: #ffffff; }
+
+section { display: flex; flex-direction: column; gap: 8px; }
+.fichier { display: flex; flex-direction: column; gap: 6px; background: var(--carte); padding: 12px; border-radius: 12px; cursor: pointer; }
+.fichier input { font-size: 0.85em; }
+.petit { min-height: 36px; padding: 4px 10px; }
+.noeud input { flex: 1; min-width: 0; }
+.noeud .age { flex: 0 0 64px; }

@@ -5,8 +5,8 @@ import { niveauDepuisXp } from '../jeu/xp';
 
 const AVATARS = ['🦊', '🐉', '🚀', '🦉', '🐼', '🤖', '🦖', '🐙'];
 
-export function EcranProfils({ profils, onCreer, onChoisir }: {
-  profils: Profil[]; onCreer: (p: Profil) => void; onChoisir: (p: Profil) => void;
+export function EcranProfils({ profils, onCreer, onChoisir, onParent }: {
+  profils: Profil[]; onCreer: (p: Profil) => void; onChoisir: (p: Profil) => void; onParent: () => void;
 }) {
   const [prenom, setPrenom] = useState('');
   const [age, setAge] = useState(10);
@@ -35,6 +35,7 @@ export function EcranProfils({ profils, onCreer, onChoisir }: {
       <button class="principal" disabled={!valide} onClick={() => { onCreer(nouveauProfil(prenom.trim(), avatar, age)); setPrenom(''); }}>
         Créer
       </button>
+      <button onClick={onParent}>🔒 Espace parent</button>
     </main>
   );
 }

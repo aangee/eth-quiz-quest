@@ -1,7 +1,7 @@
 {
-  "pack": "espace-v2",
+  "pack": "espace-v3",
   "domaine": "Espace",
-  "version": 2,
+  "version": 3,
   "source": "esp-014 à esp-020 : adaptées d'Open Trivia Database (opentdb.com), CC BY-SA 4.0. Le reste : Nysa.",
   "questions": [
     { "id": "esp-001", "type": "vrai_faux", "niveau": 1, "age_min": 6, "question": "Le Soleil est une étoile.", "reponse": true, "explication": "Vrai : le Soleil est une étoile, la plus proche de la Terre." },
@@ -47,6 +47,17 @@
     { "id": "esp-041", "type": "mot", "niveau": 2, "age_min": 7, "indice": "Elle emmène les astronautes dans l'espace", "reponse": "FUSÉE", "explication": "Une fusée." },
     { "id": "esp-042", "type": "mot", "niveau": 2, "age_min": 7, "indice": "Personne qui voyage dans l'espace", "reponse": "ASTRONAUTE", "explication": "Un astronaute (ou cosmonaute, chez les Russes)." },
     { "id": "esp-043", "type": "mot", "niveau": 3, "age_min": 8, "indice": "Instrument pour observer les étoiles", "reponse": "TÉLESCOPE", "explication": "Un télescope." },
-    { "id": "esp-044", "type": "mot", "niveau": 4, "age_min": 10, "indice": "Groupe d'étoiles qui dessine une figure dans le ciel", "reponse": "CONSTELLATION", "explication": "Une constellation, comme la Grande Ourse." }
+    { "id": "esp-044", "type": "mot", "niveau": 4, "age_min": 10, "indice": "Groupe d'étoiles qui dessine une figure dans le ciel", "reponse": "CONSTELLATION", "explication": "Une constellation, comme la Grande Ourse." },
+    { "id": "esp-045", "type": "ordre", "niveau": 2, "age_min": 7, "question": "Du plus proche au plus loin du Soleil", "elements": ["Mercure", "Vénus", "La Terre", "Mars"], "explication": "Mercure, Vénus, la Terre puis Mars." },
+    { "id": "esp-046", "type": "ordre", "niveau": 3, "age_min": 8, "question": "Du plus petit au plus grand", "elements": ["La Lune", "La Terre", "Jupiter", "Le Soleil"], "explication": "La Lune, la Terre, Jupiter puis le Soleil, 109 fois plus large que la Terre." },
+    { "id": "esp-047", "type": "ordre", "niveau": 4, "age_min": 10, "question": "Du plus ancien au plus récent", "elements": ["Spoutnik 1", "Youri Gagarine dans l'espace", "Premiers pas sur la Lune", "Thomas Pesquet dans l'ISS"], "explication": "Spoutnik 1 (1957), Gagarine (1961), la Lune (1969), Pesquet (2016)." },
+    { "id": "esp-048", "type": "ordre", "niveau": 4, "age_min": 10, "question": "Les planètes géantes, de la plus proche à la plus lointaine du Soleil", "elements": ["Jupiter", "Saturne", "Uranus", "Neptune"], "explication": "Jupiter, Saturne, Uranus puis Neptune." },
+    { "id": "esp-049", "type": "indices", "niveau": 1, "age_min": 6, "indices": ["Je suis une planète", "Je suis la troisième en partant du Soleil", "Tu vis sur moi"], "reponse": "La Terre", "explication": "La Terre." },
+    { "id": "esp-050", "type": "indices", "niveau": 1, "age_min": 6, "indices": ["Je suis une étoile", "Je suis au centre du système solaire", "Ma lumière met 8 minutes à arriver chez toi"], "reponse": "Le Soleil", "explication": "Le Soleil." },
+    { "id": "esp-051", "type": "indices", "niveau": 2, "age_min": 7, "indices": ["Je suis une planète", "Je suis couverte de poussière rouge", "Deux petites lunes tournent autour de moi"], "reponse": "Mars", "explication": "Mars, avec ses lunes Phobos et Déimos." },
+    { "id": "esp-052", "type": "indices", "niveau": 3, "age_min": 8, "indices": ["Je suis une planète", "J'ai une Grande Tache rouge", "Je suis la plus grosse du système solaire"], "reponse": "Jupiter", "explication": "Jupiter." },
+    { "id": "esp-053", "type": "indices", "niveau": 3, "age_min": 8, "indices": ["Je suis un humain", "En 1961, j'ai fait le tour de la Terre", "J'ai été le premier dans l'espace"], "reponse": "Youri Gagarine", "explication": "Youri Gagarine." },
+    { "id": "esp-054", "type": "indices", "niveau": 4, "age_min": 10, "indices": ["J'ai été une planète jusqu'en 2006", "Je suis aujourd'hui une planète naine", "La sonde New Horizons m'a survolée en 2015"], "reponse": "Pluton", "explication": "Pluton." },
+    { "id": "esp-055", "type": "etiquettes", "niveau": 3, "age_min": 8, "question": "Place le Soleil et les planètes", "image": "images/systeme-solaire.svg", "zones": [{ "label": "Le Soleil", "x": 0.06, "y": 0.85 }, { "label": "La Terre", "x": 0.333, "y": 0.2 }, { "label": "Jupiter", "x": 0.512, "y": 0.85 }, { "label": "Saturne", "x": 0.679, "y": 0.2 }, { "label": "Uranus", "x": 0.821, "y": 0.85 }, { "label": "Neptune", "x": 0.94, "y": 0.2 }], "explication": "Dans l'ordre : le Soleil, Mercure, Vénus, la Terre, Mars, Jupiter, Saturne, Uranus et Neptune." }
   ]
 }

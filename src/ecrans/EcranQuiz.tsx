@@ -24,7 +24,7 @@ type Valeur = number | boolean;
 
 const estQuiz = (q: { type: string }): q is QCM | VraiFaux => q.type === 'qcm' || q.type === 'vrai_faux';
 
-function tirer(p: Profil, doms: string[], vues: Set<string>): Tirage | null {
+export function tirer(p: Profil, doms: string[], vues: Set<string>): Tirage | null {
   for (const d of [...doms].sort(() => Math.random() - 0.5)) {
     const q = choisirQuestion(questionsDuDomaine(d).filter(estQuiz), p.cotes[d] ?? coteDepart(p.age), p.age, vues);
     if (q) { vues.add(q.id); return { q, domaine: d }; }

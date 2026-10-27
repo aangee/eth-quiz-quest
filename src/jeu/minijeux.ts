@@ -3,7 +3,7 @@ import type { MiniJeu } from './arbre';
 import { melanger } from './melange';
 
 /** Mini-jeux jouables dans cette version (les autres restent « bientôt jouable »). */
-export const JEUX_DISPONIBLES: MiniJeu[] = ['chrono', 'calcul', 'memory', 'mot'];
+export const JEUX_DISPONIBLES: MiniJeu[] = ['chrono', 'calcul', 'memory', 'mot', 'frise', 'qui', 'etiquettes'];
 
 /** Une partie : sur quels domaines, et s'il s'agit d'un défi (un seul domaine). */
 export interface Partie { domaines: string[]; defi: boolean }

@@ -2,10 +2,22 @@ import type { Profil } from '../types';
 import { MINI_JEUX, type MiniJeu } from '../jeu/arbre';
 import { JEUX_DISPONIBLES, cleRecord } from '../jeu/minijeux';
 
-export function EcranMiniJeux({ profil, onJouer, onRetour }: {
-  profil: Profil; onJouer: (jeu: MiniJeu) => void; onRetour: () => void;
+/** Défis débloqués : nœuds « defi:<jeu>:<domaine> ». */
+function defisDebloques(p: Profil): { jeu: MiniJeu; domaine: string }[] {
+  return p.debloques
+    .filter((id) => id.startsWith('defi:'))
+    .map((id) => {
+      const [, jeu, ...reste] = id.split(':');
+      return { jeu: jeu as MiniJeu, domaine: reste.join(':') };
+    })
+    .filter((d) => JEUX_DISPONIBLES.includes(d.jeu));
+}
+
+export function EcranMiniJeux({ profil, onJouer, onDefi, onRetour }: {
+  profil: Profil; onJouer: (jeu: MiniJeu) => void; onDefi: (jeu: MiniJeu, domaine: string) => void; onRetour: () => void;
 }) {
   const jeux = Object.keys(MINI_JEUX) as MiniJeu[];
+  const defis = defisDebloques(profil);
   return (
     <main class="ecran">
       <h2>🕹️ Mini-jeux</h2>
@@ -25,6 +37,24 @@ export function EcranMiniJeux({ profil, onJouer, onRetour }: {
           );
         })}
       </div>
+      {defis.length > 0 && (
+        <>
+          <h2>🏁 Défis</h2>
+          <p class="domaine">Un seul domaine, plus long, XP ×2.</p>
+          <div class="liste">
+            {defis.map((d) => {
+              const record = profil.records[cleRecord(d.jeu, d.domaine)];
+              return (
+                <div key={`${d.jeu}:${d.domaine}`} class="noeud debloque">
+                  <span>{MINI_JEUX[d.jeu].nom} · {d.domaine}</span>
+                  {record !== undefined && <small>🏆 {record}</small>}
+                  <button onClick={() => onDefi(d.jeu, d.domaine)}>Défi ▶</button>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
       <button onClick={onRetour}>← Retour</button>
     </main>
   );
