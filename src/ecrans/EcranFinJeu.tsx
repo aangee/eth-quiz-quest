@@ -2,6 +2,7 @@ import type { ResultatJeu } from '../jeu/minijeux';
 import { Celebration } from './Celebration';
 import type { Celebration as CelebrationT } from '../jeu/celebration';
 import { Icone } from '../ui/Icone';
+import { explicationSansReponse } from '../jeu/explication';
 
 export function EcranFinJeu({ nom, resultat, record, celebration, onRejouer, onRetour }: {
   nom: string; resultat: ResultatJeu; record: boolean; celebration: CelebrationT; onRejouer: () => void; onRetour: () => void;
@@ -18,7 +19,7 @@ export function EcranFinJeu({ nom, resultat, record, celebration, onRejouer, onR
           <h2>À retenir</h2>
           <ul>
             {resultat.aRetenir.map((r) => (
-              <li key={r.question}><b>{r.question}</b><br /><Icone nom="valider" /> {r.bonne}{r.explication && <> — {r.explication}</>}</li>
+              <li key={r.question}><b>{r.question}</b><br /><Icone nom="valider" /> {r.bonne}{r.explication && <> — {explicationSansReponse(r.bonne, r.explication)}</>}</li>
             ))}
           </ul>
         </>

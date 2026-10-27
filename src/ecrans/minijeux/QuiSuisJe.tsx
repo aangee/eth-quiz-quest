@@ -6,6 +6,7 @@ import { choixQui, pointsQui } from '../../jeu/qui';
 import { melanger } from '../../jeu/melange';
 import { PasDeContenu } from './PasDeContenu';
 import { Icone } from '../../ui/Icone';
+import { explicationSansReponse } from '../../jeu/explication';
 
 export const NB_PERSONNAGES = 4;
 
@@ -73,7 +74,7 @@ export function QuiSuisJe({ profil, partie, onFin, onQuitter }: PropsJeu) {
       {choisi && (
         <div class={choisi === q.reponse ? 'verdict ok' : 'verdict ko'}>
           <p>{choisi === q.reponse ? <><Icone nom="valider" /> +{pointsQui(vus)} point(s)</> : <><Icone nom="quitter" /> C'était : {q.reponse}</>}</p>
-          {q.explication && <p>{q.explication}</p>}
+          {q.explication && <p>{explicationSansReponse(q.reponse, q.explication)}</p>}
           <button class="principal" onClick={suivant}>Suivant <Icone nom="suivant" /></button>
         </div>
       )}
