@@ -22,6 +22,6 @@ export const bdpop: Theme = {
   couleursDomaines: ['#1f7ae0', '#1a9e5c', '#c77700', '#e0442f', '#c2378a', '#7b4fd6'],
   polices: { titre: "'Bangers', sans-serif", texte: "'Fredoka', system-ui, sans-serif" },
   forme: { rayon: 16, bord: 3, ombre: '4px 4px 0 #1a1a2e' },
-  textes: { titreCarte: 'LE GRAND PARCOURS !', titreJoueur: 'Super-curieux', bravo: 'BOUM ! Bien joué !', suite: 'Suite !', titreArbre: 'MES POUVOIRS !', reserve: 'étoiles à dépenser' },
+  textes: { titreCarte: 'LE GRAND PARCOURS !', titreJoueur: 'Super-curieux', bravo: 'BOUM ! Bien joué !', suite: 'Suite !', titreArbre: 'MES POUVOIRS !', reserve: 'à dépenser' },
   DecorCarte,
 };

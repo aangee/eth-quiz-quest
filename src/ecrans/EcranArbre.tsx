@@ -70,7 +70,7 @@ export function EcranArbre({ profil, arbre, onMaj, onJouer, onDefi }: {
       <div class="reserve">
         <Icone nom="etoile" pleine taille={34} />
         <div>
-          <strong>{dispo} {theme.textes.reserve}</strong>
+          <strong>{dispo} étoile{dispo > 1 ? 's' : ''} {theme.textes.reserve}</strong>
           <small>1 étoile = 1 niveau gagné dans un domaine</small>
         </div>
       </div>

@@ -20,6 +20,6 @@ export const survie: Theme = {
   couleursDomaines: ['#8fd16a', '#f08a24', '#5fb3d9', '#e8c15a', '#e5735a', '#c79bd9'],
   polices: { titre: "'Black Ops One', sans-serif", texte: "'Nunito', system-ui, sans-serif" },
   forme: { rayon: 10, bord: 3, ombre: '0 4px 0 #1a140e' },
-  textes: { titreCarte: "L'ÎLE DU SAVOIR", titreJoueur: 'Éclaireur', bravo: 'Bien vu, éclaireur !', suite: 'En avant', titreArbre: "L'ARBRE DE L'ÉCLAIREUR", reserve: 'étoiles dans ton sac' },
+  textes: { titreCarte: "L'ÎLE DU SAVOIR", titreJoueur: 'Éclaireur', bravo: 'Bien vu, éclaireur !', suite: 'En avant', titreArbre: "L'ARBRE DE L'ÉCLAIREUR", reserve: 'dans ton sac' },
   DecorCarte,
 };
