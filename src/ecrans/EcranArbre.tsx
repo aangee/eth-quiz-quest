@@ -90,7 +90,7 @@ export function EcranArbre({ profil, arbre, onMaj, onJouer, onDefi }: {
             return (
               <div key={b.nom} class="accordeon">
                 <button class="tete-accordeon" aria-expanded={estOuvert} onClick={() => setOuvert(estOuvert ? null : b.nom)}>
-                  {titreBranche(b)}<Icone nom={estOuvert ? 'retour' : 'suivant'} />
+                  {titreBranche(b)}<Icone nom={estOuvert ? 'bas' : 'suivant'} />
                 </button>
                 {estOuvert && <Rangee branche={b} dernier={dernier} onOuvrir={setFiche} />}
               </div>

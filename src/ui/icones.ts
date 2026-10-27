@@ -24,6 +24,7 @@ export const ICONES = {
   valider: ['M5 12l5 5 9-10'],
   suivant: ['M9 5l7 7-7 7'],
   retour: ['M15 5l-7 7 7 7'],
+  bas: ['M5 9l7 7 7-7'],
   plus: ['M12 5v14M5 12h14'],
   musique: ['M9 18V5l12-2v13', cercle(6, 18, 3), cercle(18, 16, 3)],
   muet: ['M11 5 6 9H2v6h4l5 4z', 'M22 9l-6 6M16 9l6 6'],
