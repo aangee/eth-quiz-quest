@@ -95,6 +95,9 @@ export function App() {
   const changerSon = (v: boolean) => { setSonActif(v); memoriserMusique(v); };
   // Thème du joueur courant ; les écrans sans joueur (profils, parent) gardent le thème en place
   const idTheme = profils && 'profilId' in ecran ? profils.find((p) => p.id === ecran.profilId)?.theme : undefined;
+  // Barre du bas : la page garde une marge pour que rien ne reste caché dessous (tous les onglets d'un coup)
+  const avecBarre = ongletActif(ecran.nom) !== null;
+  useEffect(() => { document.body.classList.toggle('avec-barre', avecBarre); }, [avecBarre]);
   useEffect(() => {
     if (idTheme === undefined) return;
     const t = themeParId(idTheme);
