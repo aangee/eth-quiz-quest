@@ -12,7 +12,7 @@ export function EcranProfil({ profil, semaine, onMaj, onChanger, onParent }: {
 }) {
   const jokers = jokersDebloques(profil);
   return (
-    <main class="ecran avec-barre">
+    <main class="ecran">
       <h1>{profil.avatar} {profil.prenom}</h1>
 
       <h2><Icone nom="quete" /> Quêtes du jour</h2>

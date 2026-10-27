@@ -18,7 +18,7 @@ export function EcranCarte({ profil, arbre, onJouer }: {
   const quetes = new Set(profil.quetes.liste.filter((q) => q.type === 'justes_domaine' && q.progres < q.cible).map((q) => q.domaine));
   const { DecorCarte } = theme;
   return (
-    <main class="ecran avec-barre">
+    <main class="ecran">
       <header class="entete-joueur">
         <span class="avatar-rond" aria-hidden="true">{profil.avatar}</span>
         <div class="identite">
