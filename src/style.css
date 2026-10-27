@@ -83,7 +83,7 @@ label { display: flex; gap: 8px; align-items: center; }
 .scores { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; background: var(--carte); padding: 10px 12px; border-radius: 10px; }
 .passe { display: flex; flex-direction: column; gap: 12px; text-align: center; padding: 24px 0; }
 .question-duel { display: flex; flex-direction: column; gap: 12px; }
-.qr { width: 100%; max-width: 360px; align-self: center; background: #ffffff; border-radius: 12px; }
+.qr { width: 100%; max-width: 420px; image-rendering: pixelated; align-self: center; background: #ffffff; border-radius: 12px; }
 .scanner video { width: 100%; border-radius: 12px; background: #000000; }
 .code-texte { background: var(--carte); padding: 10px 12px; border-radius: 10px; }
 .code-texte textarea { width: 100%; font: 0.75em ui-monospace, monospace; margin: 6px 0; background: var(--fond); color: var(--texte); border-radius: 8px; border: 1px solid #4a3d99; }
