@@ -1,0 +1,25 @@
+/* BD Pop : ornements seulement. Tout reste sous [data-theme="bdpop"]. */
+:root[data-theme="bdpop"] {
+  background-color: var(--c-fond);
+  background-image: radial-gradient(#f2c94c66 1.6px, transparent 1.6px);
+  background-size: 14px 14px;
+}
+:root[data-theme="bdpop"] body { background: transparent; }
+:root[data-theme="bdpop"] h1 { color: #ff4d4d; -webkit-text-stroke: 1.5px #1a1a2e; text-shadow: 3px 3px 0 #1a1a2e; letter-spacing: 0.05em; }
+:root[data-theme="bdpop"] h2 { letter-spacing: 0.04em; }
+:root[data-theme="bdpop"] button:not(.onglet):not(.etape), :root[data-theme="bdpop"] .carte, :root[data-theme="bdpop"] .noeud,
+:root[data-theme="bdpop"] .verdict, :root[data-theme="bdpop"] .quetes li, :root[data-theme="bdpop"] .classement li { box-shadow: var(--ombre); }
+:root[data-theme="bdpop"] .principal { font-size: 1.15em; letter-spacing: 0.05em; }
+:root[data-theme="bdpop"] .jauge { height: 18px; border: 3px solid #1a1a2e; background: #ffffff; }
+:root[data-theme="bdpop"] .jauge div { background: #2ec27e; }
+:root[data-theme="bdpop"] .pastille { background: var(--couleur); color: #ffffff; border-color: #1a1a2e; border-width: 4px; box-shadow: 4px 4px 0 #1a1a2e; }
+:root[data-theme="bdpop"] .nom-etape { background: #ffffff; border: 3px solid #1a1a2e; border-radius: 8px; padding: 0 8px; transform: rotate(-2deg);
+  font-size: 1em; letter-spacing: 0.05em; }
+:root[data-theme="bdpop"] .etape small { font-weight: 600; color: var(--c-texte); }
+:root[data-theme="bdpop"] .barre-nav { background: #ffffff; border-top: 4px solid #1a1a2e; }
+:root[data-theme="bdpop"] .onglet { color: var(--c-texte); }
+:root[data-theme="bdpop"] .onglet.actif { background: #ffd23f; color: #1a1a2e; border: 3px solid #1a1a2e; border-radius: 12px; }
+:root[data-theme="bdpop"] .avatar-rond { background: #c39bff; border: 4px solid #1a1a2e; box-shadow: 3px 3px 0 #1a1a2e; }
+:root[data-theme="bdpop"] .compteur-etoiles { background: #ffd23f; color: #1a1a2e; border: 3px solid #1a1a2e; box-shadow: 3px 3px 0 #1a1a2e; }
+:root[data-theme="bdpop"] .lettre { border-radius: 50%; color: #1a1a2e; background: #ffd23f; }
+:root[data-theme="bdpop"] .choix .rate .icone, :root[data-theme="bdpop"] .choix .bon .icone { color: #1a1a2e; }
