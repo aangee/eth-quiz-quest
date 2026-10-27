@@ -1,0 +1,21 @@
+/* Néon arcade : ornements seulement (couleurs, polices, formes : index.ts). Tout reste sous [data-theme="neon"]. */
+:root[data-theme="neon"] body {
+  background:
+    radial-gradient(ellipse at 50% 0%, #5b1fa855, transparent 70%) fixed,
+    var(--c-fond);
+}
+/* Grille rétro en perspective, fixe en bas de l'écran */
+:root[data-theme="neon"] body::before {
+  content: ''; position: fixed; left: -50%; right: -50%; bottom: 0; height: 40vh; z-index: -1; pointer-events: none;
+  background-image: linear-gradient(#ff3dbb55 2px, transparent 2px), linear-gradient(90deg, #ff3dbb55 2px, transparent 2px);
+  background-size: 46px 46px; transform: perspective(320px) rotateX(58deg); transform-origin: bottom; opacity: 0.45;
+}
+:root[data-theme="neon"] h1 {
+  color: #ff3dbb; letter-spacing: 0.06em; text-shadow: 0 0 8px #ff3dbb, 0 0 22px #ff3dbb88;
+}
+:root[data-theme="neon"] h2 { letter-spacing: 0.04em; }
+:root[data-theme="neon"] .principal { text-transform: uppercase; letter-spacing: 0.06em; }
+:root[data-theme="neon"] .choix .bon, :root[data-theme="neon"] .duo .bon {
+  box-shadow: 0 0 18px color-mix(in srgb, var(--c-ok) 55%, transparent);
+}
+:root[data-theme="neon"] .jauge div { background: linear-gradient(90deg, #22e4ff, #ff3dbb); box-shadow: 0 0 12px #22e4ff; }

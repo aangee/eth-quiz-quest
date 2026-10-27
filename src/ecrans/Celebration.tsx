@@ -1,6 +1,7 @@
 import { aCelebrer, type Celebration as C } from '../jeu/celebration';
 
-const COULEURS = ['#ffc83d', '#3ecf8e', '#ff6b6b', '#7aa7ff', '#f4f1ff'];
+/** Couleurs du thème actif (variables posées par appliquerTheme). */
+const COULEURS = [0, 1, 2, 3, 4, 5].map((i) => `var(--c-domaine-${i})`);
 
 /** Confettis + message, seulement pour un niveau ou des étoiles gagnés. */
 export function Celebration({ c }: { c: C }) {
