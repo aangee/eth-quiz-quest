@@ -1,6 +1,7 @@
 {
   "pack": "geographie-v1",
   "domaine": "Géographie",
+  "icone": "geographie",
   "version": 1,
   "source": "geo-001 à geo-020 : adaptées d'Open Trivia Database (opentdb.com), CC BY-SA 4.0. Le reste : Nysa.",
   "questions": [

@@ -1,6 +1,7 @@
 {
   "pack": "jeux-video-v1",
   "domaine": "Jeux vidéo",
+  "icone": "jeux",
   "version": 1,
   "source": "jv-001 à jv-011 : adaptées d'Open Trivia Database (opentdb.com), CC BY-SA 4.0. Le reste : Nysa.",
   "questions": [

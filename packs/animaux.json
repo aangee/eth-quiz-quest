@@ -1,6 +1,7 @@
 {
   "pack": "animaux-v3",
   "domaine": "Animaux",
+  "icone": "animaux",
   "version": 3,
   "source": "ani-012 à ani-031 : adaptées d'Open Trivia Database (opentdb.com), CC BY-SA 4.0. Le reste : Nysa.",
   "questions": [

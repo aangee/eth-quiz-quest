@@ -1,6 +1,7 @@
 import type { Pack, Question } from '../types';
 import { validerPack } from './valider';
 import { fusionnerPacks } from './fusion';
+import { ICONES_DOMAINE, type NomIcone } from '../ui/icones';
 
 const fichiers = import.meta.glob('../../packs/*.json', { eager: true, import: 'default' });
 
@@ -25,4 +26,10 @@ export function installerPacks(importes: Pack[]): void {
 
 export function questionsDuDomaine(domaine: string): Question[] {
   return packs.filter((p) => p.domaine === domaine).flatMap((p) => p.questions);
+}
+
+/** Icône d'un domaine : celle de son premier pack si elle est connue, sinon l'icône générique. */
+export function iconeDuDomaine(domaine: string, liste: Pack[] = packs): NomIcone {
+  const icone = liste.find((p) => p.domaine === domaine && p.icone)?.icone;
+  return ICONES_DOMAINE.includes(icone as NomIcone) ? (icone as NomIcone) : 'livre';
 }
