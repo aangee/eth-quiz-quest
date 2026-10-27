@@ -14,6 +14,7 @@ import { EcranResultats } from './ecrans/EcranResultats';
 import { EcranMiniJeux } from './ecrans/EcranMiniJeux';
 import { EcranFinJeu } from './ecrans/EcranFinJeu';
 import { JEUX } from './ecrans/minijeux';
+import { EcranDuel } from './ecrans/duel/EcranDuel';
 import { majRecord, type Partie, type ResultatJeu } from './jeu/minijeux';
 
 const arbre = construireArbre(packs);
@@ -26,6 +27,7 @@ type Ecran =
   | { nom: 'quiz'; profilId: string; domaines: string[] }
   | { nom: 'resultats'; profilId: string; domaines: string[]; bilan: Bilan }
   | { nom: 'minijeux'; profilId: string }
+  | { nom: 'duel'; profilId: string }
   | { nom: 'jeu'; profilId: string; jeu: MiniJeu; partie: Partie }
   | { nom: 'finjeu'; profilId: string; jeu: MiniJeu; partie: Partie; resultat: ResultatJeu; record: boolean };
 
@@ -53,14 +55,19 @@ export function App() {
     setEcran({ nom: 'joueur', profilId: p.id });
   };
 
-  const finQuiz = (p: Profil, bilan: Bilan, doms: string[]) => {
-    const { semaine: s, terminee } = avancerSemaine(majSemaine(semaine, semaineDe()), bilan.justes);
+  /** Enregistre des profils après une partie et fait avancer la quête de la semaine. */
+  const enregistrerPartie = (majs: Profil[], justes: number) => {
+    const { semaine: s, terminee } = avancerSemaine(majSemaine(semaine, semaineDe()), justes);
     setSemaine(s);
     sauverSemaine(s);
-    let liste = profils.map((x) => (x.id === p.id ? p : x));
+    let liste = profils.map((x) => majs.find((m) => m.id === x.id) ?? x);
     // Quête de la semaine terminée : +1 charge de joker pour chaque profil
     if (terminee) liste = liste.map((x) => { const j = jokerARecharger(x); return j ? ajouterCharge(x, j) : x; });
     enregistrer(liste);
+  };
+
+  const finQuiz = (p: Profil, bilan: Bilan, doms: string[]) => {
+    enregistrerPartie([p], bilan.justes);
     setEcran({ nom: 'resultats', profilId: p.id, domaines: doms, bilan });
   };
 
@@ -80,6 +87,7 @@ export function App() {
         onJouer={() => setEcran({ nom: 'domaines', profilId: ecran.profilId })}
         onArbre={() => setEcran({ nom: 'arbre', profilId: ecran.profilId })}
         onMiniJeux={() => setEcran({ nom: 'minijeux', profilId: ecran.profilId })}
+        onDuel={() => setEcran({ nom: 'duel', profilId: ecran.profilId })}
         onChanger={() => setEcran({ nom: 'profils' })} />;
     case 'arbre':
       return <EcranArbre profil={profil(ecran.profilId)} arbre={arbre} onMaj={maj}
@@ -110,5 +118,8 @@ export function App() {
       return <EcranFinJeu nom={nomJeu(ecran.jeu, ecran.partie)} resultat={ecran.resultat} record={ecran.record}
         onRejouer={() => setEcran({ nom: 'jeu', profilId: ecran.profilId, jeu: ecran.jeu, partie: ecran.partie })}
         onRetour={() => setEcran({ nom: 'minijeux', profilId: ecran.profilId })} />;
+    case 'duel':
+      return <EcranDuel joueur={profil(ecran.profilId)} profils={profils} onFin={enregistrerPartie}
+        onQuitter={() => setEcran({ nom: 'joueur', profilId: ecran.profilId })} />;
   }
 }

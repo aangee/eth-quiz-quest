@@ -6,9 +6,9 @@ import { jokersDebloques } from '../jeu/jokers';
 import { domaines } from '../packs';
 import { Calendrier } from './Calendrier';
 
-export function EcranJoueur({ profil, semaine, arbre, onJouer, onArbre, onMiniJeux, onChanger }: {
+export function EcranJoueur({ profil, semaine, arbre, onJouer, onArbre, onMiniJeux, onDuel, onChanger }: {
   profil: Profil; semaine: QueteSemaine; arbre: Noeud[];
-  onJouer: () => void; onArbre: () => void; onMiniJeux: () => void; onChanger: () => void;
+  onJouer: () => void; onArbre: () => void; onMiniJeux: () => void; onDuel: () => void; onChanger: () => void;
 }) {
   const niv = niveauDepuisXp(profil.xp);
   const pct = Math.round((100 * (profil.xp - seuil(niv))) / (seuil(niv + 1) - seuil(niv)));
@@ -41,6 +41,7 @@ export function EcranJoueur({ profil, semaine, arbre, onJouer, onArbre, onMiniJe
       <button class="principal" onClick={onJouer}>Jouer ▶</button>
       <button onClick={onArbre}>🌳 Arbre de compétences</button>
       <button onClick={onMiniJeux}>🕹️ Mini-jeux</button>
+      <button onClick={onDuel}>⚔️ Duel</button>
       <button onClick={onChanger}>Changer de joueur</button>
     </main>
   );
