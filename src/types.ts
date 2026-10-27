@@ -24,6 +24,18 @@ export type Question = QCM | VraiFaux | Ordre | Mot | Paires | Etiquettes | Indi
 
 export interface Pack { pack: string; domaine: string; version: number; questions: Question[] }
 
+export interface Quete {
+  id: string;
+  type: 'justes_domaine' | 'finir_quiz' | 'rapides';
+  domaine?: string;
+  cible: number;
+  progres: number;
+}
+
+export interface QuetesDuJour { date: string; liste: Quete[] }
+
+export interface QueteSemaine { semaine: string; cible: number; progres: number; recompensee: boolean }
+
 export interface Profil {
   id: string;
   prenom: string;
@@ -32,4 +44,11 @@ export interface Profil {
   xp: number;
   cotes: Record<string, number>;
   xpDomaine: Record<string, number>;
+  /** Ids des nœuds de l'arbre débloqués. */
+  debloques: string[];
+  /** Charges par joker (ex. { temps: 2, 'expert:Espace': 1 }). */
+  jokers: Record<string, number>;
+  quetes: QuetesDuJour;
+  /** Dates « AAAA-MM-JJ » où les 3 quêtes du jour ont été réussies. */
+  calendrier: string[];
 }

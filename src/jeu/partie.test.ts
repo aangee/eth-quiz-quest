@@ -1,8 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import { appliquerReponse } from './partie';
-import type { Profil, Question } from '../types';
+import { normaliserProfil } from './profil';
+import type { Question } from '../types';
 
-const profil: Profil = { id: 'p', prenom: 'Léo', avatar: '🦊', age: 10, xp: 0, cotes: {}, xpDomaine: {} };
+const profil = normaliserProfil({ id: 'p', prenom: 'Léo', avatar: '🦊', age: 10 });
 const q: Question = { id: 'q', type: 'vrai_faux', niveau: 2, age_min: 6, question: 'Q', reponse: true, explication: '' };
 
 describe('appliquerReponse', () => {
