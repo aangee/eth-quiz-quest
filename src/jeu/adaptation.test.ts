@@ -18,9 +18,12 @@ describe('adaptation', () => {
     expect(majCote(2, 2, true)).toBeGreaterThan(2);
     expect(majCote(2, 2, false)).toBeLessThan(2);
   });
-  it('reste entre 1 et 5', () => {
-    expect(majCote(5, 1, true)).toBeLessThanOrEqual(5);
+  it('reste entre 1 et 5,5', () => {
+    expect(majCote(5.5, 1, true)).toBeLessThanOrEqual(5.5);
     expect(majCote(1, 5, false)).toBeGreaterThanOrEqual(1);
+  });
+  it('un très bon joueur vise 75 % au niveau 5', () => {
+    expect(choisirQuestion([q('a', 4), q('b', 5)], 5.5, 37, new Set())?.id).toBe('b');
   });
   it('choisit le niveau le plus proche de cote - 0,48', () => {
     expect(choisirQuestion([q('a', 1), q('b', 3), q('c', 5)], 3.5, 10, new Set())?.id).toBe('b');

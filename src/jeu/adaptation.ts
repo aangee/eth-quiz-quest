@@ -1,7 +1,8 @@
 import type { Question } from '../types';
 
 export const COTE_MIN = 1;
-export const COTE_MAX = 5;
+// Au-dessus de 5 pour qu'un très bon joueur réussisse encore ~75 % des questions de niveau 5
+export const COTE_MAX = 5.5;
 export const K = 0.3;
 // niveau - cote = -0,48  ⇒  probaReussite ≈ 0,75 (cible 70-80 %)
 export const DECALAGE = 0.48;

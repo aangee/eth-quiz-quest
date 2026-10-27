@@ -1,4 +1,4 @@
-import type { Profil, Question } from '../types';
+import type { Profil, QCM, Question, VraiFaux } from '../types';
 import { coteDepart, majCote } from './adaptation';
 import { xpGagne } from './xp';
 
@@ -16,4 +16,8 @@ export function appliquerReponse(
       xpDomaine: { ...p.xpDomaine, [domaine]: (p.xpDomaine[domaine] ?? 0) + xp },
     },
   };
+}
+
+export function bonneReponse(q: QCM | VraiFaux): string {
+  return q.type === 'qcm' ? q.choix[q.reponse] : q.reponse ? 'Vrai' : 'Faux';
 }
