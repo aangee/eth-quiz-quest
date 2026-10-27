@@ -28,7 +28,7 @@ Types possibles :
 | `qcm` | `question`, `choix` (2 à 4 textes), `reponse` (index du bon choix, 0 = premier) |
 | `vrai_faux` | `question`, `reponse` (`true` ou `false`) |
 | `ordre` | `question`, `elements` (au moins 3, **dans le bon ordre**) |
-| `mot` | `indice`, `reponse` (un mot, en MAJUSCULES) |
+| `mot` | `indice`, `reponse` (un mot en MAJUSCULES, sans Œ ni Æ ; tirets acceptés) |
 | `paires` | `question`, `paires` (au moins 2 couples `["a", "b"]`) |
 | `indices` | `indices` (au moins 2, du plus vague au plus précis), `reponse` |
 
