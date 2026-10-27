@@ -193,4 +193,4 @@ button .icone { vertical-align: -0.25em; }
 .choix .bon .icone { color: var(--c-ok); }
 .choix .rate { border-color: var(--c-ko); background: color-mix(in srgb, var(--c-ko) 18%, var(--c-surface)); opacity: 1; }
 .choix .rate .icone { color: var(--c-ko); }
-.choix .estompe { opacity: 0.55; }
+.choix button.estompe { opacity: 0.55; }
