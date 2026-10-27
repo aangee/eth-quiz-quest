@@ -95,7 +95,9 @@ export function App() {
         onRejouer={() => setEcran({ nom: 'quiz', profilId: ecran.profilId, domaines: ecran.domaines })}
         onRetour={() => setEcran({ nom: 'joueur', profilId: ecran.profilId })} />;
     case 'minijeux':
-      return <EcranMiniJeux profil={profil(ecran.profilId)} onRetour={() => setEcran({ nom: 'joueur', profilId: ecran.profilId })}
+      return <EcranMiniJeux profil={profil(ecran.profilId)}
+        onDefi={(jeu, d) => setEcran({ nom: 'jeu', profilId: ecran.profilId, jeu, partie: { domaines: [d], defi: true } })}
+        onRetour={() => setEcran({ nom: 'joueur', profilId: ecran.profilId })}
         onJouer={(jeu) => setEcran({ nom: 'jeu', profilId: ecran.profilId, jeu, partie: { domaines, defi: false } })} />;
     case 'jeu': {
       const Jeu = JEUX[ecran.jeu];
