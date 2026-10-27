@@ -47,3 +47,20 @@ label { display: flex; gap: 8px; align-items: center; }
 .noeud.debloque { border-left: 6px solid var(--ok); }
 .jokers { display: flex; flex-wrap: wrap; gap: 6px; }
 .jokers button { min-height: 40px; padding: 8px 12px; border-color: var(--accent); }
+
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.duo button { min-height: 72px; font-size: 1.2em; }
+.calcul { text-align: center; font-size: 2.2em; }
+.rate-texte { color: var(--ko); text-align: center; margin: 0; }
+.pave { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.pave button { min-height: 60px; font-size: 1.4em; }
+.grille { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.carte-memory { min-height: 80px; font-size: 0.95em; }
+.carte-memory.visible { background: #3d2f85; }
+.carte-memory.trouvee { border-color: var(--ok); }
+.mot { text-align: center; font-size: 1.8em; letter-spacing: 0.25em; font-family: ui-monospace, monospace; word-break: break-all; }
+.clavier { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.clavier button { min-height: 44px; padding: 4px; }
+.clavier .bon { border-color: var(--ok); }
+.clavier .rate, .choix .rate { border-color: var(--ko); opacity: 0.6; }
+.record { color: var(--accent); font-weight: 700; }

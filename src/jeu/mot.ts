@@ -2,7 +2,7 @@ export const ERREURS_MAX = 7;
 
 /** Majuscules sans accents : « Éléphant » → « ELEPHANT ». */
 export function normaliser(s: string): string {
-  return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase();
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
 }
 
 const estLettre = (c: string) => /[A-Z]/.test(c);
