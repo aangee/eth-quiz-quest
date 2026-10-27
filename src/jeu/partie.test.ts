@@ -1,8 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { appliquerReponse } from './partie';
-import type { Profil, Question } from '../types';
+import { appliquerReponse, bonneReponse } from './partie';
+import { normaliserProfil } from './profil';
+import type { Question } from '../types';
 
-const profil: Profil = { id: 'p', prenom: 'Léo', avatar: '🦊', age: 10, xp: 0, cotes: {}, xpDomaine: {} };
+const profil = normaliserProfil({ id: 'p', prenom: 'Léo', avatar: '🦊', age: 10 });
 const q: Question = { id: 'q', type: 'vrai_faux', niveau: 2, age_min: 6, question: 'Q', reponse: true, explication: '' };
 
 describe('appliquerReponse', () => {
@@ -22,5 +23,9 @@ describe('appliquerReponse', () => {
     appliquerReponse(profil, 'Espace', q, true, 10000, 20000);
     expect(profil.xp).toBe(0);
     expect(profil.cotes).toEqual({});
+  });
+  it('bonneReponse donne le texte de la bonne réponse', () => {
+    expect(bonneReponse({ id: 'v', type: 'vrai_faux', niveau: 1, age_min: 6, question: 'Q', reponse: false, explication: '' })).toBe('Faux');
+    expect(bonneReponse({ id: 'c', type: 'qcm', niveau: 1, age_min: 6, question: 'Q', choix: ['a', 'b'], reponse: 1, explication: '' })).toBe('b');
   });
 });
