@@ -4,6 +4,7 @@ import '@fontsource/exo-2/latin-500.css';
 import '@fontsource/exo-2/latin-700.css';
 import './theme.css';
 import type { Theme } from '../types';
+import { DecorCarte } from './DecorCarte';
 
 export const neon: Theme = {
   id: 'neon',
@@ -20,4 +21,6 @@ export const neon: Theme = {
   couleursDomaines: ['#22e4ff', '#7dff6a', '#ffe14d', '#ff8a3d', '#ff3dbb', '#b98cff'],
   polices: { titre: "'Orbitron', sans-serif", texte: "'Exo 2', system-ui, sans-serif" },
   forme: { rayon: 14, bord: 2, ombre: '0 0 14px rgba(34, 228, 255, 0.35)' },
+  textes: { titreCarte: 'NEON CITY', titreJoueur: 'Pilote néon', bravo: 'Bien joué !', suite: 'Suite' },
+  DecorCarte,
 };

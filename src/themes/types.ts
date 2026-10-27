@@ -1,3 +1,6 @@
+import type { ComponentType } from 'preact';
+import type { Point } from '../jeu/carte';
+
 /** Jetons de couleur sémantiques. Chaque clé devient la variable CSS --c-<clé> (en kebab-case). */
 export interface CouleursTheme {
   fond: string; surface: string; surfaceForte: string; bord: string;
@@ -20,4 +23,10 @@ export interface Theme {
   polices: { titre: string; texte: string };
   /** rayon et bord en px ; ombre = valeur CSS box-shadow des cartes et boutons principaux. */
   forme: { rayon: number; bord: number; ombre: string };
+  /** Textes d'ambiance. */
+  textes: { titreCarte: string; titreJoueur: string; bravo: string; suite: string };
+  /** Décor SVG de la carte d'accueil, posé derrière les étapes (repère : viewBox 0 0 100 hauteur). */
+  DecorCarte: ComponentType<DecorCarteProps>;
 }
+
+export interface DecorCarteProps { points: Point[]; hauteur: number }
