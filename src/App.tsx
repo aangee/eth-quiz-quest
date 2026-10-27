@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'preact/hooks';
-import type { Profil, QueteSemaine } from './types';
-import { chargerProfils, sauverProfils, chargerSemaine, sauverSemaine } from './stockage';
-import { packs, domaines } from './packs';
+import { useEffect, useMemo, useState } from 'preact/hooks';
+import type { Pack, Profil, QueteSemaine } from './types';
+import {
+  chargerProfils, sauverProfils, chargerSemaine, sauverSemaine,
+  chargerPacksImportes, sauverPacksImportes, chargerPin, sauverPin,
+} from './stockage';
+import { packs, domaines, installerPacks } from './packs';
 import { MINI_JEUX, construireArbre, type MiniJeu } from './jeu/arbre';
 import { avancerSemaine, dateDuJour, majJour, majSemaine, semaineDe } from './jeu/quetes';
 import { ajouterCharge, jokerARecharger } from './jeu/jokers';
@@ -15,12 +18,13 @@ import { EcranMiniJeux } from './ecrans/EcranMiniJeux';
 import { EcranFinJeu } from './ecrans/EcranFinJeu';
 import { JEUX } from './ecrans/minijeux';
 import { EcranDuel } from './ecrans/duel/EcranDuel';
+import { EcranParent } from './ecrans/parent/EcranParent';
+import type { Sauvegarde } from './jeu/sauvegarde';
 import { majRecord, type Partie, type ResultatJeu } from './jeu/minijeux';
-
-const arbre = construireArbre(packs);
 
 type Ecran =
   | { nom: 'profils' }
+  | { nom: 'parent' }
   | { nom: 'joueur'; profilId: string }
   | { nom: 'arbre'; profilId: string }
   | { nom: 'domaines'; profilId: string }
@@ -35,9 +39,18 @@ export function App() {
   const [profils, setProfils] = useState<Profil[] | null>(null);
   const [semaine, setSemaine] = useState<QueteSemaine | null>(null);
   const [ecran, setEcran] = useState<Ecran>({ nom: 'profils' });
+  const [packsImportes, setPacksImportes] = useState<Pack[]>([]);
+  const [pin, setPin] = useState<string | null>(null);
+  const [versionPacks, setVersionPacks] = useState(0);
+  // L'arbre dépend des packs installés (intégrés + importés)
+  const arbre = useMemo(() => construireArbre(packs), [versionPacks]);
 
   useEffect(() => {
-    Promise.all([chargerProfils(), chargerSemaine()]).then(([p, s]) => {
+    Promise.all([chargerProfils(), chargerSemaine(), chargerPacksImportes(), chargerPin()]).then(([p, s, importes, h]) => {
+      installerPacks(importes);
+      setPacksImportes(importes);
+      setVersionPacks((v) => v + 1);
+      setPin(h ?? null);
       setProfils(p);
       setSemaine(majSemaine(s, semaineDe()));
     });
@@ -48,6 +61,21 @@ export function App() {
   const maj = (p: Profil) =>
     enregistrer(profils.some((x) => x.id === p.id) ? profils.map((x) => (x.id === p.id ? p : x)) : [...profils, p]);
   const profil = (id: string) => profils.find((p) => p.id === id)!;
+  const changerPacks = (liste: Pack[]) => {
+    installerPacks(liste);
+    setPacksImportes(liste);
+    sauverPacksImportes(liste);
+    setVersionPacks((v) => v + 1);
+  };
+  const changerPin = (hache: string | null) => { setPin(hache); sauverPin(hache); };
+  const supprimerProfil = (id: string) => enregistrer(profils.filter((p) => p.id !== id));
+  const restaurer = (s: Sauvegarde) => {
+    enregistrer(s.profils);
+    const sem = majSemaine(s.semaine ?? undefined, semaineDe());
+    setSemaine(sem);
+    sauverSemaine(sem);
+    changerPacks(s.packs);
+  };
 
   const ouvrir = (p: Profil) => {
     const p2 = majJour(p, dateDuJour(), domaines);
@@ -81,7 +109,11 @@ export function App() {
 
   switch (ecran.nom) {
     case 'profils':
-      return <EcranProfils profils={profils} onCreer={maj} onChoisir={ouvrir} />;
+      return <EcranProfils profils={profils} onCreer={maj} onChoisir={ouvrir} onParent={() => setEcran({ nom: 'parent' })} />;
+    case 'parent':
+      return <EcranParent pin={pin} profils={profils} packsImportes={packsImportes} semaine={semaine}
+        onPin={changerPin} onPacks={changerPacks} onRestaurer={restaurer}
+        onMajProfil={maj} onSupprimerProfil={supprimerProfil} onRetour={() => setEcran({ nom: 'profils' })} />;
     case 'joueur':
       return <EcranJoueur profil={profil(ecran.profilId)} semaine={semaine} arbre={arbre}
         onJouer={() => setEcran({ nom: 'domaines', profilId: ecran.profilId })}

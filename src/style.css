@@ -89,3 +89,10 @@ label { display: flex; gap: 8px; align-items: center; }
 .code-texte textarea { width: 100%; font: 0.75em ui-monospace, monospace; margin: 6px 0; background: var(--fond); color: var(--texte); border-radius: 8px; border: 1px solid #4a3d99; }
 .bandeau { background: #3d2f85; padding: 8px 12px; border-radius: 10px; margin: 0; }
 .bandeau.ko { background: var(--ko); color: #ffffff; }
+
+section { display: flex; flex-direction: column; gap: 8px; }
+.fichier { display: flex; flex-direction: column; gap: 6px; background: var(--carte); padding: 12px; border-radius: 12px; cursor: pointer; }
+.fichier input { font-size: 0.85em; }
+.petit { min-height: 36px; padding: 4px 10px; }
+.noeud input { flex: 1; min-width: 0; }
+.noeud .age { flex: 0 0 64px; }
