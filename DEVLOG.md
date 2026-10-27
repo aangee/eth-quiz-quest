@@ -22,7 +22,7 @@ espace parent, classement famille en ligne (facultatif), animations et musique d
 
 - `main` à jour : **PR #1 à #8 fusionnées**. Branche de travail : `claude/gamification-app-multidomains-0scl4l`.
 - **181 tests** (`npm test`), `npx tsc --noEmit` et `npm run build` OK.
-- **Lots 8 et 9 fusionnés** (PR #9, #10, #11). Correctif « réponse répétée dans les explications » sur la branche `nysa/wizardly-bardeen-ciuz3m`.
+- **Lots 8 et 9 fusionnés** (PR #9, #10, #11). Correctif « réponse répétée dans les explications » + **45 questions d'histoire de France** (pack Histoire v2) sur la branche `nysa/wizardly-bardeen-ciuz3m`.
   La spec §18-§19 et les plans 8a/8b/8c/9 sont dans `nysa-atlas`, branche `nysa/wizardly-bardeen-ciuz3m`.
 - **Classement famille installé** par aangee (projet Firebase `quiz-quest-famille`, forfait Spark) : les scores remontent.
 - **Duel réseau validé sur les vrais appareils** (box Wi-Fi et partage de connexion).
@@ -48,7 +48,7 @@ espace parent, classement famille en ligne (facultatif), animations et musique d
 ## Décisions à ne pas oublier (détails dans la spec)
 
 - **Hors ligne d'abord** ; pas d'IA dans l'app. Les questions viennent de **packs JSON** (`packs/`, format dans `packs/PROMPT-IA.md`).
-- **Contenu** : 6 domaines, 291 éléments. Une partie vient d'**Open Trivia Database (CC BY-SA 4.0)** → crédit dans le README
+- **Contenu** : 6 domaines, 336 éléments (dont 45 d'histoire de France dans « Histoire », d'après le programme du cycle 3). Une partie vient d'**Open Trivia Database (CC BY-SA 4.0)** → crédit dans le README
   et champ `source` des packs ; les packs qui en contiennent restent sous CC BY-SA. Deux relectures factuelles faites
   (lot 5 : 4 corrections, dont Pluton/Russie ; explications : 4 corrections).
 - **Explications** : affichées après une réponse (quiz, Mot mystère, Frise, Qui suis-je ?, Étiquettes) et dans le récap
@@ -85,8 +85,7 @@ espace parent, classement famille en ligne (facultatif), animations et musique d
 
 ## Prochaines étapes
 
-- **Histoire de France** (spec §20, à valider par aangee) : nouveau domaine, ~40 éléments, référence = programme
-  d'histoire du cycle 3 (repères CM1/CM2 : Gaulois → Union européenne), deux relectures factuelles.
+- PR « explications + histoire de France » vers `main` (avec l'accord d'aangee), puis test avec Loulou.
 - Ajouter un thème : suivre `src/themes/AJOUTER-UN-THEME.md`.
 
 ## Prochaines idées (non commencées)
