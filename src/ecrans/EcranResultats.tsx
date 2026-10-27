@@ -2,8 +2,8 @@ import type { Profil } from '../types';
 import type { Bilan } from './EcranQuiz';
 import { niveauDepuisXp, seuil } from '../jeu/xp';
 
-export function EcranResultats({ profil, bilan, onRejouer, onAccueil }: {
-  profil: Profil; bilan: Bilan; onRejouer: () => void; onAccueil: () => void;
+export function EcranResultats({ profil, bilan, onRejouer, onRetour }: {
+  profil: Profil; bilan: Bilan; onRejouer: () => void; onRetour: () => void;
 }) {
   const niv = niveauDepuisXp(profil.xp);
   return (
@@ -19,13 +19,15 @@ export function EcranResultats({ profil, bilan, onRejouer, onAccueil }: {
           <h2>À retenir</h2>
           <ul>
             {bilan.erreurs.map((e) => (
-              <li key={e.question}><b>{e.question}</b><br />{e.explication}</li>
+              <li key={e.question}>
+                <b>{e.question}</b><br />✅ {e.bonne}{e.explication && <> — {e.explication}</>}
+              </li>
             ))}
           </ul>
         </>
       )}
       <button class="principal" onClick={onRejouer}>Rejouer 🔁</button>
-      <button onClick={onAccueil}>Accueil</button>
+      <button onClick={onRetour}>Mon profil</button>
     </main>
   );
 }

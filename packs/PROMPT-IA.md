@@ -38,4 +38,4 @@ Règles :
 - <NOMBRE> questions, réparties sur les niveaux 1 à 5 (1 = facile pour 7 ans, 5 = difficile pour un adulte).
 - Faits **vérifiables** uniquement ; pas de question piège ni d'opinion.
 - Varier les types ; au moins la moitié en `qcm` ou `vrai_faux`.
-- `explication` courte, adaptée à un enfant.
+- `explication` courte, adaptée à un enfant, qui **redonne la bonne réponse** (ex. « Mercure, à 58 millions de km du Soleil. »).

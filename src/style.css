@@ -25,3 +25,25 @@ button:disabled { opacity: 0.6; cursor: default; }
 .verdict.ok { border-left: 6px solid var(--ok); }
 .verdict.ko { border-left: 6px solid var(--ko); }
 label { display: flex; gap: 8px; align-items: center; }
+
+.jauge { height: 10px; background: var(--carte); border-radius: 6px; overflow: hidden; }
+.jauge div { height: 100%; background: var(--accent); }
+.quetes { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.quetes li { display: flex; gap: 8px; background: var(--carte); padding: 10px 12px; border-radius: 10px; }
+.quetes small { margin-left: auto; opacity: 0.7; }
+.quetes .faite { opacity: 0.7; }
+.onglets { display: flex; gap: 6px; margin-bottom: 6px; }
+.onglets .choisi { border-color: var(--accent); }
+.calendrier { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+.calendrier span { padding: 8px 0; border-radius: 8px; background: var(--carte); }
+.calendrier .entete, .calendrier .vide { background: none; }
+.calendrier .entete { opacity: 0.6; }
+.calendrier .fait { background: var(--ok); color: #1b1340; font-weight: 700; }
+.calendrier .auj { outline: 2px solid var(--accent); }
+.noeud { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; background: var(--carte); padding: 10px 12px; border-radius: 10px; }
+.noeud small { opacity: 0.7; }
+.noeud button { margin-left: auto; min-height: 40px; padding: 8px 12px; }
+.noeud.verrouille { opacity: 0.55; }
+.noeud.debloque { border-left: 6px solid var(--ok); }
+.jokers { display: flex; flex-wrap: wrap; gap: 6px; }
+.jokers button { min-height: 40px; padding: 8px 12px; border-color: var(--accent); }

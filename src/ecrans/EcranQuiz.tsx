@@ -2,20 +2,25 @@ import { useEffect, useMemo, useState } from 'preact/hooks';
 import type { Profil, QCM, VraiFaux } from '../types';
 import { questionsDuDomaine } from '../packs';
 import { choisirQuestion, coteDepart } from '../jeu/adaptation';
-import { appliquerReponse } from '../jeu/partie';
+import { appliquerReponse, bonneReponse } from '../jeu/partie';
 import { melanger } from '../jeu/melange';
+import { avancerQuetes } from '../jeu/quetes';
+import { choixACacher, jokersDebloques, jokerUtilisable, utiliserJoker } from '../jeu/jokers';
+import { nomJoker } from '../jeu/arbre';
 
 export const NB_QUESTIONS = 10;
 export const LIMITE_MS = 20000;
+export const BONUS_TEMPS_MS = 10000;
 
 export interface Bilan {
   justes: number;
   total: number;
   xp: number;
-  erreurs: { question: string; explication: string }[];
+  erreurs: { question: string; bonne: string; explication: string }[];
 }
 
 type Tirage = { q: QCM | VraiFaux; domaine: string };
+type Valeur = number | boolean;
 
 const estQuiz = (q: { type: string }): q is QCM | VraiFaux => q.type === 'qcm' || q.type === 'vrai_faux';
 
@@ -35,11 +40,14 @@ export function EcranQuiz({ profil, domaines, onFin }: {
   const [bilan, setBilan] = useState<Bilan>({ justes: 0, total: 0, xp: 0, erreurs: [] });
   const [tirage, setTirage] = useState<Tirage | null>(() => tirer(profil, domaines, vues));
   const [debut, setDebut] = useState(() => Date.now());
+  const [limite, setLimite] = useState(LIMITE_MS);
   const [reste, setReste] = useState(LIMITE_MS);
   const [verdict, setVerdict] = useState<boolean | null>(null);
+  const [caches, setCaches] = useState<Set<Valeur>>(() => new Set());
+  const [jokerPris, setJokerPris] = useState(false);
 
   // Choix des QCM mélangés une fois par question (valeur = index d'origine)
-  const choix = useMemo<{ label: string; valeur: number | boolean }[]>(() => {
+  const choix = useMemo<{ label: string; valeur: Valeur }[]>(() => {
     if (!tirage) return [];
     const { q } = tirage;
     return q.type === 'qcm'
@@ -47,46 +55,61 @@ export function EcranQuiz({ profil, domaines, onFin }: {
       : [{ label: 'Vrai', valeur: true }, { label: 'Faux', valeur: false }];
   }, [tirage]);
 
-  const repondre = (rep: number | boolean | null) => {
+  const repondre = (rep: Valeur | null) => {
     if (!tirage || verdict !== null) return;
     const { q, domaine } = tirage;
     const juste = rep !== null && rep === q.reponse;
-    const r = appliquerReponse(p, domaine, q, juste, Date.now() - debut, LIMITE_MS);
-    setP(r.profil);
+    const temps = Date.now() - debut;
+    const r = appliquerReponse(p, domaine, q, juste, temps, limite);
+    setP(avancerQuetes(r.profil, { type: 'reponse', domaine, juste, rapide: juste && temps <= limite / 3 }));
     setVerdict(juste);
     setBilan((b) => ({
       justes: b.justes + (juste ? 1 : 0),
       total: b.total + 1,
       xp: b.xp + r.xp,
-      erreurs: juste ? b.erreurs : [...b.erreurs, { question: q.question, explication: q.explication }],
+      erreurs: juste ? b.erreurs : [...b.erreurs, { question: q.question, bonne: bonneReponse(q), explication: q.explication }],
     }));
   };
 
-  // Chrono : temps écoulé = réponse fausse
+  const prendreJoker = (j: string) => {
+    if (!tirage || verdict !== null || jokerPris) return;
+    const { q } = tirage;
+    setP(utiliserJoker(p, j));
+    setJokerPris(true);
+    if (j === 'temps') setLimite((l) => l + BONUS_TEMPS_MS);
+    else if (q.type === 'qcm') setCaches(new Set<Valeur>(choixACacher(q, j)));
+    else setCaches(new Set<Valeur>([!q.reponse]));
+  };
+
+  // Chrono : temps écoulé = réponse fausse (p dans les dépendances : un joker change p)
   useEffect(() => {
     if (!tirage || verdict !== null) return;
     const t = setInterval(() => {
-      const r = LIMITE_MS - (Date.now() - debut);
+      const r = limite - (Date.now() - debut);
       setReste(Math.max(0, r));
       if (r <= 0) repondre(null);
     }, 250);
     return () => clearInterval(t);
-  }, [tirage, verdict, debut]);
+  }, [tirage, verdict, debut, limite, p]);
 
   // Aucune question jouable : on termine tout de suite
   useEffect(() => { if (!tirage) onFin(p, bilan); }, []);
 
   const suivant = () => {
     const prochain = bilan.total >= NB_QUESTIONS ? null : tirer(p, domaines, vues);
-    if (!prochain) { onFin(p, bilan); return; }
+    if (!prochain) { onFin(avancerQuetes(p, { type: 'fin_quiz' }), bilan); return; }
     setTirage(prochain);
     setVerdict(null);
     setDebut(Date.now());
+    setLimite(LIMITE_MS);
     setReste(LIMITE_MS);
+    setCaches(new Set());
+    setJokerPris(false);
   };
 
   if (!tirage) return <main class="ecran"><p>Aucune question disponible.</p></main>;
   const { q } = tirage;
+  const jokersDispo = jokersDebloques(p).filter((j) => (p.jokers[j] ?? 0) > 0 && jokerUtilisable(j, q, tirage.domaine));
 
   return (
     <main class="ecran">
@@ -98,16 +121,24 @@ export function EcranQuiz({ profil, domaines, onFin }: {
       <p class="domaine">{tirage.domaine} · niv. {q.niveau}</p>
       <h2>{q.question}</h2>
       <div class="choix">
-        {choix.map((c) => (
+        {choix.filter((c) => !caches.has(c.valeur)).map((c) => (
           <button key={c.label} class={verdict !== null && c.valeur === q.reponse ? 'bon' : ''}
             disabled={verdict !== null} onClick={() => repondre(c.valeur)}>
             {c.label}
           </button>
         ))}
       </div>
+      {verdict === null && !jokerPris && jokersDispo.length > 0 && (
+        <div class="jokers">
+          {jokersDispo.map((j) => (
+            <button key={j} onClick={() => prendreJoker(j)}>🃏 {nomJoker(j)} ×{p.jokers[j]}</button>
+          ))}
+        </div>
+      )}
       {verdict !== null && (
         <div class={verdict ? 'verdict ok' : 'verdict ko'}>
           <p>{verdict ? '✅ Bravo !' : '❌ Raté'}</p>
+          {!verdict && <p>Bonne réponse : <b>{bonneReponse(q)}</b></p>}
           {q.explication && <p>{q.explication}</p>}
           <button class="principal" onClick={suivant}>Suivant ▶</button>
         </div>
