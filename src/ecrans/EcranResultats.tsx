@@ -4,6 +4,7 @@ import { niveauDepuisXp, seuil } from '../jeu/xp';
 import { Celebration } from './Celebration';
 import { celebration } from '../jeu/celebration';
 import { Icone } from '../ui/Icone';
+import { explicationSansReponse } from '../jeu/explication';
 
 export function EcranResultats({ profil, avant, bilan, onRejouer, onRetour }: {
   profil: Profil; avant: Profil; bilan: Bilan; onRejouer: () => void; onRetour: () => void;
@@ -24,7 +25,7 @@ export function EcranResultats({ profil, avant, bilan, onRejouer, onRetour }: {
           <ul>
             {bilan.erreurs.map((e) => (
               <li key={e.question}>
-                <b>{e.question}</b><br /><Icone nom="valider" /> {e.bonne}{e.explication && <> — {e.explication}</>}
+                <b>{e.question}</b><br /><Icone nom="valider" /> {e.bonne}{e.explication && <> — {explicationSansReponse(e.bonne, e.explication)}</>}
               </li>
             ))}
           </ul>

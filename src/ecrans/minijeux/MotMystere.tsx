@@ -5,6 +5,7 @@ import { contenu, crediter, longueur, multXp, type ARetenir, type PropsJeu } fro
 import { ERREURS_MAX, affichage, erreurs, estTrouve, normaliser } from '../../jeu/mot';
 import { PasDeContenu } from './PasDeContenu';
 import { Icone } from '../../ui/Icone';
+import { explicationSansReponse } from '../../jeu/explication';
 
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 export const NB_MOTS = 3;
@@ -57,7 +58,7 @@ export function MotMystere({ profil, partie, onFin, onQuitter }: PropsJeu) {
       {gagne || perdu ? (
         <div class={gagne ? 'verdict ok' : 'verdict ko'}>
           <p>{gagne ? <><Icone nom="valider" /> Trouvé !</> : <><Icone nom="quitter" /> C'était : {q.reponse}</>}</p>
-          {q.explication && <p>{q.explication}</p>}
+          {q.explication && <p>{explicationSansReponse(q.reponse, q.explication)}</p>}
           <button class="principal" onClick={suivant}>Suivant <Icone nom="suivant" /></button>
         </div>
       ) : (

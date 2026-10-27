@@ -10,6 +10,7 @@ import { nomJoker } from '../jeu/arbre';
 import { BarreTemps } from './BarreTemps';
 import { Icone } from '../ui/Icone';
 import { useTheme } from '../themes/contexte';
+import { explicationSansReponse } from '../jeu/explication';
 
 export const NB_QUESTIONS = 10;
 export const LIMITE_MS = 20000;
@@ -154,7 +155,7 @@ export function EcranQuiz({ profil, domaines, onFin }: {
         <div class={verdict ? 'verdict ok' : 'verdict ko'}>
           <p>{verdict ? <><Icone nom="valider" /> {theme.textes.bravo} <span class="gain">+{gain} XP</span></> : <><Icone nom="quitter" /> Raté</>}</p>
           {!verdict && <p>Bonne réponse : <b>{bonneReponse(q)}</b></p>}
-          {q.explication && <p>{q.explication}</p>}
+          {q.explication && <p>{verdict ? q.explication : explicationSansReponse(bonneReponse(q), q.explication)}</p>}
           <button class="principal" onClick={suivant}>{theme.textes.suite} <Icone nom="suivant" /></button>
         </div>
       )}
