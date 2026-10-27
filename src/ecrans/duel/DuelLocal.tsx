@@ -20,7 +20,8 @@ export function DuelLocal({ joueur, profils, onFin, onQuitter }: {
 
   useEffect(() => {
     if (!fini || !joueurs) return;
-    const majs = joueurs.map((p) => avancerQuetes(p, { type: 'fin_quiz' })) as [Profil, Profil];
+    const v = vainqueur(scores);
+    const majs = joueurs.map((p, i) => ({ ...avancerQuetes(p, { type: 'fin_quiz' }), duels: p.duels + (v === i ? 1 : 0) })) as [Profil, Profil];
     setJoueurs(majs);
     onFin(majs, justes);
   }, [fini]);

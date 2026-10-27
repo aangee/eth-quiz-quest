@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from 'preact/hooks';
+import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import type { Pack, Profil, QueteSemaine } from './types';
 import {
   chargerProfils, sauverProfils, chargerSemaine, sauverSemaine,
   chargerPacksImportes, sauverPacksImportes, chargerPin, sauverPin,
+  chargerFamille, sauverFamille, dependancesFirebase, type Famille,
 } from './stockage';
 import { packs, domaines, installerPacks } from './packs';
 import { MINI_JEUX, construireArbre, type MiniJeu } from './jeu/arbre';
@@ -20,6 +21,9 @@ import { JEUX } from './ecrans/minijeux';
 import { EcranDuel } from './ecrans/duel/EcranDuel';
 import { EcranParent } from './ecrans/parent/EcranParent';
 import type { Sauvegarde } from './jeu/sauvegarde';
+import { EcranClassement } from './ecrans/EcranClassement';
+import { debutSemaine, entreeDe } from './jeu/classement';
+import { envoyerEntrees, supprimerEntree } from './net/classementEnLigne';
 import { majRecord, type Partie, type ResultatJeu } from './jeu/minijeux';
 
 type Ecran =
@@ -32,6 +36,7 @@ type Ecran =
   | { nom: 'resultats'; profilId: string; domaines: string[]; bilan: Bilan }
   | { nom: 'minijeux'; profilId: string }
   | { nom: 'duel'; profilId: string }
+  | { nom: 'classement'; profilId: string }
   | { nom: 'jeu'; profilId: string; jeu: MiniJeu; partie: Partie }
   | { nom: 'finjeu'; profilId: string; jeu: MiniJeu; partie: Partie; resultat: ResultatJeu; record: boolean };
 
@@ -42,11 +47,14 @@ export function App() {
   const [packsImportes, setPacksImportes] = useState<Pack[]>([]);
   const [pin, setPin] = useState<string | null>(null);
   const [versionPacks, setVersionPacks] = useState(0);
+  const [famille, setFamille] = useState<Famille | null>(null);
+  const minuteurSync = useRef<ReturnType<typeof setTimeout> | null>(null);
   // L'arbre dépend des packs installés (intégrés + importés)
   const arbre = useMemo(() => construireArbre(packs), [versionPacks]);
 
   useEffect(() => {
-    Promise.all([chargerProfils(), chargerSemaine(), chargerPacksImportes(), chargerPin()]).then(([p, s, importes, h]) => {
+    Promise.all([chargerProfils(), chargerSemaine(), chargerPacksImportes(), chargerPin(), chargerFamille()]).then(([p, s, importes, h, fam]) => {
+      setFamille(fam ?? null);
       installerPacks(importes);
       setPacksImportes(importes);
       setVersionPacks((v) => v + 1);
@@ -57,7 +65,19 @@ export function App() {
   }, []);
   if (!profils || !semaine) return <main class="ecran"><p>Chargement…</p></main>;
 
-  const enregistrer = (liste: Profil[]) => { setProfils(liste); sauverProfils(liste); };
+  /** Envoie les profils au classement de la famille (regroupé, silencieux hors ligne). */
+  const synchroniser = (liste: Profil[], fam: Famille | null = famille) => {
+    if (!fam) return;
+    if (minuteurSync.current) clearTimeout(minuteurSync.current);
+    minuteurSync.current = setTimeout(() => {
+      if (!navigator.onLine) return;
+      const sem = semaineDe();
+      envoyerEntrees(fam.config, liste.map((p) => entreeDe(debutSemaine(p, sem), fam.appareil, sem)), dependancesFirebase)
+        .catch(() => { /* hors ligne ou erreur : on réessaiera au prochain enregistrement */ });
+    }, 2000);
+  };
+  const enregistrer = (liste: Profil[]) => { setProfils(liste); sauverProfils(liste); synchroniser(liste); };
+  const changerFamille = (f: Famille | null) => { setFamille(f); sauverFamille(f); if (f) synchroniser(profils, f); };
   const maj = (p: Profil) =>
     enregistrer(profils.some((x) => x.id === p.id) ? profils.map((x) => (x.id === p.id ? p : x)) : [...profils, p]);
   const profil = (id: string) => profils.find((p) => p.id === id)!;
@@ -68,7 +88,10 @@ export function App() {
     setVersionPacks((v) => v + 1);
   };
   const changerPin = (hache: string | null) => { setPin(hache); sauverPin(hache); };
-  const supprimerProfil = (id: string) => enregistrer(profils.filter((p) => p.id !== id));
+  const supprimerProfil = (id: string) => {
+    enregistrer(profils.filter((p) => p.id !== id));
+    if (famille && navigator.onLine) supprimerEntree(famille.config, id, dependancesFirebase).catch(() => {});
+  };
   const restaurer = (s: Sauvegarde) => {
     enregistrer(s.profils);
     const sem = majSemaine(s.semaine ?? undefined, semaineDe());
@@ -78,7 +101,7 @@ export function App() {
   };
 
   const ouvrir = (p: Profil) => {
-    const p2 = majJour(p, dateDuJour(), domaines);
+    const p2 = debutSemaine(majJour(p, dateDuJour(), domaines), semaineDe());
     if (p2 !== p) maj(p2);
     setEcran({ nom: 'joueur', profilId: p.id });
   };
@@ -113,13 +136,14 @@ export function App() {
     case 'parent':
       return <EcranParent pin={pin} profils={profils} packsImportes={packsImportes} semaine={semaine}
         onPin={changerPin} onPacks={changerPacks} onRestaurer={restaurer}
-        onMajProfil={maj} onSupprimerProfil={supprimerProfil} onRetour={() => setEcran({ nom: 'profils' })} />;
+        onMajProfil={maj} onSupprimerProfil={supprimerProfil} famille={famille} onFamille={changerFamille} onRetour={() => setEcran({ nom: 'profils' })} />;
     case 'joueur':
       return <EcranJoueur profil={profil(ecran.profilId)} semaine={semaine} arbre={arbre}
         onJouer={() => setEcran({ nom: 'domaines', profilId: ecran.profilId })}
         onArbre={() => setEcran({ nom: 'arbre', profilId: ecran.profilId })}
         onMiniJeux={() => setEcran({ nom: 'minijeux', profilId: ecran.profilId })}
         onDuel={() => setEcran({ nom: 'duel', profilId: ecran.profilId })}
+        onClassement={() => setEcran({ nom: 'classement', profilId: ecran.profilId })}
         onChanger={() => setEcran({ nom: 'profils' })} />;
     case 'arbre':
       return <EcranArbre profil={profil(ecran.profilId)} arbre={arbre} onMaj={maj}
@@ -153,5 +177,7 @@ export function App() {
     case 'duel':
       return <EcranDuel joueur={profil(ecran.profilId)} profils={profils} onFin={enregistrerPartie}
         onQuitter={() => setEcran({ nom: 'joueur', profilId: ecran.profilId })} />;
+    case 'classement':
+      return <EcranClassement famille={famille} onRetour={() => setEcran({ nom: 'joueur', profilId: ecran.profilId })} />;
   }
 }

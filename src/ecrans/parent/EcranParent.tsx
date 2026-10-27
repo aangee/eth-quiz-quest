@@ -5,9 +5,12 @@ import { VerrouPin } from './VerrouPin';
 import { SectionPacks } from './SectionPacks';
 import { SectionSauvegarde } from './SectionSauvegarde';
 import { SectionProfils } from './SectionProfils';
+import { SectionClassement } from './SectionClassement';
+import type { Famille } from '../../stockage';
 
 export function EcranParent(props: {
   pin: string | null; profils: Profil[]; packsImportes: Pack[]; semaine: QueteSemaine;
+  famille: Famille | null; onFamille: (f: Famille | null) => void;
   onPin: (hache: string | null) => void; onPacks: (l: Pack[]) => void; onRestaurer: (s: Sauvegarde) => void;
   onMajProfil: (p: Profil) => void; onSupprimerProfil: (id: string) => void; onRetour: () => void;
 }) {
@@ -27,6 +30,7 @@ export function EcranParent(props: {
       <SectionPacks packsImportes={props.packsImportes} onPacks={props.onPacks} />
       <SectionSauvegarde profils={props.profils} semaine={props.semaine} packsImportes={props.packsImportes} onRestaurer={props.onRestaurer} />
       <SectionProfils profils={props.profils} onMaj={props.onMajProfil} onSupprimer={props.onSupprimerProfil} />
+      <SectionClassement famille={props.famille} onFamille={props.onFamille} />
       <button onClick={() => setChangerPin(true)}>🔑 Changer le code PIN</button>
       <button onClick={props.onRetour}>← Accueil</button>
     </main>

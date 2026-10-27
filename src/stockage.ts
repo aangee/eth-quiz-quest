@@ -1,6 +1,9 @@
 import { del, get, set } from 'idb-keyval';
 import type { Pack, Profil, QueteSemaine } from './types';
 import { validerPack } from './packs/valider';
+import type { ConfigFamille } from './net/famille';
+import type { EntreeClassement } from './jeu/classement';
+import type { Dependances, Jeton } from './net/classementEnLigne';
 import { normaliserProfil } from './jeu/profil';
 
 const CLE = 'profils';
@@ -47,3 +50,31 @@ export async function sauverPin(hache: string | null): Promise<void> {
   if (hache) await set(CLE_PIN, hache);
   else await del(CLE_PIN);
 }
+
+/** Famille du classement + nom de cet appareil (absent = pas de classement). */
+export interface Famille { config: ConfigFamille; appareil: string }
+
+export async function chargerFamille(): Promise<Famille | undefined> {
+  return get<Famille>('famille');
+}
+
+export async function sauverFamille(f: Famille | null): Promise<void> {
+  if (f) await set('famille', f);
+  else { await del('famille'); await del('jetonFirebase'); await del('classementCache'); }
+}
+
+export async function chargerClassementCache(): Promise<{ date: number; entrees: EntreeClassement[] } | undefined> {
+  return get('classementCache');
+}
+
+export async function sauverClassementCache(entrees: EntreeClassement[]): Promise<void> {
+  await set('classementCache', { date: Date.now(), entrees });
+}
+
+/** Accès réseau réel pour le classement en ligne. */
+export const dependancesFirebase: Dependances = {
+  fetch: (...a) => fetch(...a),
+  lireJeton: () => get<Jeton>('jetonFirebase'),
+  ecrireJeton: (j) => set('jetonFirebase', j),
+  maintenant: () => Date.now(),
+};

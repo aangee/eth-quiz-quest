@@ -25,7 +25,7 @@ export function EcranProfils({ profils, onCreer, onChoisir, onParent }: {
         ))}
       </div>
       <h2>Nouveau joueur</h2>
-      <input placeholder="Prénom" value={prenom} onInput={(e) => setPrenom(e.currentTarget.value)} />
+      <input placeholder="Pseudo" value={prenom} onInput={(e) => setPrenom(e.currentTarget.value)} />
       <label>Âge <input type="number" min={5} max={99} value={age} onInput={(e) => setAge(Number(e.currentTarget.value))} /></label>
       <div class="avatars">
         {AVATARS.map((a) => (

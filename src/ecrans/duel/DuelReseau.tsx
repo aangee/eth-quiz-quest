@@ -34,18 +34,40 @@ export function DuelReseau({ joueur, onFin, onQuitter }: {
   const finaliser = useRef<((c: string) => Promise<Transport>) | null>(null);
   const annuler = useRef<(() => void) | null>(null);
   const moiFini = phase === 'jeu' && manche >= NB_MANCHES;
+  const victoireComptee = useRef(false);
+  const pRef = useRef(p);
+  pRef.current = p;
 
   useEffect(() => () => { transport.current?.fermer(); annuler.current?.(); }, []);
 
   // Mes 10 questions faites : on enregistre ma progression
   useEffect(() => {
     if (!moiFini) return;
-    const maj = avancerQuetes(p, { type: 'fin_quiz' });
+    let maj = avancerQuetes(p, { type: 'fin_quiz' });
+    // L'autre a déjà fini : la victoire part dans le même enregistrement
+    if (sesManches >= NB_MANCHES && !victoireComptee.current) {
+      victoireComptee.current = true;
+      if (mesPoints > sesPoints) maj = { ...maj, duels: maj.duels + 1 };
+    }
+    pRef.current = maj;
     setP(maj);
     onFin([maj], justes);
   }, [moiFini]);
 
+  // L'autre finit après moi : victoire enregistrée à ce moment-là
+  useEffect(() => {
+    if (!moiFini || sesManches < NB_MANCHES || victoireComptee.current) return;
+    victoireComptee.current = true;
+    if (mesPoints > sesPoints) {
+      const maj = { ...pRef.current, duels: pRef.current.duels + 1 };
+      pRef.current = maj;
+      setP(maj);
+      onFin([maj], 0);
+    }
+  }, [sesManches]);
+
   const demarrer = () => {
+    victoireComptee.current = false;
     setManche(0); setMesPoints(0); setJustes(0); setSesPoints(0); setSesManches(0); setVues(new Set()); setPhase('jeu');
   };
 

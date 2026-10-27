@@ -9,7 +9,7 @@ function LigneProfil({ p, onMaj, onSupprimer }: { p: Profil; onMaj: (p: Profil) 
   return (
     <div class="noeud">
       <span class="avatar">{p.avatar}</span>
-      <input aria-label="Prénom" value={prenom} onInput={(e) => setPrenom(e.currentTarget.value)} />
+      <input aria-label="Pseudo" value={prenom} onInput={(e) => setPrenom(e.currentTarget.value)} />
       <input aria-label="Âge" class="age" type="number" min={5} max={99} value={age}
         onInput={(e) => setAge(Number(e.currentTarget.value))} />
       <button class="petit" disabled={!modifie || !valide} onClick={() => onMaj({ ...p, prenom: prenom.trim(), age })}>💾</button>
