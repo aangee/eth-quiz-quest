@@ -12,6 +12,7 @@ export function normaliserProfil(p: ProfilPartiel): Profil {
     jokers: {},
     quetes: { date: '', liste: [] },
     calendrier: [],
+    records: {},
     ...p,
   };
 }

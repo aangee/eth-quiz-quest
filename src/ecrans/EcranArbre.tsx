@@ -1,5 +1,6 @@
 import type { Profil } from '../types';
 import { debloquer, etatNoeud, etoilesDispo, type Noeud } from '../jeu/arbre';
+import { JEUX_DISPONIBLES } from '../jeu/minijeux';
 
 export function EcranArbre({ profil, arbre, onMaj, onRetour }: {
   profil: Profil; arbre: Noeud[]; onMaj: (p: Profil) => void; onRetour: () => void;
@@ -19,7 +20,7 @@ export function EcranArbre({ profil, arbre, onMaj, onRetour }: {
               return (
                 <div key={n.id} class={`noeud ${etat}`}>
                   <span>{etat === 'debloque' ? '✅' : etat === 'verrouille' ? '🔒' : '⭐'.repeat(n.cout)} {n.nom}</span>
-                  {etat === 'debloque' && n.recompense.type !== 'joker' && <small>bientôt jouable</small>}
+                  {etat === 'debloque' && n.recompense.type !== 'joker' && !JEUX_DISPONIBLES.includes(n.recompense.jeu) && <small>bientôt jouable</small>}
                   {etat === 'verrouille' && (
                     <small>après : {n.prerequis.filter((id) => !profil.debloques.includes(id)).map(nom).join(', ')}</small>
                   )}

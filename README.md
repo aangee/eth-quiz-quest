@@ -17,3 +17,9 @@ Chrome/Edge PC : icône d'installation dans la barre d'adresse). Ensuite tout ma
     npm install
     npm run dev     # http://localhost:5173/eth-quiz-quest/
     npm test
+
+## Crédits
+
+Une partie des questions est adaptée de l'[Open Trivia Database](https://opentdb.com)
+(licence [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)) ; les packs qui en contiennent
+sont publiés sous la même licence (voir le champ `source` de chaque pack).
