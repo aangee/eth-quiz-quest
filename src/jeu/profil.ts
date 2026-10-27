@@ -13,6 +13,8 @@ export function normaliserProfil(p: ProfilPartiel): Profil {
     quetes: { date: '', liste: [] },
     calendrier: [],
     records: {},
+    duels: 0,
+    semaineXp: { semaine: '', depart: 0 },
     ...p,
   };
 }
