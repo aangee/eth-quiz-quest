@@ -53,4 +53,8 @@ export interface Profil {
   calendrier: string[];
   /** Meilleurs scores : « chrono », ou « chrono:Espace » pour un défi. */
   records: Record<string, number>;
+  /** Victoires en duel. */
+  duels: number;
+  /** XP au début de la semaine en cours (pour l'XP de la semaine du classement). */
+  semaineXp: { semaine: string; depart: number };
 }

@@ -18,6 +18,11 @@ Chrome/Edge PC : icône d'installation dans la barre d'adresse). Ensuite tout ma
     npm run dev     # http://localhost:5173/eth-quiz-quest/
     npm test
 
+## Classement famille (facultatif)
+
+Scores partagés entre les appareils de la famille, via Firebase (gratuit) : voir [docs/FIREBASE.md](docs/FIREBASE.md).
+Le jeu reste jouable hors ligne ; seuls les pseudos et les scores sont envoyés (jamais de vrai nom ni d'âge).
+
 ## Crédits
 
 Une partie des questions est adaptée de l'[Open Trivia Database](https://opentdb.com)

@@ -9,6 +9,16 @@ export function EcranFinJeu({ nom, resultat, record, onRejouer, onRetour }: {
       <p>{resultat.texte}</p>
       <p>✨ +{resultat.xp} XP</p>
       {record && <p class="record">🏆 Nouveau record !</p>}
+      {resultat.aRetenir && resultat.aRetenir.length > 0 && (
+        <>
+          <h2>À retenir</h2>
+          <ul>
+            {resultat.aRetenir.map((r) => (
+              <li key={r.question}><b>{r.question}</b><br />✅ {r.bonne}{r.explication && <> — {r.explication}</>}</li>
+            ))}
+          </ul>
+        </>
+      )}
       <button class="principal" onClick={onRejouer}>Rejouer 🔁</button>
       <button onClick={onRetour}>← Mini-jeux</button>
     </main>

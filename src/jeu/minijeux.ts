@@ -8,7 +8,10 @@ export const JEUX_DISPONIBLES: MiniJeu[] = ['chrono', 'calcul', 'memory', 'mot',
 /** Une partie : sur quels domaines, et s'il s'agit d'un défi (un seul domaine). */
 export interface Partie { domaines: string[]; defi: boolean }
 
-export interface ResultatJeu { score: number; xp: number; texte: string }
+/** Un raté à revoir en fin de partie (mot non trouvé, frise fausse…). */
+export interface ARetenir { question: string; bonne: string; explication: string }
+
+export interface ResultatJeu { score: number; xp: number; texte: string; aRetenir?: ARetenir[] }
 
 export interface PropsJeu {
   profil: Profil;
