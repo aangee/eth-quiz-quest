@@ -41,6 +41,8 @@ export interface Profil {
   prenom: string;
   avatar: string;
   age: number;
+  /** Id du thème visuel (voir src/themes/registre.ts). */
+  theme: string;
   xp: number;
   cotes: Record<string, number>;
   xpDomaine: Record<string, number>;

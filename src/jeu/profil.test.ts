@@ -19,3 +19,12 @@ describe('normaliserProfil', () => {
     expect(p.xp).toBe(0);
   });
 });
+
+describe('thème du profil', () => {
+  it('profil ancien sans thème → néon', () => {
+    expect(normaliserProfil({ id: 'a', prenom: 'L', avatar: 'x', age: 10 }).theme).toBe('neon');
+  });
+  it('thème existant conservé (même inconnu : le repli se fait à l\'affichage)', () => {
+    expect(normaliserProfil({ id: 'a', prenom: 'L', avatar: 'x', age: 10, theme: 'survie' }).theme).toBe('survie');
+  });
+});

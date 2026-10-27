@@ -28,6 +28,9 @@ import { majRecord, type Partie, type ResultatJeu } from './jeu/minijeux';
 import { celebration } from './jeu/celebration';
 import { musique, musiqueActivee, memoriserMusique } from './son/musique';
 import { BoutonMusique } from './ecrans/BoutonMusique';
+import { appliquerTheme } from './themes/appliquer';
+import { themeParId } from './themes/registre';
+import { memoriserTheme } from './themes/dernier';
 
 const MENUS = new Set(['profils', 'joueur', 'arbre', 'domaines', 'minijeux', 'classement', 'parent', 'resultats', 'finjeu']);
 
@@ -86,6 +89,14 @@ export function App() {
   }, []);
   useEffect(() => { if (sonVoulu.current && !document.hidden) musique.jouer(); else musique.couper(); }, [sonActif, ecran.nom]);
   const changerSon = (v: boolean) => { setSonActif(v); memoriserMusique(v); };
+  // Thème du joueur courant ; les écrans sans joueur (profils, parent) gardent le thème en place
+  const idTheme = profils && 'profilId' in ecran ? profils.find((p) => p.id === ecran.profilId)?.theme : undefined;
+  useEffect(() => {
+    if (idTheme === undefined) return;
+    const t = themeParId(idTheme);
+    appliquerTheme(t);
+    memoriserTheme(t.id);
+  }, [idTheme]);
 
   if (!profils || !semaine) return <main class="ecran"><p>Chargement…</p></main>;
 
