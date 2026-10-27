@@ -4,6 +4,7 @@ import { domaines } from '../../packs';
 import { NB_MANCHES, ordreDesTours, vainqueur } from '../../jeu/duel';
 import { avancerQuetes } from '../../jeu/quetes';
 import { QuestionDuel } from './QuestionDuel';
+import { Icone } from '../../ui/Icone';
 
 const TOURS = ordreDesTours(NB_MANCHES);
 
@@ -30,7 +31,7 @@ export function DuelLocal({ joueur, profils, onFin, onQuitter }: {
     const autres = profils.filter((p) => p.id !== joueur.id);
     return (
       <main class="ecran">
-        <h2>⚔️ Contre qui ?</h2>
+        <h2><Icone nom="duel" /> Contre qui ?</h2>
         {autres.length === 0 && <p>Crée d'abord un deuxième joueur sur l'écran d'accueil.</p>}
         <div class="liste">
           {autres.map((p) => (
@@ -39,7 +40,7 @@ export function DuelLocal({ joueur, profils, onFin, onQuitter }: {
             </button>
           ))}
         </div>
-        <button onClick={onQuitter}>← Retour</button>
+        <button onClick={onQuitter}><Icone nom="retour" /> Retour</button>
       </main>
     );
   }
@@ -55,9 +56,9 @@ export function DuelLocal({ joueur, profils, onFin, onQuitter }: {
     const revanche = () => { setManche(0); setScores([0, 0]); setJustes(0); setVues(new Set()); setPret(false); };
     return (
       <main class="ecran">
-        <h1>{v === 'egalite' ? '🤝 Égalité !' : `🏆 ${joueurs[v].avatar} ${joueurs[v].prenom} gagne !`}</h1>
+        <h1>{v === 'egalite' ? 'Égalité !' : <><Icone nom="trophee" /> {joueurs[v].avatar} {joueurs[v].prenom} gagne !</>}</h1>
         {tableau}
-        <button class="principal" onClick={revanche}>Revanche 🔁</button>
+        <button class="principal" onClick={revanche}>Revanche</button>
         <button onClick={onQuitter}>Mon profil</button>
       </main>
     );
@@ -66,12 +67,12 @@ export function DuelLocal({ joueur, profils, onFin, onQuitter }: {
   const i = TOURS[manche];
   return (
     <main class="ecran">
-      <div class="barre"><span>⚔️ Manche {manche + 1}/{TOURS.length}</span></div>
+      <div class="barre"><span><Icone nom="duel" /> Manche {manche + 1}/{TOURS.length}</span></div>
       {tableau}
       {!pret ? (
         <div class="passe">
-          <h2>📱 Passe l'appareil à {joueurs[i].avatar} {joueurs[i].prenom}</h2>
-          <button class="principal" onClick={() => setPret(true)}>Je suis prêt ▶</button>
+          <h2><Icone nom="telephone" /> Passe l'appareil à {joueurs[i].avatar} {joueurs[i].prenom}</h2>
+          <button class="principal" onClick={() => setPret(true)}>Je suis prêt <Icone nom="suivant" /></button>
         </div>
       ) : (
         <QuestionDuel key={manche} profil={joueurs[i]} domaines={domaines} vues={vues}

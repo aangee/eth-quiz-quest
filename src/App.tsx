@@ -10,9 +10,9 @@ import { MINI_JEUX, construireArbre, type MiniJeu } from './jeu/arbre';
 import { avancerSemaine, dateDuJour, majJour, majSemaine, semaineDe } from './jeu/quetes';
 import { ajouterCharge, jokerARecharger } from './jeu/jokers';
 import { EcranProfils } from './ecrans/EcranProfils';
-import { EcranJoueur } from './ecrans/EcranJoueur';
+import { EcranCarte } from './ecrans/EcranCarte';
+import { EcranProfil } from './ecrans/EcranProfil';
 import { EcranArbre } from './ecrans/EcranArbre';
-import { EcranDomaines } from './ecrans/EcranDomaines';
 import { EcranQuiz, type Bilan } from './ecrans/EcranQuiz';
 import { EcranResultats } from './ecrans/EcranResultats';
 import { EcranMiniJeux } from './ecrans/EcranMiniJeux';
@@ -28,15 +28,22 @@ import { majRecord, type Partie, type ResultatJeu } from './jeu/minijeux';
 import { celebration } from './jeu/celebration';
 import { musique, musiqueActivee, memoriserMusique } from './son/musique';
 import { BoutonMusique } from './ecrans/BoutonMusique';
+import { appliquerTheme } from './themes/appliquer';
+import { themeParId } from './themes/registre';
+import { lireDernierTheme, memoriserTheme } from './themes/dernier';
+import { ThemeContexte } from './themes/contexte';
+import { BarreNav } from './ui/BarreNav';
+import { ongletActif } from './jeu/navigation';
+import { Icone } from './ui/Icone';
 
-const MENUS = new Set(['profils', 'joueur', 'arbre', 'domaines', 'minijeux', 'classement', 'parent', 'resultats', 'finjeu']);
+const MENUS = new Set(['profils', 'carte', 'profil', 'arbre', 'minijeux', 'classement', 'parent', 'resultats', 'finjeu']);
 
 type Ecran =
   | { nom: 'profils' }
   | { nom: 'parent' }
-  | { nom: 'joueur'; profilId: string }
+  | { nom: 'carte'; profilId: string }
+  | { nom: 'profil'; profilId: string }
   | { nom: 'arbre'; profilId: string }
-  | { nom: 'domaines'; profilId: string }
   | { nom: 'quiz'; profilId: string; domaines: string[] }
   | { nom: 'resultats'; profilId: string; domaines: string[]; bilan: Bilan; avant: Profil }
   | { nom: 'minijeux'; profilId: string }
@@ -86,6 +93,14 @@ export function App() {
   }, []);
   useEffect(() => { if (sonVoulu.current && !document.hidden) musique.jouer(); else musique.couper(); }, [sonActif, ecran.nom]);
   const changerSon = (v: boolean) => { setSonActif(v); memoriserMusique(v); };
+  // Thème du joueur courant ; les écrans sans joueur (profils, parent) gardent le thème en place
+  const idTheme = profils && 'profilId' in ecran ? profils.find((p) => p.id === ecran.profilId)?.theme : undefined;
+  useEffect(() => {
+    if (idTheme === undefined) return;
+    const t = themeParId(idTheme);
+    appliquerTheme(t);
+    memoriserTheme(t.id);
+  }, [idTheme, ecran.nom]); // ecran.nom : réapplique après un aperçu sur l'écran des profils
 
   if (!profils || !semaine) return <main class="ecran"><p>Chargement…</p></main>;
 
@@ -127,7 +142,7 @@ export function App() {
   const ouvrir = (p: Profil) => {
     const p2 = debutSemaine(majJour(p, dateDuJour(), domaines), semaineDe());
     if (p2 !== p) maj(p2);
-    setEcran({ nom: 'joueur', profilId: p.id });
+    setEcran({ nom: 'carte', profilId: p.id });
   };
 
   /** Enregistre des profils après une partie et fait avancer la quête de la semaine. */
@@ -162,36 +177,30 @@ export function App() {
       return <EcranParent pin={pin} profils={profils} packsImportes={packsImportes} semaine={semaine}
         onPin={changerPin} onPacks={changerPacks} onRestaurer={restaurer}
         onMajProfil={maj} onSupprimerProfil={supprimerProfil} famille={famille} onFamille={changerFamille} onRetour={() => setEcran({ nom: 'profils' })} />;
-    case 'joueur':
-      return <EcranJoueur profil={profil(ecran.profilId)} semaine={semaine} arbre={arbre}
-        onJouer={() => setEcran({ nom: 'domaines', profilId: ecran.profilId })}
-        onArbre={() => setEcran({ nom: 'arbre', profilId: ecran.profilId })}
-        onMiniJeux={() => setEcran({ nom: 'minijeux', profilId: ecran.profilId })}
-        onDuel={() => setEcran({ nom: 'duel', profilId: ecran.profilId })}
-        onClassement={() => setEcran({ nom: 'classement', profilId: ecran.profilId })}
-        onChanger={() => setEcran({ nom: 'profils' })} />;
-    case 'arbre':
-      return <EcranArbre profil={profil(ecran.profilId)} arbre={arbre} onMaj={maj}
-        onRetour={() => setEcran({ nom: 'joueur', profilId: ecran.profilId })} />;
-    case 'domaines':
-      return <EcranDomaines profil={profil(ecran.profilId)} onRetour={() => setEcran({ nom: 'joueur', profilId: ecran.profilId })}
+    case 'carte':
+      return <EcranCarte profil={profil(ecran.profilId)} arbre={arbre}
         onJouer={(d) => setEcran({ nom: 'quiz', profilId: ecran.profilId, domaines: d })} />;
+    case 'profil':
+      return <EcranProfil profil={profil(ecran.profilId)} semaine={semaine} onMaj={maj}
+        onChanger={() => setEcran({ nom: 'profils' })} onParent={() => setEcran({ nom: 'parent' })} />;
+    case 'arbre':
+      return <EcranArbre profil={profil(ecran.profilId)} arbre={arbre} onMaj={maj} />;
     case 'quiz':
       return <EcranQuiz profil={profil(ecran.profilId)} domaines={ecran.domaines}
         onFin={(p, bilan) => finQuiz(p, bilan, ecran.domaines)} />;
     case 'resultats':
       return <EcranResultats profil={profil(ecran.profilId)} bilan={ecran.bilan} avant={ecran.avant}
         onRejouer={() => setEcran({ nom: 'quiz', profilId: ecran.profilId, domaines: ecran.domaines })}
-        onRetour={() => setEcran({ nom: 'joueur', profilId: ecran.profilId })} />;
+        onRetour={() => setEcran({ nom: 'carte', profilId: ecran.profilId })} />;
     case 'minijeux':
       return <EcranMiniJeux profil={profil(ecran.profilId)}
         onDefi={(jeu, d) => setEcran({ nom: 'jeu', profilId: ecran.profilId, jeu, partie: { domaines: [d], defi: true } })}
-        onRetour={() => setEcran({ nom: 'joueur', profilId: ecran.profilId })}
+        onDuel={() => setEcran({ nom: 'duel', profilId: ecran.profilId })}
         onJouer={(jeu) => setEcran({ nom: 'jeu', profilId: ecran.profilId, jeu, partie: { domaines, defi: false } })} />;
     case 'jeu': {
       const Jeu = JEUX[ecran.jeu];
       const retour = () => setEcran({ nom: 'minijeux', profilId: ecran.profilId });
-      if (!Jeu) return <main class="ecran"><p>Bientôt !</p><button onClick={retour}>← Retour</button></main>;
+      if (!Jeu) return <main class="ecran"><p>Bientôt !</p><button onClick={retour}><Icone nom="retour" /> Retour</button></main>;
       return <Jeu profil={profil(ecran.profilId)} partie={ecran.partie} onQuitter={retour}
         onFin={(p, r) => finJeu(ecran.jeu, ecran.partie, p, r)} />;
     }
@@ -201,10 +210,18 @@ export function App() {
         onRetour={() => setEcran({ nom: 'minijeux', profilId: ecran.profilId })} />;
     case 'duel':
       return <EcranDuel joueur={profil(ecran.profilId)} profils={profils} onFin={enregistrerPartie}
-        onQuitter={() => setEcran({ nom: 'joueur', profilId: ecran.profilId })} />;
+        onQuitter={() => setEcran({ nom: 'minijeux', profilId: ecran.profilId })} />;
     case 'classement':
-      return <EcranClassement famille={famille} onRetour={() => setEcran({ nom: 'joueur', profilId: ecran.profilId })} />;
+      return <EcranClassement famille={famille} />;
   }
   })();
-  return <>{MENUS.has(ecran.nom) && <BoutonMusique active={sonActif} onChange={changerSon} />}{ecranCourant}</>;
+  const onglet = ongletActif(ecran.nom);
+  const theme = themeParId(idTheme ?? lireDernierTheme());
+  return (
+    <ThemeContexte.Provider value={theme}>
+      {MENUS.has(ecran.nom) && <BoutonMusique active={sonActif} onChange={changerSon} />}
+      {ecranCourant}
+      {onglet && 'profilId' in ecran && <BarreNav actif={onglet} onAller={(o) => setEcran({ nom: o, profilId: ecran.profilId })} />}
+    </ThemeContexte.Provider>
+  );
 }

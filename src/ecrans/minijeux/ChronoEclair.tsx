@@ -4,6 +4,7 @@ import { questionsDuDomaine } from '../../packs';
 import { contenu, crediter, longueur, multXp, type PropsJeu } from '../../jeu/minijeux';
 import { PasDeContenu } from './PasDeContenu';
 import { BarreTemps } from '../BarreTemps';
+import { Icone } from '../../ui/Icone';
 
 export const DUREE_MS = 60000;
 export const PENALITE_MS = 3000;
@@ -29,7 +30,7 @@ export function ChronoEclair({ profil, partie, onFin, onQuitter }: PropsJeu) {
   }, [termine]);
 
   if (!liste.length) return <PasDeContenu onQuitter={onQuitter} />;
-  if (termine) return <main class="ecran"><p>⏱ Terminé !</p></main>;
+  if (termine) return <main class="ecran"><p><Icone nom="chrono" /> Terminé !</p></main>;
   const { q, domaine } = liste[i];
 
   const repondre = (v: boolean) => {
@@ -47,9 +48,9 @@ export function ChronoEclair({ profil, partie, onFin, onQuitter }: PropsJeu) {
   return (
     <main class="ecran">
       <div class="barre">
-        <span>⚡ Chrono-éclair</span>
-        <span>⏱ {Math.ceil(reste / 1000)} s</span>
-        <span>✅ {score} {dernier === 'ok' ? '👍' : dernier === 'ko' ? '−3 s' : ''}</span>
+        <span><Icone nom="eclair" /> Chrono-éclair</span>
+        <span><Icone nom="chrono" /> {Math.ceil(reste / 1000)} s</span>
+        <span><Icone nom="valider" /> {score} {dernier === 'ok' ? '+1' : dernier === 'ko' ? '−3 s' : ''}</span>
       </div>
       <BarreTemps reste={reste} total={longueur(DUREE_MS, partie)} />
       <p class="domaine">{domaine}</p>

@@ -15,3 +15,18 @@ describe('packs livrés', () => {
     });
   }
 });
+
+describe('iconeDuDomaine', () => {
+  const p = (domaine: string, icone?: string) => ({ pack: domaine, domaine, version: 1, questions: [], ...(icone ? { icone } : {}) });
+  it('icône connue, inconnue, absente', async () => {
+    const { iconeDuDomaine } = await import('./index');
+    const liste = [p('A', 'espace'), p('B', 'licorne'), p('C')];
+    expect(iconeDuDomaine('A', liste)).toBe('espace');
+    expect(iconeDuDomaine('B', liste)).toBe('livre');
+    expect(iconeDuDomaine('C', liste)).toBe('livre');
+  });
+  it('les packs livrés ont une icône connue', async () => {
+    const { iconeDuDomaine, domaines } = await import('./index');
+    domaines.forEach((d) => expect(iconeDuDomaine(d)).not.toBe('livre'));
+  });
+});

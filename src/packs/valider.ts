@@ -71,5 +71,7 @@ export function validerPack(data: unknown): Resultat {
     if (r) erreurs.push({ index, id: String(q?.id ?? '?'), raison: r });
     else { vus.add(q.id); ok.push(q as Question); }
   });
-  return { pack: { pack: d.pack, domaine: d.domaine, version: d.version, questions: ok }, erreurs };
+  const pack: Pack = { pack: d.pack, domaine: d.domaine, version: d.version, questions: ok };
+  if (str(d.icone)) pack.icone = d.icone;
+  return { pack, erreurs };
 }

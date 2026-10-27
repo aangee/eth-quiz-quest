@@ -4,6 +4,7 @@ import { packs } from '../../packs';
 import { validerPack, type ErreurQuestion } from '../../packs/valider';
 import { ajouterPackImporte } from '../../packs/fusion';
 import { lireJson } from './fichiers';
+import { Icone } from '../../ui/Icone';
 
 export function SectionPacks({ packsImportes, onPacks }: { packsImportes: Pack[]; onPacks: (l: Pack[]) => void }) {
   const [rapport, setRapport] = useState<{ titre: string; erreurs: ErreurQuestion[] } | null>(null);
@@ -14,12 +15,12 @@ export function SectionPacks({ packsImportes, onPacks }: { packsImportes: Pack[]
   const importer = async (e: Event) => {
     try {
       const r = validerPack(await lireJson(e));
-      if (!r.pack) { setRapport({ titre: `❌ Pack refusé : ${r.erreurPack}`, erreurs: [] }); return; }
-      if (!r.pack.questions.length) { setRapport({ titre: '❌ Aucune question valide dans ce pack.', erreurs: r.erreurs }); return; }
+      if (!r.pack) { setRapport({ titre: `Pack refusé : ${r.erreurPack}`, erreurs: [] }); return; }
+      if (!r.pack.questions.length) { setRapport({ titre: 'Aucune question valide dans ce pack.', erreurs: r.erreurs }); return; }
       onPacks(ajouterPackImporte(packsImportes, r.pack));
-      setRapport({ titre: `✅ « ${r.pack.domaine} » : ${r.pack.questions.length} question(s) importée(s)`, erreurs: r.erreurs });
+      setRapport({ titre: `« ${r.pack.domaine} » : ${r.pack.questions.length} question(s) importée(s)`, erreurs: r.erreurs });
     } catch (err) {
-      setRapport({ titre: `❌ ${(err as Error).message}`, erreurs: [] });
+      setRapport({ titre: `${(err as Error).message}`, erreurs: [] });
     }
   };
   const supprimer = (p: Pack) => {
@@ -28,18 +29,18 @@ export function SectionPacks({ packsImportes, onPacks }: { packsImportes: Pack[]
 
   return (
     <section>
-      <h3>📚 Packs</h3>
+      <h3><Icone nom="livre" /> Packs</h3>
       <ul class="quetes">
         {integres.map((p) => <li key={p.pack}>{p.domaine} <small>{p.questions.length} · intégré</small></li>)}
         {packsImportes.map((p) => (
           <li key={p.pack}>
             {p.domaine} <small>{actives(p.pack)}/{p.questions.length} · importé</small>
-            <button class="petit" onClick={() => supprimer(p)}>🗑️</button>
+            <button class="petit" aria-label={`Supprimer le pack ${p.domaine}`} onClick={() => supprimer(p)}><Icone nom="supprimer" /></button>
           </li>
         ))}
       </ul>
       <label class="fichier">
-        📥 Importer un pack (.json)
+        <Icone nom="sauvegarde" /> Importer un pack (.json)
         <input type="file" accept=".json,application/json" onChange={importer} />
       </label>
       {rapport && (

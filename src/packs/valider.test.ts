@@ -10,6 +10,10 @@ describe('validerPack', () => {
     expect(r.erreurs).toEqual([]);
     expect(r.pack?.questions).toHaveLength(1);
   });
+  it('garde une icône texte, ignore le reste', () => {
+    expect(validerPack({ ...base, icone: 'espace', questions: [qcm] }).pack?.icone).toBe('espace');
+    expect(validerPack({ ...base, icone: 3, questions: [qcm] }).pack?.icone).toBeUndefined();
+  });
   it('rejette un en-tête invalide', () => {
     expect(validerPack({ questions: [] }).erreurPack).toBeDefined();
   });

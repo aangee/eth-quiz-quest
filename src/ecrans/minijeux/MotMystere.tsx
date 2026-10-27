@@ -4,6 +4,7 @@ import { questionsDuDomaine } from '../../packs';
 import { contenu, crediter, longueur, multXp, type ARetenir, type PropsJeu } from '../../jeu/minijeux';
 import { ERREURS_MAX, affichage, erreurs, estTrouve, normaliser } from '../../jeu/mot';
 import { PasDeContenu } from './PasDeContenu';
+import { Icone } from '../../ui/Icone';
 
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 export const NB_MOTS = 3;
@@ -46,18 +47,18 @@ export function MotMystere({ profil, partie, onFin, onQuitter }: PropsJeu) {
   return (
     <main class="ecran">
       <div class="barre">
-        <span>🔤 Mot {i + 1}/{liste.length}</span>
-        <span>❤️ {ERREURS_MAX - nbErreurs}</span>
-        <span>✅ {score}</span>
+        <span><Icone nom="livre" /> Mot {i + 1}/{liste.length}</span>
+        <span>Essais : {ERREURS_MAX - nbErreurs}</span>
+        <span><Icone nom="valider" /> {score}</span>
       </div>
       <p class="domaine">{domaine}</p>
       <h2>{q.indice}</h2>
       <p class="mot">{affichage(q.reponse, perdu ? new Set(ALPHABET) : essayees)}</p>
       {gagne || perdu ? (
         <div class={gagne ? 'verdict ok' : 'verdict ko'}>
-          <p>{gagne ? '✅ Trouvé !' : `❌ C'était : ${q.reponse}`}</p>
+          <p>{gagne ? <><Icone nom="valider" /> Trouvé !</> : <><Icone nom="quitter" /> C'était : {q.reponse}</>}</p>
           {q.explication && <p>{q.explication}</p>}
-          <button class="principal" onClick={suivant}>Suivant ▶</button>
+          <button class="principal" onClick={suivant}>Suivant <Icone nom="suivant" /></button>
         </div>
       ) : (
         <div class="clavier">

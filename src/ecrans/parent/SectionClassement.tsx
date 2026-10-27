@@ -6,6 +6,7 @@ import { lireClassement } from '../../net/classementEnLigne';
 import { QrCode } from '../duel/QrCode';
 import { Scanner } from '../duel/Scanner';
 import { CodeTexte } from '../duel/CodeTexte';
+import { Icone } from '../../ui/Icone';
 
 export function SectionClassement({ famille, onFamille }: { famille: Famille | null; onFamille: (f: Famille | null) => void }) {
   const [mode, setMode] = useState<'choix' | 'creer' | 'rejoindre'>('choix');
@@ -24,23 +25,23 @@ export function SectionClassement({ famille, onFamille }: { famille: Famille | n
     try {
       await lireClassement(config, dependancesFirebase);
       onFamille({ config, appareil: appareil.trim() });
-      setMessage('✅ Classement installé sur cet appareil.');
+      setMessage('Classement installé sur cet appareil.');
       setMode('choix');
     } catch (e) {
-      setMessage(`❌ Firebase ne répond pas (${(e as Error).message}). Vérifie l'ID du projet, la clé et les règles (docs/FIREBASE.md).`);
+      setMessage(`Firebase ne répond pas (${(e as Error).message}). Vérifie l'ID du projet, la clé et les règles (docs/FIREBASE.md).`);
     } finally {
       setAttente(false);
     }
   };
   const creer = () => {
     const config = { projet: projet.trim(), cle: cle.trim(), famille: genererFamille() };
-    if (!configValide(config)) { setMessage("❌ ID du projet ou clé d'API invalide."); return; }
+    if (!configValide(config)) { setMessage("ID du projet ou clé d'API invalide."); return; }
     installer(config);
   };
   const recuCode = (code: string) => {
     setScanner(false);
     const config = decoderFamille(code);
-    if (!config) { setMessage("❌ Ce n'est pas un code famille Quiz Quest."); return; }
+    if (!config) { setMessage("Ce n'est pas un code famille Quiz Quest."); return; }
     installer(config);
   };
 
@@ -50,7 +51,7 @@ export function SectionClassement({ famille, onFamille }: { famille: Famille | n
 
   return (
     <section>
-      <h3>🏆 Classement famille</h3>
+      <h3><Icone nom="trophee" /> Classement famille</h3>
       {famille ? (
         <>
           <p class="domaine">Installé sur cet appareil (« {famille.appareil} »). Pour ajouter un appareil : Espace parent › Classement famille › Rejoindre, puis scanne ce QR.</p>
@@ -61,7 +62,7 @@ export function SectionClassement({ famille, onFamille }: { famille: Famille | n
       ) : mode === 'choix' ? (
         <>
           <p class="domaine">Partage les scores entre les appareils de la famille (pseudos seulement, jamais de vrai nom ni d'âge).</p>
-          <button onClick={() => setMode('rejoindre')}>📷 Rejoindre la famille (scanner le QR d'un autre appareil)</button>
+          <button onClick={() => setMode('rejoindre')}><Icone nom="qr" /> Rejoindre la famille (scanner le QR d'un autre appareil)</button>
           <button onClick={() => setMode('creer')}>🆕 Créer le classement (première fois, avec Firebase)</button>
         </>
       ) : mode === 'creer' ? (
@@ -71,14 +72,14 @@ export function SectionClassement({ famille, onFamille }: { famille: Famille | n
           <input placeholder="Clé d'API web (AIza…)" value={cle} onInput={(e) => setCle(e.currentTarget.value)} />
           {champAppareil}
           <button class="principal" disabled={attente} onClick={creer}>Créer et tester</button>
-          <button onClick={() => setMode('choix')}>← Retour</button>
+          <button onClick={() => setMode('choix')}><Icone nom="retour" /> Retour</button>
         </>
       ) : (
         <>
           {champAppareil}
-          {scanner ? <Scanner onCode={recuCode} /> : <button class="principal" disabled={attente} onClick={() => setScanner(true)}>📷 Scanner le QR famille</button>}
+          {scanner ? <Scanner onCode={recuCode} /> : <button class="principal" disabled={attente} onClick={() => setScanner(true)}><Icone nom="qr" /> Scanner le QR famille</button>}
           <CodeTexte onCode={recuCode} />
-          <button onClick={() => { setScanner(false); setMode('choix'); }}>← Retour</button>
+          <button onClick={() => { setScanner(false); setMode('choix'); }}><Icone nom="retour" /> Retour</button>
         </>
       )}
       {message && <p class="bandeau">{message}</p>}

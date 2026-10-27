@@ -22,7 +22,11 @@ export interface Indices extends Base { type: 'indices'; indices: string[]; repo
 
 export type Question = QCM | VraiFaux | Ordre | Mot | Paires | Etiquettes | Indices;
 
-export interface Pack { pack: string; domaine: string; version: number; questions: Question[] }
+export interface Pack {
+  pack: string; domaine: string; version: number; questions: Question[];
+  /** Icône du domaine (voir ICONES_DOMAINE) ; facultative. */
+  icone?: string;
+}
 
 export interface Quete {
   id: string;
@@ -41,6 +45,8 @@ export interface Profil {
   prenom: string;
   avatar: string;
   age: number;
+  /** Id du thème visuel (voir src/themes/registre.ts). */
+  theme: string;
   xp: number;
   cotes: Record<string, number>;
   xpDomaine: Record<string, number>;

@@ -9,6 +9,7 @@ import { adressesDuCode } from '../../net/signal';
 import { QrCode } from './QrCode';
 import { Scanner } from './Scanner';
 import { CodeTexte } from './CodeTexte';
+import { Icone } from '../../ui/Icone';
 
 type Phase = 'role' | 'hote' | 'invite' | 'salon' | 'jeu';
 
@@ -117,19 +118,19 @@ export function DuelReseau({ joueur, onFin, onQuitter }: {
   };
   const lancer = () => { transport.current?.envoyer({ t: 'debut' }); demarrer(); };
 
-  const bandeau = etat === 'instable' ? <p class="bandeau">📶 Connexion instable…</p>
-    : etat === 'ferme' && phase !== 'role' && phase !== 'hote' && phase !== 'invite' ? <p class="bandeau ko">🔌 Connexion perdue</p>
+  const bandeau = etat === 'instable' ? <p class="bandeau"><Icone nom="reseau" /> Connexion instable…</p>
+    : etat === 'ferme' && phase !== 'role' && phase !== 'hote' && phase !== 'invite' ? <p class="bandeau ko"><Icone nom="attention" /> Connexion perdue</p>
     : null;
   const nomAdv = adv ? `${adv.avatar} ${adv.prenom}` : "l'autre joueur";
 
   if (phase === 'role') {
     return (
       <main class="ecran">
-        <h2>📶 Duel en réseau</h2>
+        <h2><Icone nom="reseau" /> Duel en réseau</h2>
         <p class="domaine">Les deux appareils sur le même Wi-Fi, ou sur le partage de connexion du téléphone.</p>
         <button class="principal" onClick={devenirHote}>Créer la partie (montrer un QR)</button>
         <button onClick={devenirInvite}>Rejoindre (scanner le QR)</button>
-        <button onClick={onQuitter}>← Retour</button>
+        <button onClick={onQuitter}><Icone nom="retour" /> Retour</button>
       </main>
     );
   }
@@ -140,7 +141,7 @@ export function DuelReseau({ joueur, onFin, onQuitter }: {
       : (code ? '2. Montre ce QR à l’appareil hôte :' : '1. Scanne le QR de l’appareil hôte :');
     return (
       <main class="ecran">
-        <h2>{phase === 'hote' ? '🎮 Tu crées la partie' : '🔗 Tu rejoins la partie'}</h2>
+        <h2>{phase === 'hote' ? 'Tu crées la partie' : 'Tu rejoins la partie'}</h2>
         {erreur && (
           <div class="bandeau ko">
             <p>{erreur}</p>
@@ -169,9 +170,9 @@ export function DuelReseau({ joueur, onFin, onQuitter }: {
     return (
       <main class="ecran">
         {bandeau}
-        <h2>✅ Connecté avec {nomAdv}</h2>
+        <h2><Icone nom="valider" /> Connecté avec {nomAdv}</h2>
         {hote
-          ? <button class="principal" disabled={!adv} onClick={lancer}>Lancer le duel ▶</button>
+          ? <button class="principal" disabled={!adv} onClick={lancer}>Lancer le duel <Icone nom="suivant" /></button>
           : <p>En attente de l’hôte…</p>}
         <button onClick={onQuitter}>Quitter</button>
       </main>
@@ -209,11 +210,11 @@ export function DuelReseau({ joueur, onFin, onQuitter }: {
     <main class="ecran">
       {bandeau}
       {adversaireFini
-        ? <h1>{v === 'egalite' ? '🤝 Égalité !' : v === 0 ? '🏆 Tu gagnes !' : `🏆 ${nomAdv} gagne !`}</h1>
-        : <h2>⏳ En attente de {nomAdv}…</h2>}
+        ? <h1>{v === 'egalite' ? 'Égalité !' : <><Icone nom="trophee" /> {v === 0 ? 'Tu gagnes !' : `${nomAdv} gagne !`}</>}</h1>
+        : <h2><Icone nom="horloge" /> En attente de {nomAdv}…</h2>}
       {tableau}
       {adversaireFini && (hote
-        ? <button class="principal" onClick={lancer}>Revanche 🔁</button>
+        ? <button class="principal" onClick={lancer}>Revanche</button>
         : <p>L’hôte peut lancer une revanche.</p>)}
       <button onClick={onQuitter}>Quitter</button>
     </main>

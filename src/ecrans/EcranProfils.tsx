@@ -2,6 +2,11 @@ import { useState } from 'preact/hooks';
 import type { Profil } from '../types';
 import { nouveauProfil } from '../stockage';
 import { niveauDepuisXp } from '../jeu/xp';
+import { Icone } from '../ui/Icone';
+import { ChoixTheme } from '../ui/ChoixTheme';
+import { appliquerTheme } from '../themes/appliquer';
+import { themeParId } from '../themes/registre';
+import { useTheme } from '../themes/contexte';
 
 const AVATARS = ['🦊', '🐉', '🚀', '🦉', '🐼', '🤖', '🦖', '🐙'];
 
@@ -11,11 +16,14 @@ export function EcranProfils({ profils, onCreer, onChoisir, onParent }: {
   const [prenom, setPrenom] = useState('');
   const [age, setAge] = useState(10);
   const [avatar, setAvatar] = useState(AVATARS[0]);
+  const [theme, setTheme] = useState(useTheme().id);
+  // Aperçu en direct : l'écran prend le thème choisi
+  const choisirTheme = (id: string) => { setTheme(id); appliquerTheme(themeParId(id)); };
   const valide = prenom.trim() !== '' && age >= 5 && age <= 99;
 
   return (
     <main class="ecran">
-      <h1>⭐ Quiz Quest</h1>
+      <h1>Quiz Quest</h1>
       {profils.length > 0 && <h2>Qui joue ?</h2>}
       <div class="liste">
         {profils.map((p) => (
@@ -32,10 +40,12 @@ export function EcranProfils({ profils, onCreer, onChoisir, onParent }: {
           <button key={a} class={a === avatar ? 'choisi' : ''} onClick={() => setAvatar(a)}>{a}</button>
         ))}
       </div>
-      <button class="principal" disabled={!valide} onClick={() => { onCreer(nouveauProfil(prenom.trim(), avatar, age)); setPrenom(''); }}>
+      <h3>Ton thème</h3>
+      <ChoixTheme valeur={theme} onChoisir={choisirTheme} />
+      <button class="principal" disabled={!valide} onClick={() => { onCreer(nouveauProfil(prenom.trim(), avatar, age, theme)); setPrenom(''); }}>
         Créer
       </button>
-      <button onClick={onParent}>🔒 Espace parent</button>
+      <button onClick={onParent}><Icone nom="cadenas" /> Espace parent</button>
     </main>
   );
 }

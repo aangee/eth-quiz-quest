@@ -13,10 +13,14 @@ Format :
 {
   "pack": "<domaine-en-minuscules>-v1",
   "domaine": "<DOMAINE>",
+  "icone": "<ICONE>",
   "version": 1,
   "questions": [ ... ]
 }
 ```
+
+`icone` (facultatif) : l'icône du domaine sur la carte, parmi `espace`, `animaux`, `geographie`, `histoire`,
+`jeux`, `sciences`, `livre`. Absente ou inconnue → `livre`.
 
 Chaque question a toujours : `id` (unique, ex. `geo-001`), `type`, `niveau` (entier 1 à 5),
 `age_min` (âge minimum, entier), `explication` (une phrase qui apprend quelque chose, ou `""`).

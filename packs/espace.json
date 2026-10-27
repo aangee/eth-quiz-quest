@@ -1,6 +1,7 @@
 {
   "pack": "espace-v3",
   "domaine": "Espace",
+  "icone": "espace",
   "version": 3,
   "source": "esp-014 à esp-020 : adaptées d'Open Trivia Database (opentdb.com), CC BY-SA 4.0. Le reste : Nysa.",
   "questions": [
