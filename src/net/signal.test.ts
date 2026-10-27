@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { decoderSignal, encoderSignal } from './signal';
+import { adressesDuCode, decoderSignal, encoderSignal } from './signal';
 
 const FP = '7A:1B:2C:3D:4E:5F:60:71:82:93:A4:B5:C6:D7:E8:F9:0A:1B:2C:3D:4E:5F:60:71:82:93:A4:B5:C6:D7:E8:F9';
 const sdp = (candidats: string[], setup = 'actpass') => [
@@ -34,6 +34,15 @@ describe('signal', () => {
     expect(d.sdp).toContain('fe80:0:0:0:0:0:1c2b:3a4d 50001 typ host');
     expect(d.sdp).not.toContain(' tcp ');
     expect(d.sdp).toContain('a=setup:active');
+  });
+  it('PC avec cartes virtuelles : garde la vraie IPv4, écarte mDNS, 127.x et 169.254', () => {
+    const c = (n: number, ip: string) => `a=candidate:${n} 1 udp ${2122260223 - n} ${ip} ${50000 + n} typ host generation 0`;
+    const code = encoderSignal('offre', sdp([
+      c(1, '172.25.80.1'), c(2, '192.168.56.1'), c(3, '10.0.75.1'), c(4, '169.254.12.7'), c(5, '127.0.0.1'),
+      c(6, '3f2b6c1e-7d4a-4b8e-9c1f-2a3b4c5d6e7f.local'), c(7, '192.168.1.42'),
+    ]));
+    expect(adressesDuCode(code)).toEqual(['192.168.56.1', '192.168.1.42', '10.0.75.1', '172.25.80.1']);
+    expect(code.length).toBeLessThan(160);
   });
   it('rejette ce qui n’est pas un code Quiz Quest', () => {
     expect(decoderSignal('https://exemple.fr')).toBeNull();

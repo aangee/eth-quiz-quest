@@ -5,6 +5,7 @@ import { NB_MANCHES, vainqueur } from '../../jeu/duel';
 import { avancerQuetes } from '../../jeu/quetes';
 import { creerOffre, demanderCamera, repondre, type EtatConnexion, type Transport } from '../../net/connexion';
 import { QuestionDuel } from './QuestionDuel';
+import { adressesDuCode } from '../../net/signal';
 import { QrCode } from './QrCode';
 import { Scanner } from './Scanner';
 import { CodeTexte } from './CodeTexte';
@@ -17,6 +18,7 @@ export function DuelReseau({ joueur, onFin, onQuitter }: {
   const [phase, setPhase] = useState<Phase>('role');
   const [hote, setHote] = useState(false);
   const [code, setCode] = useState<string | null>(null);
+  const [codeAutre, setCodeAutre] = useState<string | null>(null);
   const [attente, setAttente] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
   const [etat, setEtat] = useState<EtatConnexion>('ouvert');
@@ -74,6 +76,7 @@ export function DuelReseau({ joueur, onFin, onQuitter }: {
   const recuReponse = async (c: string) => {
     if (!finaliser.current) return;
     setAttente(true);
+    setCodeAutre(c);
     try { connecte(await finaliser.current(c)); } catch (e) { echec(e); }
   };
   const devenirInvite = async () => {
@@ -82,6 +85,7 @@ export function DuelReseau({ joueur, onFin, onQuitter }: {
   };
   const recuOffre = async (c: string) => {
     setAttente(true);
+    setCodeAutre(c);
     try {
       const r = await repondre(c);
       annuler.current = r.annuler;
@@ -115,7 +119,17 @@ export function DuelReseau({ joueur, onFin, onQuitter }: {
     return (
       <main class="ecran">
         <h2>{phase === 'hote' ? '🎮 Tu crées la partie' : '🔗 Tu rejoins la partie'}</h2>
-        {erreur && <p class="bandeau ko">{erreur}</p>}
+        {erreur && (
+          <div class="bandeau ko">
+            <p>{erreur}</p>
+            <p>Essaie le partage de connexion du téléphone (le PC s'y connecte en Wi-Fi). Sur Windows, le réseau doit être « Privé ».</p>
+            <details>
+              <summary>Diagnostic</summary>
+              <p>Cet appareil : {code ? adressesDuCode(code).join(', ') || 'aucune adresse' : '—'}</p>
+              <p>L'autre appareil : {codeAutre ? adressesDuCode(codeAutre).join(', ') || 'aucune adresse' : '—'}</p>
+            </details>
+          </div>
+        )}
         {phase === 'hote' && code && <><p>1. Fais scanner ce QR par l’autre appareil :</p><QrCode texte={code} /></>}
         {phase === 'invite' && code && <QrCode texte={code} />}
         <p>{attente && phase === 'invite' ? `${etape} — en attente de connexion…` : etape}</p>

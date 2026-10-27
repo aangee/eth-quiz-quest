@@ -96,3 +96,4 @@ section { display: flex; flex-direction: column; gap: 8px; }
 .petit { min-height: 36px; padding: 4px 10px; }
 .noeud input { flex: 1; min-width: 0; }
 .noeud .age { flex: 0 0 64px; }
+.bandeau p { margin: 4px 0; }

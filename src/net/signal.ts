@@ -10,7 +10,8 @@ export type TypeSignal = 'offre' | 'reponse';
 const PREFIXE = 'Q2';
 const B32 = '0123456789ABCDEFGHIJKLMNOPQRSTUV';
 const SETUPS = ['actpass', 'active', 'passive'];
-const MAX_CANDIDATS = 3;
+// Un PC a souvent des cartes virtuelles (WSL, Hyper-V, VPN) : on garde assez d'adresses pour inclure la vraie
+const MAX_CANDIDATS = 6;
 
 // --- flux de bits <-> base 32 -------------------------------------------
 const ICE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
@@ -101,16 +102,28 @@ function lireAdresse(l: Lecteur): string | null {
 // --- SDP --------------------------------------------------------------------
 const ligne = (sdp: string, cle: string) => sdp.split(/\r?\n/).find((l) => l.startsWith(cle))?.slice(cle.length).trim() ?? '';
 
-/** Candidats UDP retenus : IPv4 d'abord (hors 169.254), puis mDNS, puis IPv6. */
+/**
+ * Candidats UDP retenus : les IPv4 privées d'abord (192.168, puis 10, puis 172.16-31 souvent virtuelles),
+ * sans 127.x ni 169.254 ; les noms mDNS et l'IPv6 seulement s'il n'y a aucune IPv4 utilisable.
+ */
 function candidats(sdp: string): { adresse: number[]; port: number }[] {
-  const rang = (a: number[]) => (a[0] === 4 ? (a[1] === 169 && a[2] === 254 ? 3 : 0) : a[0] === 1 ? 1 : 2);
-  return sdp.split(/\r?\n/)
+  const rangIpv4 = (a: number[]) => (a[1] === 192 && a[2] === 168 ? 0 : a[1] === 10 ? 1 : a[1] === 172 && a[2] >= 16 && a[2] <= 31 ? 2 : 3);
+  const tous = sdp.split(/\r?\n/)
     .filter((l) => l.startsWith('a=candidate:'))
     .map((l) => l.split(' '))
     .filter((c) => c[1] === '1' && c[2]?.toLowerCase() === 'udp')
-    .flatMap((c) => { const a = adresseVersOctets(c[4]); return a ? [{ adresse: a, port: Number(c[5]) }] : []; })
-    .sort((x, y) => rang(x.adresse) - rang(y.adresse))
-    .slice(0, MAX_CANDIDATS);
+    .flatMap((c) => { const a = adresseVersOctets(c[4]); return a ? [{ adresse: a, port: Number(c[5]) }] : []; });
+  const ipv4 = tous
+    .filter((c) => c.adresse[0] === 4 && c.adresse[1] !== 127 && !(c.adresse[1] === 169 && c.adresse[2] === 254))
+    .sort((x, y) => rangIpv4(x.adresse) - rangIpv4(y.adresse));
+  const choisis = ipv4.length ? ipv4 : [...tous.filter((c) => c.adresse[0] === 1), ...tous.filter((c) => c.adresse[0] === 6)];
+  return choisis.slice(0, MAX_CANDIDATS);
+}
+
+/** Adresses annoncées dans un code (pour aider au diagnostic). */
+export function adressesDuCode(code: string): string[] {
+  const d = decoderSignal(code);
+  return d ? d.sdp.split('\r\n').filter((l) => l.startsWith('a=candidate:')).map((l) => l.split(' ')[4]) : [];
 }
 
 export function encoderSignal(type: TypeSignal, sdp: string): string {
@@ -120,7 +133,7 @@ export function encoderSignal(type: TypeSignal, sdp: string): string {
   w.octets(ligne(sdp, 'a=fingerprint:sha-256').split(':').map((h) => parseInt(h, 16) || 0));
   w.ecrire(Math.max(0, SETUPS.indexOf(ligne(sdp, 'a=setup:'))), 2);
   const cands = candidats(sdp);
-  w.ecrire(cands.length, 2);
+  w.ecrire(cands.length, 3);
   for (const c of cands) { w.octets(c.adresse); w.ecrire(c.port, 16); }
   return `${PREFIXE}${type === 'offre' ? 'O' : 'R'}${w.base32()}`;
 }
@@ -136,7 +149,7 @@ export function decoderSignal(code: string): { type: TypeSignal; sdp: string } |
   const pwd = l.ice();
   const empreinte = l.octets(32);
   const setup = SETUPS[l.lire(2) ?? 9];
-  const nb = l.lire(2);
+  const nb = l.lire(3);
   if (!ufrag || ufrag.length < 4 || !pwd || pwd.length < 22 || !empreinte || !setup || nb === null) return null;
   const lignes: string[] = [];
   for (let k = 0; k < nb; k++) {
