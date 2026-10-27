@@ -1,9 +1,9 @@
 /* Néon arcade : ornements seulement (couleurs, polices, formes : index.ts). Tout reste sous [data-theme="neon"]. */
-:root[data-theme="neon"] body {
-  background:
-    radial-gradient(ellipse at 50% 0%, #5b1fa855, transparent 70%) fixed,
-    var(--c-fond);
+:root[data-theme="neon"] {
+  background: radial-gradient(ellipse at 50% 0%, #5b1fa855, transparent 70%) fixed, var(--c-fond);
 }
+/* body transparent : sinon il recouvre la grille posée derrière lui */
+:root[data-theme="neon"] body { background: transparent; }
 /* Grille rétro en perspective, fixe en bas de l'écran */
 :root[data-theme="neon"] body::before {
   content: ''; position: fixed; left: -50%; right: -50%; bottom: 0; height: 40vh; z-index: -1; pointer-events: none;
