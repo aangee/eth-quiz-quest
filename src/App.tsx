@@ -25,6 +25,11 @@ import { EcranClassement } from './ecrans/EcranClassement';
 import { debutSemaine, entreeDe } from './jeu/classement';
 import { envoyerEntrees, supprimerEntree } from './net/classementEnLigne';
 import { majRecord, type Partie, type ResultatJeu } from './jeu/minijeux';
+import { celebration } from './jeu/celebration';
+import { musique, musiqueActivee, memoriserMusique } from './son/musique';
+import { BoutonMusique } from './ecrans/BoutonMusique';
+
+const MENUS = new Set(['profils', 'joueur', 'arbre', 'domaines', 'minijeux', 'classement', 'parent', 'resultats', 'finjeu']);
 
 type Ecran =
   | { nom: 'profils' }
@@ -33,12 +38,12 @@ type Ecran =
   | { nom: 'arbre'; profilId: string }
   | { nom: 'domaines'; profilId: string }
   | { nom: 'quiz'; profilId: string; domaines: string[] }
-  | { nom: 'resultats'; profilId: string; domaines: string[]; bilan: Bilan }
+  | { nom: 'resultats'; profilId: string; domaines: string[]; bilan: Bilan; avant: Profil }
   | { nom: 'minijeux'; profilId: string }
   | { nom: 'duel'; profilId: string }
   | { nom: 'classement'; profilId: string }
   | { nom: 'jeu'; profilId: string; jeu: MiniJeu; partie: Partie }
-  | { nom: 'finjeu'; profilId: string; jeu: MiniJeu; partie: Partie; resultat: ResultatJeu; record: boolean };
+  | { nom: 'finjeu'; profilId: string; jeu: MiniJeu; partie: Partie; resultat: ResultatJeu; record: boolean; avant: Profil };
 
 export function App() {
   const [profils, setProfils] = useState<Profil[] | null>(null);
@@ -63,6 +68,25 @@ export function App() {
       setSemaine(majSemaine(s, semaineDe()));
     });
   }, []);
+  // Musique douce : seulement dans les menus, jamais en partie
+  const [sonActif, setSonActif] = useState(() => musiqueActivee());
+  const sonVoulu = useRef(false);
+  sonVoulu.current = sonActif && MENUS.has(ecran.nom);
+  useEffect(() => {
+    const debloquer = () => musique.debloquer();
+    const visibilite = () => { if (document.hidden) musique.couper(); else if (sonVoulu.current) musique.jouer(); };
+    window.addEventListener('pointerdown', debloquer);
+    window.addEventListener('keydown', debloquer);
+    document.addEventListener('visibilitychange', visibilite);
+    return () => {
+      window.removeEventListener('pointerdown', debloquer);
+      window.removeEventListener('keydown', debloquer);
+      document.removeEventListener('visibilitychange', visibilite);
+    };
+  }, []);
+  useEffect(() => { if (sonVoulu.current && !document.hidden) musique.jouer(); else musique.couper(); }, [sonActif, ecran.nom]);
+  const changerSon = (v: boolean) => { setSonActif(v); memoriserMusique(v); };
+
   if (!profils || !semaine) return <main class="ecran"><p>Chargement…</p></main>;
 
   /** Envoie les profils au classement de la famille (regroupé, silencieux hors ligne). */
@@ -119,17 +143,18 @@ export function App() {
 
   const finQuiz = (p: Profil, bilan: Bilan, doms: string[]) => {
     enregistrerPartie([p], bilan.justes);
-    setEcran({ nom: 'resultats', profilId: p.id, domaines: doms, bilan });
+    setEcran({ nom: 'resultats', profilId: p.id, domaines: doms, bilan, avant: profil(p.id) });
   };
 
   const finJeu = (jeu: MiniJeu, partie: Partie, p: Profil, resultat: ResultatJeu) => {
     const r = majRecord(p, jeu, resultat.score, partie.defi ? partie.domaines[0] : undefined);
     maj(r.profil);
-    setEcran({ nom: 'finjeu', profilId: p.id, jeu, partie, resultat, record: r.nouveau });
+    setEcran({ nom: 'finjeu', profilId: p.id, jeu, partie, resultat, record: r.nouveau, avant: profil(p.id) });
   };
   const nomJeu = (jeu: MiniJeu, partie: Partie) =>
     partie.defi ? `Défi ${MINI_JEUX[jeu].nom} ${partie.domaines[0]}` : MINI_JEUX[jeu].nom;
 
+  const ecranCourant = (() => {
   switch (ecran.nom) {
     case 'profils':
       return <EcranProfils profils={profils} onCreer={maj} onChoisir={ouvrir} onParent={() => setEcran({ nom: 'parent' })} />;
@@ -155,7 +180,7 @@ export function App() {
       return <EcranQuiz profil={profil(ecran.profilId)} domaines={ecran.domaines}
         onFin={(p, bilan) => finQuiz(p, bilan, ecran.domaines)} />;
     case 'resultats':
-      return <EcranResultats profil={profil(ecran.profilId)} bilan={ecran.bilan}
+      return <EcranResultats profil={profil(ecran.profilId)} bilan={ecran.bilan} avant={ecran.avant}
         onRejouer={() => setEcran({ nom: 'quiz', profilId: ecran.profilId, domaines: ecran.domaines })}
         onRetour={() => setEcran({ nom: 'joueur', profilId: ecran.profilId })} />;
     case 'minijeux':
@@ -171,7 +196,7 @@ export function App() {
         onFin={(p, r) => finJeu(ecran.jeu, ecran.partie, p, r)} />;
     }
     case 'finjeu':
-      return <EcranFinJeu nom={nomJeu(ecran.jeu, ecran.partie)} resultat={ecran.resultat} record={ecran.record}
+      return <EcranFinJeu nom={nomJeu(ecran.jeu, ecran.partie)} resultat={ecran.resultat} record={ecran.record} celebration={celebration(ecran.avant, profil(ecran.profilId))}
         onRejouer={() => setEcran({ nom: 'jeu', profilId: ecran.profilId, jeu: ecran.jeu, partie: ecran.partie })}
         onRetour={() => setEcran({ nom: 'minijeux', profilId: ecran.profilId })} />;
     case 'duel':
@@ -180,4 +205,6 @@ export function App() {
     case 'classement':
       return <EcranClassement famille={famille} onRetour={() => setEcran({ nom: 'joueur', profilId: ecran.profilId })} />;
   }
+  })();
+  return <>{MENUS.has(ecran.nom) && <BoutonMusique active={sonActif} onChange={changerSon} />}{ecranCourant}</>;
 }

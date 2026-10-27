@@ -7,6 +7,7 @@ import { melanger } from '../jeu/melange';
 import { avancerQuetes } from '../jeu/quetes';
 import { choixACacher, jokersDebloques, jokerUtilisable, utiliserJoker } from '../jeu/jokers';
 import { nomJoker } from '../jeu/arbre';
+import { BarreTemps } from './BarreTemps';
 
 export const NB_QUESTIONS = 10;
 export const LIMITE_MS = 20000;
@@ -45,6 +46,7 @@ export function EcranQuiz({ profil, domaines, onFin }: {
   const [verdict, setVerdict] = useState<boolean | null>(null);
   const [caches, setCaches] = useState<Set<Valeur>>(() => new Set());
   const [jokerPris, setJokerPris] = useState(false);
+  const [gain, setGain] = useState(0);
 
   // Choix des QCM mélangés une fois par question (valeur = index d'origine)
   const choix = useMemo<{ label: string; valeur: Valeur }[]>(() => {
@@ -61,6 +63,7 @@ export function EcranQuiz({ profil, domaines, onFin }: {
     const juste = rep !== null && rep === q.reponse;
     const temps = Date.now() - debut;
     const r = appliquerReponse(p, domaine, q, juste, temps, limite);
+    setGain(r.xp);
     setP(avancerQuetes(r.profil, { type: 'reponse', domaine, juste, rapide: juste && temps <= limite / 3 }));
     setVerdict(juste);
     setBilan((b) => ({
@@ -118,6 +121,7 @@ export function EcranQuiz({ profil, domaines, onFin }: {
         <span>⏱ {Math.ceil(reste / 1000)} s</span>
         <span>✨ {bilan.xp} XP</span>
       </div>
+      <BarreTemps reste={reste} total={limite} />
       <p class="domaine">{tirage.domaine} · niv. {q.niveau}</p>
       <h2>{q.question}</h2>
       <div class="choix">
@@ -137,7 +141,7 @@ export function EcranQuiz({ profil, domaines, onFin }: {
       )}
       {verdict !== null && (
         <div class={verdict ? 'verdict ok' : 'verdict ko'}>
-          <p>{verdict ? '✅ Bravo !' : '❌ Raté'}</p>
+          <p>{verdict ? <>✅ Bravo ! <span class="gain">+{gain} XP</span></> : '❌ Raté'}</p>
           {!verdict && <p>Bonne réponse : <b>{bonneReponse(q)}</b></p>}
           {q.explication && <p>{q.explication}</p>}
           <button class="principal" onClick={suivant}>Suivant ▶</button>

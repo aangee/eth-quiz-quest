@@ -52,7 +52,7 @@ export function Memory({ profil, partie, onFin, onQuitter }: PropsJeu) {
           const visible = trouvee || retournees.includes(c.id);
           return (
             <button key={c.id} class={`carte-memory ${visible ? 'visible' : ''} ${trouvee ? 'trouvee' : ''}`} onClick={() => toucher(c)}>
-              {visible ? c.texte : '❓'}
+              <span class="face dos">❓</span><span class="face recto">{c.texte}</span>
             </button>
           );
         })}

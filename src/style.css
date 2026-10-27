@@ -104,3 +104,38 @@ section { display: flex; flex-direction: column; gap: 8px; }
 .classement .nom { display: flex; flex-direction: column; flex: 1; min-width: 0; }
 .classement .nom small { opacity: 0.7; }
 select { font: inherit; padding: 10px 12px; border-radius: 12px; background: var(--carte); color: var(--texte); border: 2px solid transparent; }
+
+/* --- Animations (lot 7) : courtes, douces, coupées si « réduire les animations » --- */
+@keyframes entree { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes rebond { 0% { transform: scale(1); } 40% { transform: scale(1.06); } 100% { transform: scale(1); } }
+@keyframes secoue { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+@keyframes monte { 0% { opacity: 0; transform: translateY(6px); } 30% { opacity: 1; } 100% { opacity: 1; transform: translateY(-3px); } }
+@keyframes deverrouille { 0% { box-shadow: 0 0 0 0 rgba(255, 200, 61, 0.8); transform: scale(1); } 50% { transform: scale(1.03); } 100% { box-shadow: 0 0 0 14px rgba(255, 200, 61, 0); transform: scale(1); } }
+@keyframes tombe { from { transform: translateY(-20px) rotate(0deg); opacity: 1; } to { transform: translateY(100vh) rotate(540deg); opacity: 0; } }
+.ecran { animation: entree 180ms ease-out; }
+.verdict { animation: entree 200ms ease-out; }
+.verdict.ko { animation: secoue 320ms ease-out; }
+.choix .bon, .duo .bon { animation: rebond 320ms ease-out; }
+.gain { display: inline-block; margin-left: 6px; color: var(--accent); font-weight: 700; animation: monte 900ms ease-out both; }
+.noeud.nouveau { animation: deverrouille 700ms ease-out; }
+.classement li { animation: entree 250ms ease-out both; }
+.celebration { text-align: center; }
+.celebration .grand { font-size: 1.6em; font-weight: 800; color: var(--accent); margin: 0.2em 0; animation: rebond 500ms ease-out; }
+.confettis { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 20; }
+.confettis i { position: absolute; top: 0; width: 8px; height: 12px; border-radius: 2px; animation: tombe 1000ms ease-in forwards; }
+.barre-temps { height: 6px; background: var(--carte); border-radius: 4px; overflow: hidden; }
+.barre-temps div { height: 100%; background: var(--ok); transition: width 250ms linear, background-color 300ms; }
+.barre-temps.urgent div { background: #ff9f43; }
+.carte-memory { position: relative; perspective: 600px; padding: 0; background: none; border: none; }
+.carte-memory.visible { background: none; }
+.carte-memory .face { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 6px;
+  border-radius: 12px; border: 2px solid transparent; background: var(--carte); backface-visibility: hidden; transition: transform 300ms ease; }
+.carte-memory .recto { transform: rotateY(180deg); background: #3d2f85; }
+.carte-memory.visible .dos { transform: rotateY(180deg); }
+.carte-memory.visible .recto { transform: rotateY(0deg); }
+.carte-memory.trouvee .recto { border-color: var(--ok); }
+.bouton-musique { position: fixed; top: 10px; right: 10px; z-index: 10; min-height: 40px; padding: 6px 10px; border-radius: 20px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  .confettis { display: none; }
+}

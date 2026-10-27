@@ -3,6 +3,7 @@ import type { VraiFaux } from '../../types';
 import { questionsDuDomaine } from '../../packs';
 import { contenu, crediter, longueur, multXp, type PropsJeu } from '../../jeu/minijeux';
 import { PasDeContenu } from './PasDeContenu';
+import { BarreTemps } from '../BarreTemps';
 
 export const DUREE_MS = 60000;
 export const PENALITE_MS = 3000;
@@ -50,6 +51,7 @@ export function ChronoEclair({ profil, partie, onFin, onQuitter }: PropsJeu) {
         <span>⏱ {Math.ceil(reste / 1000)} s</span>
         <span>✅ {score} {dernier === 'ok' ? '👍' : dernier === 'ko' ? '−3 s' : ''}</span>
       </div>
+      <BarreTemps reste={reste} total={longueur(DUREE_MS, partie)} />
       <p class="domaine">{domaine}</p>
       <h2>{q.question}</h2>
       <div class="duo">
