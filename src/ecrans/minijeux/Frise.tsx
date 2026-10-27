@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'preact/hooks';
 import type { Ordre } from '../../types';
 import { questionsDuDomaine } from '../../packs';
-import { contenu, crediter, longueur, multXp, type PropsJeu } from '../../jeu/minijeux';
+import { contenu, crediter, longueur, multXp, type ARetenir, type PropsJeu } from '../../jeu/minijeux';
 import { friseJuste, verifierOrdre } from '../../jeu/frise';
 import { melanger } from '../../jeu/melange';
 import { PasDeContenu } from './PasDeContenu';
@@ -15,6 +15,7 @@ export function Frise({ profil, partie, onFin, onQuitter }: PropsJeu) {
   const [valide, setValide] = useState(false);
   const [p, setP] = useState(profil);
   const [score, setScore] = useState(0);
+  const [rates, setRates] = useState<ARetenir[]>([]);
   const courant = liste[i];
   const melange = useMemo(() => (courant ? melanger(courant.q.elements) : []), [i]);
 
@@ -29,11 +30,13 @@ export function Frise({ profil, partie, onFin, onQuitter }: PropsJeu) {
     if (juste) {
       setScore((s) => s + 1);
       setP((x) => crediter(x, domaine, 10 * q.niveau * multXp(partie)));
+    } else {
+      setRates((r) => [...r, { question: q.question, bonne: q.elements.join(' → '), explication: q.explication }]);
     }
   };
   const suivant = () => {
     if (i + 1 >= liste.length) {
-      onFin(p, { score, xp: p.xp - profil.xp, texte: `${score}/${liste.length} frise(s) parfaite(s)` });
+      onFin(p, { score, xp: p.xp - profil.xp, texte: `${score}/${liste.length} frise(s) parfaite(s)`, aRetenir: rates });
       return;
     }
     setI(i + 1);

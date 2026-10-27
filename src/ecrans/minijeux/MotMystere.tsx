@@ -1,7 +1,7 @@
 import { useState } from 'preact/hooks';
 import type { Mot } from '../../types';
 import { questionsDuDomaine } from '../../packs';
-import { contenu, crediter, longueur, multXp, type PropsJeu } from '../../jeu/minijeux';
+import { contenu, crediter, longueur, multXp, type ARetenir, type PropsJeu } from '../../jeu/minijeux';
 import { ERREURS_MAX, affichage, erreurs, estTrouve, normaliser } from '../../jeu/mot';
 import { PasDeContenu } from './PasDeContenu';
 
@@ -14,6 +14,7 @@ export function MotMystere({ profil, partie, onFin, onQuitter }: PropsJeu) {
   const [essayees, setEssayees] = useState<Set<string>>(() => new Set());
   const [p, setP] = useState(profil);
   const [score, setScore] = useState(0);
+  const [rates, setRates] = useState<ARetenir[]>([]);
 
   if (!liste.length) return <PasDeContenu onQuitter={onQuitter} />;
   const { q, domaine } = liste[i];
@@ -32,8 +33,10 @@ export function MotMystere({ profil, partie, onFin, onQuitter }: PropsJeu) {
   };
 
   const suivant = () => {
+    const r = perdu ? [...rates, { question: q.indice, bonne: q.reponse, explication: q.explication }] : rates;
+    setRates(r);
     if (i + 1 >= liste.length) {
-      onFin(p, { score, xp: p.xp - profil.xp, texte: `${score}/${liste.length} mot(s) trouvé(s)` });
+      onFin(p, { score, xp: p.xp - profil.xp, texte: `${score}/${liste.length} mot(s) trouvé(s)`, aRetenir: r });
       return;
     }
     setI(i + 1);

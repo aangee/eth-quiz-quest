@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'preact/hooks';
 import type { Etiquettes as QEtiquettes } from '../../types';
 import { questionsDuDomaine } from '../../packs';
-import { contenu, crediter, longueur, multXp, type PropsJeu } from '../../jeu/minijeux';
+import { contenu, crediter, longueur, multXp, type ARetenir, type PropsJeu } from '../../jeu/minijeux';
 import { etiquettesRestantes, scoreEtiquettes } from '../../jeu/etiquettes';
 import { melanger } from '../../jeu/melange';
 import { PasDeContenu } from './PasDeContenu';
@@ -14,6 +14,7 @@ export function Etiquettes({ profil, partie, onFin, onQuitter }: PropsJeu) {
   const [valide, setValide] = useState(false);
   const [p, setP] = useState(profil);
   const [score, setScore] = useState(0);
+  const [rates, setRates] = useState<ARetenir[]>([]);
   const courant = liste[i];
   const labels = useMemo(() => (courant ? melanger(courant.q.zones.map((z) => z.label)) : []), [i]);
 
@@ -38,10 +39,12 @@ export function Etiquettes({ profil, partie, onFin, onQuitter }: PropsJeu) {
     setValide(true);
     setScore((s) => s + bonnes);
     setP((x) => crediter(x, domaine, 5 * q.niveau * bonnes * multXp(partie)));
+    const mal = q.zones.filter((z, k) => placements[k] !== z.label).map((z) => z.label);
+    if (mal.length) setRates((r) => [...r, { question: q.question, bonne: `Mal placées : ${mal.join(', ')}`, explication: q.explication }]);
   };
   const suivant = () => {
     if (i + 1 >= liste.length) {
-      onFin(p, { score, xp: p.xp - profil.xp, texte: `${score} étiquette(s) bien placée(s)` });
+      onFin(p, { score, xp: p.xp - profil.xp, texte: `${score} étiquette(s) bien placée(s)`, aRetenir: rates });
       return;
     }
     setI(i + 1);

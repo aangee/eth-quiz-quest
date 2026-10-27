@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'preact/hooks';
 import type { Indices } from '../../types';
 import { questionsDuDomaine } from '../../packs';
-import { contenu, crediter, longueur, multXp, type PropsJeu } from '../../jeu/minijeux';
+import { contenu, crediter, longueur, multXp, type ARetenir, type PropsJeu } from '../../jeu/minijeux';
 import { choixQui, pointsQui } from '../../jeu/qui';
 import { melanger } from '../../jeu/melange';
 import { PasDeContenu } from './PasDeContenu';
@@ -16,6 +16,7 @@ export function QuiSuisJe({ profil, partie, onFin, onQuitter }: PropsJeu) {
   const [choisi, setChoisi] = useState<string | null>(null);
   const [p, setP] = useState(profil);
   const [score, setScore] = useState(0);
+  const [rates, setRates] = useState<ARetenir[]>([]);
   const courant = tour[i];
   // Leurres pris d'abord dans le même domaine
   const choix = useMemo(() => {
@@ -34,11 +35,13 @@ export function QuiSuisJe({ profil, partie, onFin, onQuitter }: PropsJeu) {
       const pts = pointsQui(vus);
       setScore((s) => s + pts);
       setP((x) => crediter(x, domaine, 5 * pts * q.niveau * multXp(partie)));
+    } else {
+      setRates((r) => [...r, { question: `Qui suis-je ? ${q.indices.join(' · ')}`, bonne: q.reponse, explication: q.explication }]);
     }
   };
   const suivant = () => {
     if (i + 1 >= tour.length) {
-      onFin(p, { score, xp: p.xp - profil.xp, texte: `${score} point(s)` });
+      onFin(p, { score, xp: p.xp - profil.xp, texte: `${score} point(s)`, aRetenir: rates });
       return;
     }
     setI(i + 1);
