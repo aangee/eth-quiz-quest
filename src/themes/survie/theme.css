@@ -1,0 +1,18 @@
+/* Aventure survie : ornements seulement. Tout reste sous [data-theme="survie"]. */
+:root[data-theme="survie"] {
+  background: radial-gradient(circle at 20% 15%, #3d2e1f, transparent 45%) fixed, radial-gradient(circle at 85% 85%, #34422c, transparent 45%) fixed, var(--c-fond);
+}
+:root[data-theme="survie"] body { background: transparent; }
+:root[data-theme="survie"] h1 { color: var(--c-lien); text-shadow: 2px 2px 0 #1a140e; letter-spacing: 0.03em; }
+:root[data-theme="survie"] button:not(.onglet):not(.etape) { box-shadow: var(--ombre); }
+:root[data-theme="survie"] .principal { letter-spacing: 0.04em; }
+:root[data-theme="survie"] .jauge { height: 14px; border: 2px solid var(--c-bord); background: #1a140e; }
+:root[data-theme="survie"] .jauge div { background: repeating-linear-gradient(45deg, #f08a24 0 8px, #e07a14 8px 16px); }
+:root[data-theme="survie"] .pastille { background: #f3e7c9; color: #3b2a1a; border-width: 4px; box-shadow: 0 4px 0 #1a140e; }
+:root[data-theme="survie"] .nom-etape { background: #3b2a1a; color: #f3e7c9; padding: 2px 8px; border-radius: 6px; border: 2px solid #1a140e; }
+:root[data-theme="survie"] .etape small { background: #f3e7c9; color: #2b2118; padding: 0 6px; border-radius: 6px; font-weight: 800; }
+:root[data-theme="survie"] .barre-nav { background: #3b2a1a; border-top: 4px solid var(--c-bord); }
+:root[data-theme="survie"] .onglet.actif { background: var(--c-accent); color: var(--c-sur-accent); border-radius: 10px; }
+:root[data-theme="survie"] .avatar-rond { border-radius: 12px; background: #4e7a3a; border-color: var(--c-texte); }
+:root[data-theme="survie"] .compteur-etoiles { background: var(--c-accent); color: var(--c-sur-accent); border-color: var(--c-accent); border-radius: 8px; }
+:root[data-theme="survie"] .lettre { border-radius: 50%; background: var(--c-texte); color: #3b2a1a; border-color: var(--c-texte); }
