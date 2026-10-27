@@ -2,6 +2,7 @@ import { useEffect, useState } from 'preact/hooks';
 import { crediter, longueur, multXp, type PropsJeu } from '../../jeu/minijeux';
 import { genererCalcul, niveauCalcul, niveauCalculDepart } from '../../jeu/calcul';
 import { DUREE_MS } from './ChronoEclair';
+import { BarreTemps } from '../BarreTemps';
 
 const TOUCHES = ['7', '8', '9', '4', '5', '6', '1', '2', '3'];
 
@@ -53,6 +54,7 @@ export function CalculEclair({ profil, partie, onFin, onQuitter }: PropsJeu) {
         <span>⏱ {Math.ceil(reste / 1000)} s</span>
         <span>✅ {score}</span>
       </div>
+      <BarreTemps reste={reste} total={duree} />
       <h1 class="calcul">{calcul.texte} = {saisie || '?'}</h1>
       {rate && <p class="rate-texte">❌ Essaie encore</p>}
       <div class="pave">

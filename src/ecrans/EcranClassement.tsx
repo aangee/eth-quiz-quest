@@ -63,7 +63,7 @@ export function EcranClassement({ famille, onRetour }: { famille: Famille | null
       {entrees && lignes.length === 0 && <p>Personne encore dans ce classement.</p>}
       <ol class="classement">
         {lignes.map(({ entree, valeur }, i) => (
-          <li key={entree.id}>
+          <li key={entree.id} style={{ animationDelay: `${i * 60}ms` }}>
             <span class="rang">{MEDAILLES[i] ?? `${i + 1}.`}</span>
             <span class="avatar">{entree.avatar}</span>
             <span class="nom">{entree.pseudo}<small>{entree.appareil} · niv. {entree.niveau}</small></span>

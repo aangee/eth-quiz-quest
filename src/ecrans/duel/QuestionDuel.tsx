@@ -5,6 +5,7 @@ import { appliquerReponse, bonneReponse } from '../../jeu/partie';
 import { avancerQuetes } from '../../jeu/quetes';
 import { melanger } from '../../jeu/melange';
 import { pointsDuel } from '../../jeu/duel';
+import { BarreTemps } from '../BarreTemps';
 
 export interface ReponseDuel { juste: boolean; points: number; profil: Profil }
 
@@ -55,6 +56,7 @@ export function QuestionDuel({ profil, domaines, vues, onReponse }: {
   return (
     <div class="question-duel">
       <p class="domaine">{profil.avatar} {profil.prenom} · {tirage.domaine} · niv. {q.niveau} · ⏱ {Math.ceil(reste / 1000)} s</p>
+      <BarreTemps reste={reste} total={LIMITE_MS} />
       <h2>{q.question}</h2>
       <div class="choix">
         {choix.map((c) => (
