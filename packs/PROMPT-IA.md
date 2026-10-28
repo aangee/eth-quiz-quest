@@ -19,7 +19,7 @@ Format :
 }
 ```
 
-`icone` (facultatif) : l'icône du domaine sur la carte, parmi `espace`, `animaux`, `geographie`, `histoire`,
+`icone` (facultatif) : l'icône du domaine sur la carte, parmi `espace`, `animaux`, `geographie`, `histoire`, `temple`,
 `jeux`, `sciences`, `livre`. Absente ou inconnue → `livre`.
 
 Chaque question a toujours : `id` (unique, ex. `geo-001`), `type`, `niveau` (entier 1 à 5),
