@@ -49,6 +49,7 @@ export const ICONES = {
   animaux: [cercle(7, 9, 2), cercle(12, 6, 2), cercle(17, 9, 2), 'M12 12c-3 0-5 3-5 5s2 3 5 3 5-1 5-3-2-5-5-5z'],
   geographie: [cercle(12, 12, 9), 'M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18'],
   histoire: ['M4 21V8h3v3h3V8h4v3h3V8h3v13z', 'M10 21v-5h4v5'],
+  temple: ['M3 21h18M4 18h16M6 18v-8M10 18v-8M14 18v-8M18 18v-8', 'M3 10l9-6 9 6z'],
   sciences: ['M9 3h6M10 3v6l-5 10a1.5 1.5 0 0 0 1.3 2h11.4a1.5 1.5 0 0 0 1.3-2L14 9V3', 'M7.5 15h9'],
   livre: ['M4 4h7a3 3 0 0 1 3 3v14a2 2 0 0 0-2-2H4z', 'M20 4h-6M20 4v15h-6'],
 } satisfies Record<string, string[]>;
@@ -56,4 +57,4 @@ export const ICONES = {
 export type NomIcone = keyof typeof ICONES;
 
 /** Icônes proposées pour le champ `icone` des packs (lot 8b) ; `livre` = icône générique. */
-export const ICONES_DOMAINE: NomIcone[] = ['espace', 'animaux', 'geographie', 'histoire', 'jeux', 'sciences', 'livre'];
+export const ICONES_DOMAINE: NomIcone[] = ['espace', 'animaux', 'geographie', 'histoire', 'temple', 'jeux', 'sciences', 'livre'];

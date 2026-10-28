@@ -58,7 +58,6 @@ export function Memory({ profil, partie, onFin, onQuitter }: PropsJeu) {
           );
         })}
       </div>
-      <button onClick={onQuitter}>Abandonner</button>
     </main>
   );
 }

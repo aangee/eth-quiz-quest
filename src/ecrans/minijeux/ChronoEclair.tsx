@@ -59,7 +59,6 @@ export function ChronoEclair({ profil, partie, onFin, onQuitter }: PropsJeu) {
         <button onClick={() => repondre(true)}>Vrai</button>
         <button onClick={() => repondre(false)}>Faux</button>
       </div>
-      <button onClick={onQuitter}>Abandonner</button>
     </main>
   );
 }

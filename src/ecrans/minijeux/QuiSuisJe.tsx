@@ -78,7 +78,6 @@ export function QuiSuisJe({ profil, partie, onFin, onQuitter }: PropsJeu) {
           <button class="principal" onClick={suivant}>Suivant <Icone nom="suivant" /></button>
         </div>
       )}
-      <button onClick={onQuitter}>Abandonner</button>
     </main>
   );
 }
