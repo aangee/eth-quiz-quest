@@ -72,7 +72,6 @@ export function MotMystere({ profil, partie, onFin, onQuitter }: PropsJeu) {
           ))}
         </div>
       )}
-      <button onClick={onQuitter}>Abandonner</button>
     </main>
   );
 }

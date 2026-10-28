@@ -1,6 +1,7 @@
 import { useState } from 'preact/hooks';
 import { defiOubli, hacherPin, pinValide, verifierPin } from '../../jeu/pin';
 import { Icone } from '../../ui/Icone';
+import { EnteteRetour } from '../../ui/EnteteRetour';
 
 type Mode = 'saisie' | 'creer' | 'oubli';
 
@@ -36,7 +37,7 @@ export function VerrouPin({ pin, onPin, onOuvrir, onRetour }: {
 
   return (
     <main class="ecran">
-      <h2><Icone nom="cadenas" /> Espace parent</h2>
+      <EnteteRetour onRetour={onRetour}><Icone nom="cadenas" /> Espace parent</EnteteRetour>
       {mode === 'saisie' && (
         <>
           <p>Entre le code PIN :</p>
@@ -62,7 +63,6 @@ export function VerrouPin({ pin, onPin, onOuvrir, onRetour }: {
         </>
       )}
       {message && <p class="bandeau">{message}</p>}
-      <button onClick={onRetour}><Icone nom="retour" /> Retour</button>
     </main>
   );
 }

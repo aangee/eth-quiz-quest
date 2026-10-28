@@ -33,6 +33,7 @@ import { themeParId } from './themes/registre';
 import { lireDernierTheme, memoriserTheme } from './themes/dernier';
 import { ThemeContexte } from './themes/contexte';
 import { BarreNav } from './ui/BarreNav';
+import { BoutonAbandon } from './ui/BoutonAbandon';
 import { ongletActif } from './jeu/navigation';
 import { Icone } from './ui/Icone';
 
@@ -98,6 +99,9 @@ export function App() {
   // Barre du bas : la page garde une marge pour que rien ne reste caché dessous (tous les onglets d'un coup)
   const avecBarre = ongletActif(ecran.nom) !== null;
   useEffect(() => { document.body.classList.toggle('avec-barre', avecBarre); }, [avecBarre]);
+  // En partie : bouton « Abandonner » en haut, la page garde une marge au-dessus
+  const enPartie = ecran.nom === 'quiz' || ecran.nom === 'jeu';
+  useEffect(() => { document.body.classList.toggle('en-partie', enPartie); }, [enPartie]);
   useEffect(() => {
     if (idTheme === undefined) return;
     const t = themeParId(idTheme);
@@ -225,6 +229,8 @@ export function App() {
   return (
     <ThemeContexte.Provider value={theme}>
       {MENUS.has(ecran.nom) && <BoutonMusique active={sonActif} onChange={changerSon} />}
+      {ecran.nom === 'quiz' && <BoutonAbandon onAbandon={() => setEcran({ nom: 'carte', profilId: ecran.profilId })} />}
+      {ecran.nom === 'jeu' && <BoutonAbandon onAbandon={() => setEcran({ nom: 'minijeux', profilId: ecran.profilId })} />}
       {ecranCourant}
       {onglet && 'profilId' in ecran && <BarreNav actif={onglet} onAller={(o) => setEcran({ nom: o, profilId: ecran.profilId })} />}
     </ThemeContexte.Provider>

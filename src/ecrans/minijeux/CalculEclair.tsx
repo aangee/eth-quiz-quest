@@ -7,7 +7,7 @@ import { Icone } from '../../ui/Icone';
 
 const TOUCHES = ['7', '8', '9', '4', '5', '6', '1', '2', '3'];
 
-export function CalculEclair({ profil, partie, onFin, onQuitter }: PropsJeu) {
+export function CalculEclair({ profil, partie, onFin }: PropsJeu) {
   const depart = niveauCalculDepart(profil.age);
   const duree = longueur(DUREE_MS, partie);
   const [fin] = useState(() => Date.now() + duree);
@@ -60,11 +60,10 @@ export function CalculEclair({ profil, partie, onFin, onQuitter }: PropsJeu) {
       {rate && <p class="rate-texte">Essaie encore</p>}
       <div class="pave">
         {TOUCHES.map((t) => <button key={t} onClick={() => taper(t)}>{t}</button>)}
-        <button onClick={() => setSaisie((s) => s.slice(0, -1))}>⌫</button>
+        <button aria-label="Effacer" onClick={() => setSaisie((s) => s.slice(0, -1))}>⌫</button>
         <button onClick={() => taper('0')}>0</button>
         <button class="principal" onClick={valider}>OK</button>
       </div>
-      <button onClick={onQuitter}>Abandonner</button>
     </main>
   );
 }

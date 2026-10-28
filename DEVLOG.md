@@ -21,8 +21,8 @@ espace parent, classement famille en ligne (facultatif), animations et musique d
 ## État au 2026-10-27
 
 - `main` à jour : **PR #1 à #8 fusionnées**. Branche de travail : `claude/gamification-app-multidomains-0scl4l`.
-- **181 tests** (`npm test`), `npx tsc --noEmit` et `npm run build` OK.
-- **Lots 8 et 9 fusionnés** (PR #9, #10, #11). Correctif « réponse répétée dans les explications » + **45 questions d'histoire de France** (pack Histoire v2) sur la branche `nysa/wizardly-bardeen-ciuz3m`.
+- **184 tests** (`npm test`), `npx tsc --noEmit` et `npm run build` OK.
+- **Lots 8 et 9 fusionnés** (PR #9, #10, #11). Explications + histoire de France fusionnées (PR #12). Sur la branche `nysa/wizardly-bardeen-ciuz3m` : **Histoire scindée** en « Histoire de France » / « Histoire du monde », bouton **Abandonner** en haut des parties, **retour** collé en haut de l'Espace parent.
   La spec §18-§19 et les plans 8a/8b/8c/9 sont dans `nysa-atlas`, branche `nysa/wizardly-bardeen-ciuz3m`.
 - **Classement famille installé** par aangee (projet Firebase `quiz-quest-famille`, forfait Spark) : les scores remontent.
 - **Duel réseau validé sur les vrais appareils** (box Wi-Fi et partage de connexion).
@@ -48,7 +48,8 @@ espace parent, classement famille en ligne (facultatif), animations et musique d
 ## Décisions à ne pas oublier (détails dans la spec)
 
 - **Hors ligne d'abord** ; pas d'IA dans l'app. Les questions viennent de **packs JSON** (`packs/`, format dans `packs/PROMPT-IA.md`).
-- **Contenu** : 6 domaines, 336 éléments (dont 45 d'histoire de France dans « Histoire », d'après le programme du cycle 3). Une partie vient d'**Open Trivia Database (CC BY-SA 4.0)** → crédit dans le README
+- **Contenu** : 7 domaines, 340 éléments. « Histoire » est scindé (2026-10-28) en **Histoire de France** (58, programme du cycle 3) et **Histoire du monde** (37) ; la progression d'« Histoire » passe à « Histoire du monde » (`DOMAINES_RENOMMES` dans `src/jeu/profil.ts`), Histoire de France démarre à zéro.
+- **Abandon** : bouton en haut à gauche pendant un quiz ou un mini-jeu, avec confirmation ; rien n'est gardé de la partie abandonnée. Une partie vient d'**Open Trivia Database (CC BY-SA 4.0)** → crédit dans le README
   et champ `source` des packs ; les packs qui en contiennent restent sous CC BY-SA. Deux relectures factuelles faites
   (lot 5 : 4 corrections, dont Pluton/Russie ; explications : 4 corrections).
 - **Explications** : affichées après une réponse (quiz, Mot mystère, Frise, Qui suis-je ?, Étiquettes) et dans le récap
@@ -85,7 +86,7 @@ espace parent, classement famille en ligne (facultatif), animations et musique d
 
 ## Prochaines étapes
 
-- PR « explications + histoire de France » vers `main` (avec l'accord d'aangee), puis test avec Loulou.
+- PR « deux domaines d'histoire + abandon + retour parent » vers `main` (avec l'accord d'aangee).
 - Ajouter un thème : suivre `src/themes/AJOUTER-UN-THEME.md`.
 
 ## Prochaines idées (non commencées)
@@ -99,7 +100,7 @@ espace parent, classement famille en ligne (facultatif), animations et musique d
 ## Reprendre le travail
 
 1. `git pull` dans ce dépôt **et** dans `nysa-atlas` ; lire ce DEVLOG puis la spec (`§0` à `§17`).
-2. `npm install && npm test && npm run build` (attendu : 181 tests OK).
+2. `npm install && npm test && npm run build` (attendu : 184 tests OK).
 3. Pour une nouvelle fonctionnalité : brainstorm (skill `brainstorming` de `nysa-plugins`) → section de spec → plan
    `docs/superpowers/plans/AAAA-MM-JJ-quiz-quest-<lot>.md` → exécution → PR vers `main`.
 4. Sur aaee-katana : lancer `/nysa-boot` depuis le dossier du projet (`L:/CORE/labs/eth-quiz-quest`, à confirmer) pour

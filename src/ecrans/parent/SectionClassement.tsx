@@ -63,7 +63,7 @@ export function SectionClassement({ famille, onFamille }: { famille: Famille | n
         <>
           <p class="domaine">Partage les scores entre les appareils de la famille (pseudos seulement, jamais de vrai nom ni d'âge).</p>
           <button onClick={() => setMode('rejoindre')}><Icone nom="qr" /> Rejoindre la famille (scanner le QR d'un autre appareil)</button>
-          <button onClick={() => setMode('creer')}>🆕 Créer le classement (première fois, avec Firebase)</button>
+          <button onClick={() => setMode('creer')}><Icone nom="plus" /> Créer le classement (première fois, avec Firebase)</button>
         </>
       ) : mode === 'creer' ? (
         <>

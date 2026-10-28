@@ -253,3 +253,14 @@ body.avec-barre .ecran { padding-bottom: calc(108px + env(safe-area-inset-bottom
 .etat-fiche.ok { color: var(--c-ok); font-weight: 700; }
 .ensuite { color: var(--c-texte-doux); }
 @keyframes monte-fiche { from { transform: translate(-50%, 40px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+
+/* --- Abandon d'une partie (en haut, loin des réponses) --- */
+body.en-partie .ecran { padding-top: 68px; }
+.bouton-abandon { position: fixed; top: 10px; left: max(10px, calc(50% - 270px)); z-index: 10; min-height: 44px; padding: 6px 14px;
+  display: inline-flex; align-items: center; gap: 6px; font-size: 0.85em; }
+
+/* --- En-tête avec retour, collé en haut (espace parent) --- */
+.entete-retour { position: sticky; top: 0; z-index: 9; display: flex; align-items: center; gap: 12px; margin: -16px -16px 0;
+  padding: 10px 64px 10px 16px; background: var(--c-fond); border-bottom: var(--bord) solid var(--c-bord); }
+.entete-retour h2 { margin: 0; display: flex; align-items: center; gap: 8px; font-size: 1.2em; }
+.entete-retour button { min-height: 44px; padding: 6px 12px; display: inline-flex; align-items: center; gap: 4px; flex: none; }
